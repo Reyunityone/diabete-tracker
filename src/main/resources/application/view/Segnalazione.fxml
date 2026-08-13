@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox
+        xmlns="http://javafx.com/javafx/26"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="application.controller.SegnalazioneController"
+
+        spacing="12"
+
+        prefWidth="500"
+        prefHeight="420"
+
+        styleClass="window-background">
+
+    <padding>
+
+        <Insets
+                top="30"
+                right="30"
+                bottom="30"
+                left="30"/>
+
+    </padding>
+
+
+    <Label
+            text="Nuova segnalazione"
+            styleClass="window-title"/>
+
+
+    <Label
+            text="Data"
+            styleClass="field-label"/>
+
+
+    <DatePicker
+            fx:id="dataPicker"/>
+
+
+    <Label
+            text="Segnalazione"
+            styleClass="field-label"/>
+
+
+    <TextArea
+            fx:id="testoArea"
+            promptText="Descrivi la segnalazione..."
+            wrapText="true"
+            VBox.vgrow="ALWAYS"/>
+
+
+    <Button
+            text="Salva"
+            onAction="#salva"
+            styleClass="save-button"/>
+
+</VBox>

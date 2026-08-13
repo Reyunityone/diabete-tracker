@@ -1,0 +1,34 @@
+.history-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.search-field {
+    -fx-pref-height: 40px;
+    -fx-font-size: 14px;
+}
+
+.history-scroll {
+    -fx-background-color: transparent;
+}
+
+.history-item {
+    -fx-padding: 15px;
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: #dddddd;
+}
+
+.history-date {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.history-description {
+    -fx-font-size: 14px;
+}
+
+.modify-button {
+    -fx-padding: 8px 15px;
+}

@@ -1,0 +1,305 @@
+/* ========================================================= */
+/* FINESTRA PRINCIPALE */
+/* ========================================================= */
+
+.root {
+    -fx-font-family: "Segoe UI";
+    -fx-background-color: #f4f5f7;
+}
+
+/* =========================================================
+   BARRA SUPERIORE
+   ========================================================= */
+
+.top-bar {
+
+    -fx-background-color: #ffffff;
+
+    -fx-border-color: transparent transparent #dddddd transparent;
+
+    -fx-border-width: 0 0 1 0;
+}
+
+
+/* =========================================================
+   PROFILO
+   ========================================================= */
+.profile-name {
+
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.profile-role {
+
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 14px;
+    -fx-text-fill: #777777;
+}
+
+/* =========================================================
+   MAIL
+   ========================================================= */
+.mail-button {
+
+    -fx-background-color: transparent;
+
+    -fx-background-radius: 8px;
+
+    -fx-padding: 8px;
+
+    -fx-cursor: hand;
+
+    -fx-pref-width: 55px;
+    -fx-min-width: 55px;
+    -fx-max-width: 55px;
+
+    -fx-pref-height: 55px;
+    -fx-min-height: 55px;
+    -fx-max-height: 55px;
+}
+
+.mail-button:hover {
+
+    -fx-background-color: #eeeeee;
+}
+/* =========================================================
+   MENU MAIL
+   ========================================================= */
+.mail-menu {
+
+    -fx-background-color: white;
+
+    -fx-background-radius: 10px;
+
+    -fx-border-color: #dddddd;
+
+    -fx-border-radius: 10px;
+
+    -fx-padding: 8px;
+
+    -fx-pref-width: 350px;
+
+    -fx-min-width: 350px;
+
+    -fx-max-width: 350px;
+
+    -fx-pref-height: 60px;
+
+    -fx-min-height: 60px;
+
+    -fx-max-height: 60px;
+
+    -fx-effect:
+        dropshadow(
+            gaussian,
+            rgba(0,0,0,0.18),
+            10,
+            0,
+            0,
+            3
+        );
+}
+
+/* =========================================================
+   PULSANTI MENU MAIL
+   ========================================================= */
+
+.mail-menu-button {
+
+    -fx-background-color: white;
+
+    -fx-border-color: #dddddd;
+
+    -fx-border-radius: 6px;
+
+    -fx-background-radius: 6px;
+
+    -fx-font-family: "Segoe UI";
+
+    -fx-font-size: 14px;
+
+    -fx-text-fill: #222222;
+
+    -fx-pref-width: 130px;
+    -fx-min-width: 130px;
+    -fx-max-width: 130px;
+
+    -fx-pref-height: 40px;
+    -fx-min-height: 40px;
+    -fx-max-height: 40px;
+
+    -fx-alignment: CENTER;
+
+    -fx-cursor: hand;
+}
+
+.mail-menu-button:hover {
+
+    -fx-background-color: #eeeeee;
+
+    -fx-border-color: #cccccc;
+}
+/* =========================================================
+   RICERCA
+   ========================================================= */
+
+.search-field {
+
+    -fx-font-family: "Segoe UI";
+
+    -fx-font-size: 15px;
+
+    -fx-background-radius: 7px;
+
+    -fx-border-radius: 7px;
+
+    -fx-border-color: #dddddd;
+
+    -fx-padding: 8px 12px;
+}
+
+
+/* =========================================================
+   TITOLO SEZIONE
+   ========================================================= */
+
+.section-title {
+
+    -fx-font-size: 22px;
+
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #222222;
+}
+
+/* =========================================================
+   SCROLL
+   ========================================================= */
+
+.list-scroll {
+
+    -fx-background-color: transparent;
+
+    -fx-background: transparent;
+
+    -fx-border-color: transparent;
+}
+
+
+.list-scroll .viewport {
+
+    -fx-background-color: transparent;
+}
+
+
+.list-scroll .scroll-bar:vertical {
+
+    -fx-pref-width: 16px;
+}
+
+
+.list-scroll .scroll-bar:vertical .thumb {
+
+    -fx-background-radius: 8px;
+}
+
+
+.list-scroll .scroll-bar:vertical .track {
+
+    -fx-background-radius: 8px;
+}
+
+
+.list-scroll .scroll-bar:vertical .increment-button,
+.list-scroll .scroll-bar:vertical .decrement-button {
+
+    -fx-pref-height: 16px;
+}
+
+/* =========================================================
+   BOX PAZIENTE
+   ========================================================= */
+
+.patient-box {
+
+    -fx-background-color: white;
+
+    -fx-background-radius: 8px;
+
+    -fx-border-color: #dddddd;
+
+    -fx-border-radius: 8px;
+
+    -fx-padding: 10px 15px;
+
+    -fx-min-height: 65px;
+}
+
+
+.patient-name {
+
+    -fx-font-size: 15px;
+
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #222222;
+}
+
+
+/* =========================================================
+   BOTTONI PAZIENTE
+   ========================================================= */
+
+.patient-action-button {
+
+    -fx-background-color: white;
+
+    -fx-border-color: #bbbbbb;
+
+    -fx-border-radius: 5px;
+
+    -fx-background-radius: 5px;
+
+    -fx-text-fill: #333333;
+
+    -fx-padding: 6px 10px;
+
+    -fx-font-size: 12px;
+
+    -fx-cursor: hand;
+}
+
+
+.patient-action-button:hover {
+
+    -fx-background-color: #eeeeee;
+}
+
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+.logout-button {
+
+    -fx-background-color: transparent;
+
+    -fx-background-radius: 8px;
+
+    -fx-padding: 8px;
+
+    -fx-cursor: hand;
+
+    -fx-pref-width: 55px;
+
+    -fx-pref-height: 55px;
+}
+
+
+.logout-button:hover {
+
+    -fx-background-color: #eeeeee;
+}
+

@@ -1,0 +1,72 @@
+.root {
+
+    -fx-font-family: "Segoe UI";
+
+    -fx-background-color: #f4f5f7;
+}
+
+
+.window-title {
+
+    -fx-font-size: 22px;
+
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #222222;
+}
+
+
+.label {
+
+    -fx-font-size: 14px;
+
+    -fx-text-fill: #333333;
+}
+
+
+.text-field {
+
+    -fx-background-color: white;
+
+    -fx-border-color: #dddddd;
+
+    -fx-border-radius: 6px;
+
+    -fx-background-radius: 6px;
+
+    -fx-padding: 8px;
+}
+
+
+.text-area {
+
+    -fx-background-color: white;
+
+    -fx-border-color: #dddddd;
+
+    -fx-border-radius: 6px;
+
+    -fx-background-radius: 6px;
+}
+
+
+.button {
+
+    -fx-background-color: white;
+
+    -fx-border-color: #bbbbbb;
+
+    -fx-border-radius: 6px;
+
+    -fx-background-radius: 6px;
+
+    -fx-padding: 8px 15px;
+
+    -fx-cursor: hand;
+}
+
+
+.button:hover {
+
+    -fx-background-color: #eeeeee;
+}

@@ -1,0 +1,470 @@
+/* =========================================================
+   FINESTRA PRINCIPALE
+   ========================================================= */
+
+.root {
+
+    -fx-font-family: "Segoe UI";
+
+    -fx-background-color: #f4f5f7;
+}
+
+
+/* =========================================================
+   BARRA SUPERIORE
+   ========================================================= */
+
+.top-bar {
+
+    -fx-background-color: #ffffff;
+
+    -fx-border-color:
+        transparent
+        transparent
+        #dddddd
+        transparent;
+
+    -fx-border-width:
+        0
+        0
+        1
+        0;
+}
+
+
+/* =========================================================
+   PROFILO
+   ========================================================= */
+
+.profile-name {
+
+    -fx-font-family: "Segoe UI";
+
+    -fx-font-size: 18px;
+
+    -fx-font-weight: bold;
+}
+
+
+.profile-role {
+
+    -fx-font-family: "Segoe UI";
+
+    -fx-font-size: 14px;
+
+    -fx-text-fill: #777777;
+}
+
+
+/* =========================================================
+   SEZIONE PAZIENTE
+   ========================================================= */
+
+.patient-section {
+
+    -fx-background-color: white;
+
+    -fx-background-radius: 10px;
+
+    -fx-border-color: #dddddd;
+
+    -fx-border-radius: 10px;
+
+    -fx-padding: 20px;
+
+    -fx-min-height: 130px;
+
+    -fx-effect:
+        dropshadow(
+            gaussian,
+            rgba(0,0,0,0.05),
+            5,
+            0,
+            0,
+            2
+        );
+}
+
+
+/* =========================================================
+   TITOLO SEZIONE
+   ========================================================= */
+
+.section-title {
+
+    -fx-font-family: "Segoe UI";
+
+    -fx-font-size: 19px;
+
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #222222;
+}
+
+
+/* =========================================================
+   DESCRIZIONE
+   ========================================================= */
+
+.section-description {
+
+    -fx-font-family: "Segoe UI";
+
+    -fx-font-size: 13px;
+
+    -fx-text-fill: #777777;
+}
+
+
+/* =========================================================
+   BOTTONI AZIONE
+   ========================================================= */
+
+.patient-action-button {
+
+    -fx-background-color: white;
+
+    -fx-border-color: #bbbbbb;
+
+    -fx-border-radius: 5px;
+
+    -fx-background-radius: 5px;
+
+    -fx-text-fill: #333333;
+
+    -fx-padding: 6px 10px;
+
+    -fx-font-family: "Segoe UI";
+
+    -fx-font-size: 12px;
+
+    -fx-cursor: hand;
+}
+
+
+.patient-action-button:hover {
+
+    -fx-background-color: #eeeeee;
+
+    -fx-border-color: #cccccc;
+}
+
+
+/* =========================================================
+   PULSANTE INFO
+   ========================================================= */
+
+.patient-info-button {
+
+    -fx-background-color: white;
+
+    -fx-border-color: #bbbbbb;
+
+    -fx-border-radius: 5px;
+
+    -fx-background-radius: 5px;
+
+    -fx-padding: 8px;
+
+    -fx-cursor: hand;
+}
+
+
+.patient-info-button:hover {
+
+    -fx-background-color: #eeeeee;
+
+    -fx-border-color: #cccccc;
+}
+
+
+/* =========================================================
+   MAIL
+   ========================================================= */
+
+.mail-button {
+
+    -fx-background-color: transparent;
+
+    -fx-background-radius: 8px;
+
+    -fx-padding: 8px;
+
+    -fx-cursor: hand;
+
+    -fx-pref-width: 55px;
+
+    -fx-min-width: 55px;
+
+    -fx-max-width: 55px;
+
+    -fx-pref-height: 55px;
+
+    -fx-min-height: 55px;
+
+    -fx-max-height: 55px;
+}
+
+
+.mail-button:hover {
+
+    -fx-background-color: #eeeeee;
+}
+
+
+/* =========================================================
+   MENU MAIL
+   ========================================================= */
+
+.mail-menu {
+
+    -fx-background-color: white;
+
+    -fx-background-radius: 10px;
+
+    -fx-border-color: #dddddd;
+
+    -fx-border-radius: 10px;
+
+
+    -fx-pref-width: 350px;
+
+    -fx-min-width: 350px;
+
+    -fx-max-width: 350px;
+
+    -fx-pref-height: 60px;
+
+    -fx-min-height: 60px;
+
+    -fx-max-height: 60px;
+
+    -fx-padding: 8px;
+
+    -fx-effect:
+        dropshadow(
+            gaussian,
+            rgba(0,0,0,0.18),
+            10,
+            0,
+            0,
+            3
+        );
+}
+
+
+/* =========================================================
+   PULSANTI MENU MAIL
+   ========================================================= */
+
+.mail-menu-button {
+
+    -fx-background-color: white;
+
+    -fx-border-color: #dddddd;
+
+    -fx-border-radius: 6px;
+
+    -fx-background-radius: 6px;
+
+    -fx-font-family: "Segoe UI";
+
+    -fx-font-size: 14px;
+
+    -fx-text-fill: #222222;
+    
+    -fx-pref-width: 130px;
+    -fx-min-width: 130px;
+    -fx-max-width: 130px;
+
+    -fx-pref-height: 40px;
+    -fx-min-height: 40px;
+    -fx-max-height: 40px;
+
+    -fx-alignment: CENTER;
+
+    -fx-cursor: hand;
+}
+
+
+.mail-menu-button:hover {
+
+    -fx-background-color: #eeeeee;
+
+    -fx-border-color: #cccccc;
+}
+
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+.logout-button {
+
+    -fx-background-color: transparent;
+
+    -fx-background-radius: 8px;
+
+    -fx-padding: 8px;
+
+    -fx-cursor: hand;
+
+    -fx-pref-width: 55px;
+
+    -fx-pref-height: 55px;
+}
+
+
+.logout-button:hover {
+
+    -fx-background-color: #eeeeee;
+}
+
+/* =========================================================
+   FINESTRE DATI
+   ========================================================= */
+
+.window-background {
+
+    -fx-background-color: #f4f5f7;
+}
+
+
+.window-title {
+
+    -fx-font-family: "Segoe UI";
+
+    -fx-font-size: 22px;
+
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #222222;
+}
+
+
+.field-label {
+
+    -fx-font-family: "Segoe UI";
+
+    -fx-font-size: 14px;
+
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #333333;
+}
+
+
+.save-button {
+
+    -fx-background-color: #ffffff;
+
+    -fx-border-color: #bbbbbb;
+
+    -fx-border-radius: 6px;
+
+    -fx-background-radius: 6px;
+
+    -fx-padding: 8px 25px;
+
+    -fx-font-size: 14px;
+
+    -fx-cursor: hand;
+}
+
+
+.save-button:hover {
+
+    -fx-background-color: #eeeeee;
+}
+
+
+.open-button {
+
+    -fx-background-color: #ffffff;
+
+    -fx-border-color: #bbbbbb;
+
+    -fx-border-radius: 6px;
+
+    -fx-background-radius: 6px;
+
+    -fx-padding: 7px 15px;
+
+    -fx-font-size: 13px;
+
+    -fx-cursor: hand;
+}
+
+
+.open-button:hover {
+
+    -fx-background-color: #eeeeee;
+}
+
+
+/* =========================================================
+   STORICO
+   ========================================================= */
+
+.history-box {
+
+    -fx-background-color: white;
+
+    -fx-background-radius: 8px;
+
+    -fx-border-color: #dddddd;
+
+    -fx-border-radius: 8px;
+
+    -fx-padding: 12px 15px;
+
+    -fx-min-height: 65px;
+}
+
+
+.history-date {
+
+    -fx-font-size: 14px;
+
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #222222;
+}
+
+
+.history-description {
+
+    -fx-font-size: 13px;
+
+    -fx-text-fill: #666666;
+}
+
+
+.history-button {
+
+    -fx-background-color: white;
+
+    -fx-border-color: #bbbbbb;
+
+    -fx-border-radius: 5px;
+
+    -fx-background-radius: 5px;
+
+    -fx-padding: 7px 12px;
+
+    -fx-font-size: 12px;
+
+    -fx-cursor: hand;
+}
+
+
+.history-button:hover {
+
+    -fx-background-color: #eeeeee;
+}
+
+.tooltip {
+    -fx-font-size: 15px;
+    -fx-padding: 12px;
+    -fx-max-width: 350px;
+}

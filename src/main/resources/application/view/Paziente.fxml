@@ -1,0 +1,723 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane
+        xmlns="http://javafx.com/javafx/26"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="application.controller.PazienteController"
+
+        prefWidth="1200.0"
+        prefHeight="750.0"
+
+        stylesheets="@../css/paziente.css">
+
+
+    <children>
+
+        <BorderPane
+                AnchorPane.topAnchor="0.0"
+                AnchorPane.bottomAnchor="0.0"
+                AnchorPane.leftAnchor="0.0"
+                AnchorPane.rightAnchor="0.0">
+
+
+            <!-- ================================================= -->
+            <!-- BARRA SUPERIORE -->
+            <!-- ================================================= -->
+
+            <top>
+
+                <HBox
+                        alignment="CENTER_LEFT"
+                        spacing="15.0"
+                        prefHeight="90.0"
+                        styleClass="top-bar">
+
+                    <padding>
+                        <Insets
+                                left="25.0"
+                                right="25.0"
+                                top="15.0"
+                                bottom="15.0"/>
+                    </padding>
+
+
+                    <!-- ================================================= -->
+                    <!-- AVATAR -->
+                    <!-- ================================================= -->
+
+                    <ImageView
+                            fx:id="profileImage"
+                            fitHeight="55.0"
+                            fitWidth="55.0"
+                            preserveRatio="true">
+
+                        <image>
+                            <Image
+                                    url="@../images/avatar.png"/>
+                        </image>
+
+                    </ImageView>
+
+
+                    <!-- ================================================= -->
+                    <!-- NOME + RUOLO -->
+                    <!-- ================================================= -->
+
+                    <VBox spacing="3.0">
+
+                        <Label
+                                fx:id="nomeCognomeLabel"
+                                text="Nome Cognome"
+                                styleClass="profile-name"/>
+
+                        <Label
+                                fx:id="ruoloLabel"
+                                text="Paziente"
+                                styleClass="profile-role"/>
+
+                    </VBox>
+
+
+                    <!-- SPAZIO -->
+
+                    <Region HBox.hgrow="ALWAYS"/>
+
+
+                    <!-- ================================================= -->
+                    <!-- LOGOUT -->
+                    <!-- ================================================= -->
+
+                    <Button
+                            fx:id="logoutButton"
+                            onAction="#handleLogout"
+                            styleClass="logout-button">
+
+                        <graphic>
+
+                            <ImageView
+                                    fitHeight="35.0"
+                                    fitWidth="35.0"
+                                    preserveRatio="true">
+
+                                <image>
+                                    <Image
+                                            url="@../images/logout.png"/>
+                                </image>
+
+                            </ImageView>
+
+                        </graphic>
+
+                    </Button>
+
+                </HBox>
+
+            </top>
+
+
+            <!-- ================================================= -->
+            <!-- CONTENUTO CENTRALE -->
+            <!-- ================================================= -->
+
+            <center>
+
+                <AnchorPane>
+
+
+                    <!-- ================================================= -->
+                    <!-- SEZIONI PAZIENTE -->
+                    <!-- ================================================= -->
+
+                    <VBox
+                            spacing="18.0"
+
+                            AnchorPane.topAnchor="85.0"
+                            AnchorPane.bottomAnchor="25.0"
+                            AnchorPane.leftAnchor="40.0"
+                            AnchorPane.rightAnchor="40.0">
+
+                        <padding>
+
+                            <Insets
+                                    top="15.0"
+                                    bottom="15.0"
+                                    left="5.0"
+                                    right="5.0"/>
+
+                        </padding>
+
+
+                        <!-- ================================================= -->
+                        <!-- RILEVAZIONI GIORNALIERE -->
+                        <!-- ================================================= -->
+
+                        <HBox
+                                alignment="CENTER_LEFT"
+                                spacing="15.0"
+                                prefHeight="130.0"
+                                styleClass="patient-section">
+
+
+                            <VBox
+                                    spacing="5.0"
+                                    alignment="CENTER_LEFT">
+
+                                <Label
+                                        text="Rilevazioni Giornaliere"
+                                        styleClass="section-title"/>
+
+                                <Label
+                                        text="Inserisci e consulta le tue rilevazioni."
+                                        styleClass="section-description"/>
+
+                            </VBox>
+
+
+                            <Region HBox.hgrow="ALWAYS"/>
+
+
+                            <!-- AGGIUNGI -->
+
+                            <Button
+                                    fx:id="aggiungiRilevazioneButton"
+                                    text="Aggiungi"
+                                    onAction="#apriAggiungiRilevazione"
+                                    styleClass="patient-action-button">
+
+                                <graphic>
+
+                                    <ImageView
+                                            fitHeight="25.0"
+                                            fitWidth="25.0"
+                                            preserveRatio="true">
+
+                                        <image>
+                                            <Image
+                                                    url="@../images/aggiungi.png"/>
+                                        </image>
+
+                                    </ImageView>
+
+                                </graphic>
+
+                            </Button>
+
+
+                            <!-- VEDI PRECEDENTI -->
+
+                            <Button
+                                    fx:id="precedentiRilevazioniButton"
+                                    text="Vedi Precedenti"
+                                    onAction="#apriStoricoRilevazioni"
+                                    styleClass="patient-action-button">
+
+                                <graphic>
+
+                                    <ImageView
+                                            fitHeight="25.0"
+                                            fitWidth="25.0"
+                                            preserveRatio="true">
+
+                                        <image>
+                                            <Image
+                                                    url="@../images/vediPrecedenti.png"/>
+                                        </image>
+
+                                    </ImageView>
+
+                                </graphic>
+
+                            </Button>
+
+
+                            <!-- INFO -->
+
+                            <Button
+                                    fx:id="infoRilevazioniButton"
+                                    styleClass="patient-info-button">
+
+                                <graphic>
+
+                                    <ImageView
+                                            fitHeight="25.0"
+                                            fitWidth="25.0"
+                                            preserveRatio="true">
+
+                                        <image>
+                                            <Image
+                                                    url="@../images/info.png"/>
+                                        </image>
+
+                                    </ImageView>
+
+                                </graphic>
+
+                            </Button>
+
+                        </HBox>
+
+
+                        <!-- ================================================= -->
+                        <!-- SINTOMI / FARMACI -->
+                        <!-- ================================================= -->
+
+                        <HBox
+                                alignment="CENTER_LEFT"
+                                spacing="15.0"
+                                prefHeight="130.0"
+                                styleClass="patient-section">
+
+
+                            <VBox
+                                    spacing="5.0"
+                                    alignment="CENTER_LEFT">
+
+                                <Label
+                                        text="Sintomi / Farmaci"
+                                        styleClass="section-title"/>
+
+                                <Label
+                                        text="Gestisci sintomi e farmaci assunti."
+                                        styleClass="section-description"/>
+
+                            </VBox>
+
+
+                            <Region HBox.hgrow="ALWAYS"/>
+
+
+                            <!-- AGGIUNGI -->
+
+                            <Button
+                                    fx:id="aggiungiSintomoButton"
+                                    text="Aggiungi"
+                                    onAction="#apriAggiungiSintomo"
+                                    styleClass="patient-action-button">
+
+                                <graphic>
+
+                                    <ImageView
+                                            fitHeight="25.0"
+                                            fitWidth="25.0"
+                                            preserveRatio="true">
+
+                                        <image>
+                                            <Image
+                                                    url="@../images/aggiungi.png"/>
+                                        </image>
+
+                                    </ImageView>
+
+                                </graphic>
+
+                            </Button>
+
+
+                            <!-- VEDI PRECEDENTI -->
+
+                            <Button
+                                    fx:id="precedentiSintomiButton"
+                                    text="Vedi Precedenti"
+                                    onAction="#apriStoricoSintomi"
+                                    styleClass="patient-action-button">
+
+                                <graphic>
+
+                                    <ImageView
+                                            fitHeight="25.0"
+                                            fitWidth="25.0"
+                                            preserveRatio="true">
+
+                                        <image>
+                                            <Image
+                                                    url="@../images/vediPrecedenti.png"/>
+                                        </image>
+
+                                    </ImageView>
+
+                                </graphic>
+
+                            </Button>
+
+
+                            <!-- INFO -->
+
+                            <Button
+                                    fx:id="infoSintomiButton"
+                                    styleClass="patient-info-button">
+
+                                <graphic>
+
+                                    <ImageView
+                                            fitHeight="25.0"
+                                            fitWidth="25.0"
+                                            preserveRatio="true">
+
+                                        <image>
+                                            <Image
+                                                    url="@../images/info.png"/>
+                                        </image>
+
+                                    </ImageView>
+
+                                </graphic>
+
+                            </Button>
+
+                        </HBox>
+
+
+                        <!-- ================================================= -->
+                        <!-- SEGNALAZIONI -->
+                        <!-- ================================================= -->
+
+                        <HBox
+                                alignment="CENTER_LEFT"
+                                spacing="15.0"
+                                prefHeight="130.0"
+                                styleClass="patient-section">
+
+
+                            <VBox
+                                    spacing="5.0"
+                                    alignment="CENTER_LEFT">
+
+                                <Label
+                                        text="Segnalazioni"
+                                        styleClass="section-title"/>
+
+                                <Label
+                                        text="Invia e consulta le tue segnalazioni."
+                                        styleClass="section-description"/>
+
+                            </VBox>
+
+
+                            <Region HBox.hgrow="ALWAYS"/>
+
+
+                            <!-- AGGIUNGI -->
+
+                            <Button
+                                    fx:id="aggiungiSegnalazioneButton"
+                                    text="Aggiungi"
+                                    onAction="#apriAggiungiSegnalazione"
+                                    styleClass="patient-action-button">
+
+                                <graphic>
+
+                                    <ImageView
+                                            fitHeight="25.0"
+                                            fitWidth="25.0"
+                                            preserveRatio="true">
+
+                                        <image>
+                                            <Image
+                                                    url="@../images/aggiungi.png"/>
+                                        </image>
+
+                                    </ImageView>
+
+                                </graphic>
+
+                            </Button>
+
+
+                            <!-- VEDI PRECEDENTI -->
+
+                            <Button
+                                    fx:id="precedentiSegnalazioniButton"
+                                    text="Vedi Precedenti"
+                                    onAction="#apriStoricoSegnalazioni"
+                                    styleClass="patient-action-button">
+
+                                <graphic>
+
+                                    <ImageView
+                                            fitHeight="25.0"
+                                            fitWidth="25.0"
+                                            preserveRatio="true">
+
+                                        <image>
+                                            <Image
+                                                    url="@../images/vediPrecedenti.png"/>
+                                        </image>
+
+                                    </ImageView>
+
+                                </graphic>
+
+                            </Button>
+
+
+                            <!-- INFO -->
+
+                            <Button
+                                    fx:id="infoSegnalazioniButton"
+                                    styleClass="patient-info-button">
+
+                                <graphic>
+
+                                    <ImageView
+                                            fitHeight="25.0"
+                                            fitWidth="25.0"
+                                            preserveRatio="true">
+
+                                        <image>
+                                            <Image
+                                                    url="@../images/info.png"/>
+                                        </image>
+
+                                    </ImageView>
+
+                                </graphic>
+
+                            </Button>
+
+                        </HBox>
+
+                    </VBox>
+
+
+                    <!-- ================================================= -->
+                    <!-- MAIL -->
+                    <!-- ================================================= -->
+
+                    <AnchorPane
+                            fx:id="mailContainer"
+
+                            prefWidth="75.0"
+                            prefHeight="75.0"
+
+                            minWidth="75.0"
+                            maxWidth="75.0"
+
+                            minHeight="75.0"
+                            maxHeight="75.0"
+
+                            translateX="70.0"
+
+                            AnchorPane.topAnchor="10.0"
+                            AnchorPane.rightAnchor="110.0">
+
+
+                        <!-- ================================================= -->
+                        <!-- PULSANTE MAIL -->
+                        <!-- ================================================= -->
+
+                        <Button
+                                fx:id="mailButton"
+
+                                prefWidth="55.0"
+                                prefHeight="55.0"
+
+                                AnchorPane.topAnchor="0.0"
+                                AnchorPane.rightAnchor="0.0"
+
+                                styleClass="mail-button">
+
+                            <graphic>
+
+                                <ImageView
+                                        fitHeight="45.0"
+                                        fitWidth="45.0"
+                                        preserveRatio="true">
+
+                                    <image>
+                                        <Image
+                                                url="@../images/mail.png"/>
+                                    </image>
+
+                                </ImageView>
+
+                            </graphic>
+
+                        </Button>
+
+
+                        <!-- ================================================= -->
+                        <!-- PALLINO NOTIFICA MAIL -->
+                        <!-- ================================================= -->
+
+                        <ImageView
+                                fx:id="mailNotification"
+
+                                fitHeight="15.0"
+                                fitWidth="15.0"
+
+                                preserveRatio="true"
+
+                                AnchorPane.topAnchor="-2.0"
+                                AnchorPane.rightAnchor="-2.0">
+
+                            <image>
+                                <Image
+                                        url="@../images/daLeggere.png"/>
+                            </image>
+
+                        </ImageView>
+
+
+                        <!-- ================================================= -->
+                        <!-- MENU MAIL -->
+                        <!-- ================================================= -->
+
+                        <HBox
+                                fx:id="mailMenu"
+
+                                spacing="10.0"
+
+                                prefWidth="250.0"
+                                prefHeight="60.0"
+
+                                minWidth="250.0"
+                                maxWidth="250.0"
+
+                                minHeight="60.0"
+                                maxHeight="60.0"
+
+                                layoutX="-250.0"
+                                layoutY="60.0"
+
+                                visible="false"
+                                managed="false"
+
+                                styleClass="mail-menu">
+
+
+                            <!-- ================================================= -->
+                            <!-- TELEFONO -->
+                            <!-- ================================================= -->
+
+                            <Button
+                                    fx:id="telefonoButton"
+
+                                    text="Telefono"
+
+                                    prefWidth="115.0"
+                                    prefHeight="45.0"
+
+                                    styleClass="mail-menu-button">
+
+                                <graphic>
+
+                                    <ImageView
+                                            fitHeight="28.0"
+                                            fitWidth="28.0"
+                                            preserveRatio="true">
+
+                                        <image>
+                                            <Image
+                                                    url="@../images/telefono.png"/>
+                                        </image>
+
+                                    </ImageView>
+
+                                </graphic>
+
+                            </Button>
+
+
+                            <!-- ================================================= -->
+                            <!-- PALLINO TELEFONO -->
+                            <!-- ================================================= -->
+
+                            <ImageView
+                                    fx:id="telefonoNotification"
+
+                                    fitHeight="12.0"
+                                    fitWidth="12.0"
+
+                                    preserveRatio="true"
+
+                                    translateX="-25.0"
+                                    translateY="-17.0">
+
+                                <image>
+                                    <Image
+                                            url="@../images/daLeggere.png"/>
+                                </image>
+
+                            </ImageView>
+
+
+                            <!-- ================================================= -->
+                            <!-- MESSAGGIO -->
+                            <!-- ================================================= -->
+
+                            <Button
+                                    fx:id="messaggioButton"
+
+                                    text="Messaggio"
+
+                                    prefWidth="115.0"
+                                    prefHeight="45.0"
+
+                                    styleClass="mail-menu-button">
+
+                                <graphic>
+
+                                    <ImageView
+                                            fitHeight="28.0"
+                                            fitWidth="28.0"
+                                            preserveRatio="true">
+
+                                        <image>
+                                            <Image
+                                                    url="@../images/messaggio.png"/>
+                                        </image>
+
+                                    </ImageView>
+
+                                </graphic>
+
+                            </Button>
+
+
+                            <!-- ================================================= -->
+                            <!-- PALLINO MESSAGGIO -->
+                            <!-- ================================================= -->
+
+                            <ImageView
+                                    fx:id="messaggioNotification"
+
+                                    fitHeight="12.0"
+                                    fitWidth="12.0"
+
+                                    preserveRatio="true"
+
+                                    translateX="-25.0"
+                                    translateY="-17.0">
+
+                                <image>
+                                    <Image
+                                            url="@../images/daLeggere.png"/>
+                                </image>
+
+                            </ImageView>
+
+                        </HBox>
+
+                    </AnchorPane>
+
+                </AnchorPane>
+
+            </center>
+
+        </BorderPane>
+
+    </children>
+
+</AnchorPane>

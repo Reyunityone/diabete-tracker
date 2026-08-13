@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane
+        xmlns="http://javafx.com/javafx/26"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="application.controller.StoricoController"
+        prefWidth="750.0"
+        prefHeight="600.0"
+        stylesheets="@../css/storico.css">
+
+    <!-- ================================================= -->
+    <!-- TITOLO + RICERCA -->
+    <!-- ================================================= -->
+
+    <top>
+
+        <VBox spacing="12.0">
+
+            <padding>
+                <Insets
+                        top="20.0"
+                        bottom="15.0"
+                        left="25.0"
+                        right="25.0"/>
+            </padding>
+
+            <Label
+                    fx:id="titoloLabel"
+                    text="Storico"
+                    styleClass="history-title"/>
+
+            <TextField
+                    fx:id="ricercaDataField"
+                    promptText="Cerca per data..."
+                    styleClass="search-field"/>
+
+        </VBox>
+
+    </top>
+
+
+    <!-- ================================================= -->
+    <!-- LISTA -->
+    <!-- ================================================= -->
+
+    <center>
+
+        <ScrollPane
+                fitToWidth="true"
+                hbarPolicy="NEVER"
+                vbarPolicy="AS_NEEDED"
+                styleClass="history-scroll">
+
+            <content>
+
+                <VBox
+                        fx:id="contenitoreStorico"
+                        spacing="12.0">
+
+                    <padding>
+                        <Insets
+                                top="10.0"
+                                bottom="20.0"
+                                left="25.0"
+                                right="25.0"/>
+                    </padding>
+
+                </VBox>
+
+            </content>
+
+        </ScrollPane>
+
+    </center>
+
+</BorderPane>

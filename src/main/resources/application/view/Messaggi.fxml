@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox
+        xmlns="http://javafx.com/javafx/26"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="application.controller.MessaggiController"
+        spacing="15"
+        prefWidth="650"
+        prefHeight="600"
+        stylesheets="@../css/finestre.css">
+
+    <padding>
+
+        <Insets top="25"
+                right="30"
+                bottom="25"
+                left="30"/>
+
+    </padding>
+
+
+    <Label fx:id="titoloLabel"
+           text="Messaggi"
+           styleClass="window-title"/>
+
+
+    <TextField fx:id="searchField"
+               promptText="Cerca messaggio..."/>
+
+
+    <ScrollPane
+            fitToWidth="true"
+            VBox.vgrow="ALWAYS">
+
+        <content>
+
+            <VBox fx:id="messaggiContainer"
+                  spacing="10"
+                  fillWidth="true"/>
+
+        </content>
+
+    </ScrollPane>
+
+</VBox>

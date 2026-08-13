@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/26"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="application.controller.TerapiaController"
+      spacing="12"
+      prefWidth="500"
+      prefHeight="500"
+      stylesheets="@../css/finestra.css">
+
+    <padding>
+        <Insets top="25"
+                right="30"
+                bottom="25"
+                left="30"/>
+    </padding>
+
+    <Label fx:id="titoloLabel"
+           text="Terapia"
+           styleClass="title"/>
+
+    <Label text="Farmaco"/>
+
+    <TextField fx:id="farmacoField"/>
+
+    <Label text="Numero di assunzioni giornaliere"/>
+
+    <TextField fx:id="assunzioniField"/>
+
+    <Label text="Quantità di farmaco per assunzione"/>
+
+    <TextField fx:id="quantitaField"/>
+
+    <Label text="Indicazioni aggiuntive"/>
+
+    <TextArea fx:id="indicazioniArea"
+              prefRowCount="4"
+              wrapText="true"/>
+
+    <Button fx:id="salvaButton"
+            text="Salva"/>
+
+</VBox>

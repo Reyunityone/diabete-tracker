@@ -1,0 +1,20 @@
+\section{Stili Architetturali e Pattern}
+
+\subsection{Stili Architetturali}
+- Architettura a Strati: \\
+Presentation layer -$>$ GUI; \\
+Business logic layer -$>$ Paziente, Diabetologo, Terapia, Alert, GestoreLog, ecc.;\\
+Data access layer -$>$ Per ottenere, salvare, modificare i dati nel database
+
+\subsection{Design Pattern}
+-Creazionali: \\
+creazione degli oggetti (in modo controllato)\\
+(Es. "Factory" per la creazione degli oggetti relativi alla GUI, per Amministratore.creaUtente() e per gli alert)\\
+Qui "Singleton" dato che esiste un'unica istanza del gestore dei log condivisa da tutto il sistema, dato che deve tracciare in modo centralizzato tutte le operazioni dei medici. \\\\
+-Strutturali: \\
+composizione di classi ed oggetti (strutture tipiche)\\
+(Es. "Façade" per fornire un'unica interfaccia per un insieme di funzionalità divise tra più classi) \\\\
+-Comportamentali: \\
+come classi (oggetti) interagiscono tra di loro e si distribuiscono le responsabilità\\
+(Es "Template" per implementare la parte invariante di un algoritmo una sola volta, e lasciare alle sottoclassi l’implementazione delle parti che possono variare, come per il login)\\
+Qui probabilmente "Observer": il diabetologo e il paziente sono notificati quando cambia lo stato, cioè il paziente dimentica un farmaco o non segue la terapia per più di 3 giorni

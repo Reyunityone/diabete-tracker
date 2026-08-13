@@ -1,0 +1,43 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{graphicx} %Inserimento immagini
+\usepackage{biblatex}
+\usepackage{xcolor}
+\newcommand\todo[1]{\textcolor{red}{\textbf{//TODO: \textit{#1}}}}
+
+
+\title{Relazione progetto Ingegneria del Software}
+\date{\parbox{\linewidth}{\centering
+		\today\endgraf\bigskip
+		Giosuè Corbioli (VR518264)\\
+		Giovanni Grigoli (VR500669) \\
+		Rey Merzari (VR517101) \\
+		Denis Modenese (VR518328)\endgraf\bigskip
+		Dip. Informatica\bigskip \endgraf
+		Università degli studi di Verona}}
+
+
+\renewcommand{\contentsname}{Contenuti}
+
+\begin{document}
+	
+	\maketitle
+	\newpage
+	\tableofcontents
+	\newpage
+	\input{Introduzione}
+	\newpage
+	\input{ClassDiagram}
+	\newpage
+	\input{UseCaseDiagram}
+	\newpage
+	\input{SequenceDiagram}
+	\newpage
+	\input{ActivityDiagram}
+	
+	\newpage
+	\input{ArchitecturalStylesAndPatterns}
+	
+	\newpage
+	\input{Testing}	
+	
+\end{document}

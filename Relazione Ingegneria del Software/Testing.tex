@@ -1,0 +1,20 @@
+\section{Testing}
+Il testing è stato realizzato sulla base dell'approccio White Box.
+\subsection{Unit Test}
+(Test sulle singole classi in isolamento)\\
+Probabili casi da verificare:\\
+-Controllo login valido e non valido\\
+-Controllo soglia glicemia vicino e lontano dai pasti\\
+-Creazione degli alert per ricordare l'assunzione dei farmaci e in caso la terapia non sia effettivemente seguita per più di 3 giorni\\
+-Verificare che il sistema riconosca che i farmaci sono o  non sono coerenti con la terapia assegnata
+
+\subsection{System Test}
+(Test sull'applicazione completa)\\
+Probabili casi da verificare:\\
+-Registrazione di una glicemia fuori soglia -$>$ alert $>$ nella dashboard del diabetologo di riferimento\\
+-Mancata registrazione di assunzioni farmaco per più di 3 giorni consecutivi -$>$ alert generato al medico\\
+-Modifica di una terapia da parte del medico -$>$ le assunzioni successive vengono validate sulla nuova terapia\\
+-Login con credenziali errate -$>$ accesso rifiutato\\
+-Impossibilità di accedere a dati altrui per chi non ne ha le facoltà\\
+
+

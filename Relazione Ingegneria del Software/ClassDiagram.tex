@@ -1,0 +1,20 @@
+\section{Class Diagram}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=15cm,height=10cm,keepaspectratio]{Immagini/Bozza-UML(6).drawio.png}
+	\caption{Class Diagram}
+	%\label{fig:figure1}
+\end{figure}
+
+\subsection{Class Diagram della modellazione concettuale}
+
+Il sistema è incentrato sulla classe astratta Utente, che definisce le credenziali e i dati anagrafici comuni (username, password, codice fiscale, nome, cognome, email) e il metodo login(). Da essa ereditano Paziente, Diabetologo e Amministratore.\\
+A ogni Paziente è associato un Diabetologo come medico di riferimento e mantiene un elenco di fattori di rischio sotto forma di enumerazione, patologie pregresse e comorbidità. La modifica della cartella clinica (editCartella()) richiede l'autorizzazione di un medico e viene registrata tramite l'interfaccia GestoreLog, che salva ogni operazione in un oggetto Log (medico, paziente, timestamp, dettagli), in modo da assicurare il requisito di tracciabilità delle operazioni dei medici.\\
+Le rilevazioni giornaliere registrano data e ora, ultimo pasto e livello di glicemia. Le assunzioni di farmaci sono verificate rispetto alla Terapia assegnata tramite verificaTerapia(). Ogni Terapia, definita dal diabetologo, specifica farmaco, dose, numero di assunzioni giornaliere e indicazioni (prima, dopo o lontano dai pasti).\\
+Il paziente può inoltre inviare Segnalazione per sintomi, patologie o terapie concomitanti, indicando il periodo di riferimento. Il sistema genera Alert (verso paziente o medico) classificati per tipo (sistema-paziente, medico-paziente, paziente-medico) e livello di urgenza, coerentemente con i requisiti di notifica per mancata aderenza alla terapia o glicemia fuori soglia.\\
+Infine, Amministratore è responsabile della creazione dei nuovi utenti (creaUtente()) inserendone i dati iniziali.
+
+
+\subsection{Class Diagram del software}~\\
+
+

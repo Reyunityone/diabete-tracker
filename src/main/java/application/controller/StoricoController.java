@@ -188,7 +188,7 @@ public class StoricoController {
         if (elemento instanceof Rilevazione) {
 
             return ((Rilevazione) elemento)
-                    .getData();
+                    .getData().toString();
         }
 
 
@@ -240,10 +240,7 @@ public class StoricoController {
         // RILEVAZIONE
         // =====================================================
 
-        if (elemento instanceof Rilevazione) {
-
-            Rilevazione r =
-                    (Rilevazione) elemento;
+        if (elemento instanceof Rilevazione r) {
 
 
             Label data =
@@ -283,10 +280,7 @@ public class StoricoController {
         // SINTOMO / FARMACO
         // =====================================================
 
-        else if (elemento instanceof SintomoFarmaco) {
-
-            SintomoFarmaco s =
-                    (SintomoFarmaco) elemento;
+        else if (elemento instanceof SintomoFarmaco s) {
 
 
             Label data =
@@ -322,10 +316,7 @@ public class StoricoController {
         // SEGNALAZIONE
         // =====================================================
 
-        else if (elemento instanceof Segnalazione) {
-
-            Segnalazione s =
-                    (Segnalazione) elemento;
+        else if (elemento instanceof Segnalazione s) {
 
 
             Label data =

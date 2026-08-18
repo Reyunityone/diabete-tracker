@@ -1,23 +1,26 @@
 package application.classiGeneriche;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class Rilevazione {
 
-    private String data;
+    private LocalDate data;
     private int livelloGlicemia;
-    private String orarioPasto;
-    private String orarioRilevazione;
+    private LocalTime orarioPasto;
+    private LocalTime orarioRilevazione;
 
 
     public Rilevazione(
-            String data,
+            LocalDate data,
             int livelloGlicemia,
-            String orarioPasto,
-            String orarioRilevazione) {
+            LocalTime orarioPasto,
+            LocalTime orarioRilevazione) {
 
         this.data = data;
         this.livelloGlicemia = livelloGlicemia;
-        this.orarioPasto = orarioPasto;
         this.orarioRilevazione = orarioRilevazione;
+        this.orarioPasto = orarioPasto;
     }
 
 
@@ -25,15 +28,16 @@ public class Rilevazione {
     // GETTER
     // =========================================================
 
-    public String getData() {
+
+    public LocalDate getData() {
         return data;
     }
 
-    public String getOrarioPasto() {
+    public LocalTime getOrarioPasto() {
         return orarioPasto;
     }
 
-    public String getOrarioRilevazione() {
+    public LocalTime getOrarioRilevazione() {
         return orarioRilevazione;
     }
 
@@ -47,10 +51,18 @@ public class Rilevazione {
     // SETTER
     // =========================================================
 
-    public void setData(String data) {
-        this.data = data;
+
+    public void setOrarioRilevazione(LocalTime orarioRilevazione) {
+        this.orarioRilevazione = orarioRilevazione;
     }
 
+    public void setOrarioPasto(LocalTime orarioPasto) {
+        this.orarioPasto = orarioPasto;
+    }
+
+    public void setData(LocalDate data) {
+        this.data = data;
+    }
 
     public void setLivelloGlicemia(
             int livelloGlicemia) {
@@ -59,11 +71,4 @@ public class Rilevazione {
                 livelloGlicemia;
     }
 
-    public void setOrarioPasto(String orarioPasto) {
-        this.orarioPasto = orarioPasto;
-    }
-
-    public void setOrarioRilevazione(String orarioRilevazione) {
-        this.orarioRilevazione = orarioRilevazione;
-    }
 }

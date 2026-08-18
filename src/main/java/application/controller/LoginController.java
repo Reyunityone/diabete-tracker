@@ -1,5 +1,8 @@
 package application.controller;
 
+import application.classiGeneriche.Diabetologo;
+import application.classiGeneriche.Paziente;
+import application.classiGeneriche.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,77 +17,34 @@ import java.io.IOException;
 public class LoginController {
 
     @FXML
-    private TextField nomeField;
+    private TextField usernameField;
 
     @FXML
-    private TextField cognomeField;
-
-    @FXML
-    private PasswordField credenzialiField;
-
-    @FXML
-    private ComboBox<String> ruoloComboBox;
+    private PasswordField passwordField;
 
 
     @FXML
     public void initialize() {
 
-        ruoloComboBox.getItems().addAll(
-                "Responsabile",
-                "Diabetologo",
-                "Paziente"
-        );
     }
 
 
     @FXML
     private void handleLogin() {
 
-        String nome = nomeField.getText();
-        String cognome = cognomeField.getText();
+        String username = usernameField.getText();
+        String password = passwordField.getText();
 
-        String ruolo = ruoloComboBox.getValue();
+        // TODO Validate user
+        User loggedUser = new Paziente();
 
+        if(loggedUser instanceof Paziente)
+            cambiaSchermataPaziente(loggedUser.getNome(), loggedUser.getCognome());
+        if(loggedUser instanceof Diabetologo)
+            cambiaSchermataDiabetologo(loggedUser.getNome(), loggedUser.getCognome());
+        //if(loggedUser instanceof Responsabile)
+        //    cambiaSchermataResponsabile(loggedUser.getNome(), loggedUser.getCognome());
 
-        if (ruolo == null) {
-
-            System.out.println("Seleziona un ruolo.");
-
-            return;
-        }
-
-
-        switch (ruolo) {
-
-            case "Responsabile":
-
-                cambiaSchermataResponsabile(
-                        nome,
-                        cognome
-                );
-
-                break;
-
-
-            case "Diabetologo":
-
-                cambiaSchermataDiabetologo(
-                        nome,
-                        cognome
-                );
-
-                break;
-
-
-            case "Paziente":
-
-            	cambiaSchermataPaziente(
-                        nome,
-                        cognome
-                );
-
-                break;
-        }
     }
 
 
@@ -92,51 +52,51 @@ public class LoginController {
      * Apre la schermata del Responsabile
      * passando nome e cognome inseriti nel Login.
      */
-    private void cambiaSchermataResponsabile(
-            String nome,
-            String cognome) {
-
-        try {
-
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource(
-                            "/application/view/Responsabile.fxml"
-                    )
-            );
-
-            Parent root = loader.load();
-
-
-            // Recuperiamo il controller
-            ResponsabileController controller =
-                    loader.getController();
-
-
-            // Passiamo nome e cognome
-            controller.impostaProfilo(
-                    nome,
-                    cognome
-            );
-
-
-            Stage stage =
-                    (Stage) ruoloComboBox
-                            .getScene()
-                            .getWindow();
-
-
-            Scene scene = new Scene(root);
-
-            stage.setScene(scene);
-
-
-            stage.show();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
-    }
+//    private void cambiaSchermataResponsabile(
+//            String nome,
+//            String cognome) {
+//
+//        try {
+//
+//            FXMLLoader loader = new FXMLLoader(
+//                    getClass().getResource(
+//                            "/application/view/Responsabile.fxml"
+//                    )
+//            );
+//
+//            Parent root = loader.load();
+//
+//
+//            // Recuperiamo il controller
+//            ResponsabileController controller =
+//                    loader.getController();
+//
+//
+//            // Passiamo nome e cognome
+//            controller.impostaProfilo(
+//                    nome,
+//                    cognome
+//            );
+//
+//
+//            Stage stage =
+//                    (Stage) ruoloComboBox
+//                            .getScene()
+//                            .getWindow();
+//
+//
+//            Scene scene = new Scene(root);
+//
+//            stage.setScene(scene);
+//
+//
+//            stage.show();
+//
+//        } catch (IOException e) {
+//
+//            e.printStackTrace();
+//        }
+//    }
     
     /**
      * Apre la schermata del Diabetologo
@@ -166,7 +126,7 @@ public class LoginController {
 
 
         Stage stage =
-                (Stage) ruoloComboBox
+                (Stage) usernameField
                         .getScene()
                         .getWindow();
 
@@ -219,7 +179,7 @@ public class LoginController {
 
 
             Stage stage =
-                    (Stage) ruoloComboBox
+                    (Stage) usernameField
                             .getScene()
                             .getWindow();
 

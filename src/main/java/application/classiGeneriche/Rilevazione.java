@@ -3,18 +3,21 @@ package application.classiGeneriche;
 public class Rilevazione {
 
     private String data;
-    private String livelloGlicemia;
-    private String momentoGiornata;
+    private int livelloGlicemia;
+    private String orarioPasto;
+    private String orarioRilevazione;
 
 
     public Rilevazione(
             String data,
-            String livelloGlicemia,
-            String momentoGiornata) {
+            int livelloGlicemia,
+            String orarioPasto,
+            String orarioRilevazione) {
 
         this.data = data;
         this.livelloGlicemia = livelloGlicemia;
-        this.momentoGiornata = momentoGiornata;
+        this.orarioPasto = orarioPasto;
+        this.orarioRilevazione = orarioRilevazione;
     }
 
 
@@ -26,15 +29,18 @@ public class Rilevazione {
         return data;
     }
 
+    public String getOrarioPasto() {
+        return orarioPasto;
+    }
 
-    public String getLivelloGlicemia() {
+    public String getOrarioRilevazione() {
+        return orarioRilevazione;
+    }
+
+    public int getLivelloGlicemia() {
         return livelloGlicemia;
     }
 
-
-    public String getMomentoGiornata() {
-        return momentoGiornata;
-    }
 
 
     // =========================================================
@@ -47,17 +53,17 @@ public class Rilevazione {
 
 
     public void setLivelloGlicemia(
-            String livelloGlicemia) {
+            int livelloGlicemia) {
 
         this.livelloGlicemia =
                 livelloGlicemia;
     }
 
+    public void setOrarioPasto(String orarioPasto) {
+        this.orarioPasto = orarioPasto;
+    }
 
-    public void setMomentoGiornata(
-            String momentoGiornata) {
-
-        this.momentoGiornata =
-                momentoGiornata;
+    public void setOrarioRilevazione(String orarioRilevazione) {
+        this.orarioRilevazione = orarioRilevazione;
     }
 }

@@ -258,8 +258,8 @@ public class StoricoController {
                             "Glicemia: "
                                     + r.getLivelloGlicemia()
                                     + "    |    "
-                                    + "Momento: "
-                                    + r.getMomentoGiornata()
+                                    + "Orario rilevazione: "
+                                    + r.getOrarioRilevazione()
                     );
 
 

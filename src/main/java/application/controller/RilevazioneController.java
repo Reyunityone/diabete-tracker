@@ -2,10 +2,13 @@ package application.controller;
 
 import application.classiGeneriche.Rilevazione;
 
+import com.sun.javafx.scene.control.IntegerField;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
+import javafx.util.converter.IntegerStringConverter;
 
 import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
@@ -17,9 +20,12 @@ public class RilevazioneController {
 
     @FXML
     private TextField glicemiaField;
+    private TextFormatter<Integer> glicemiaFormatter;
 
     @FXML
-    private TextField momentoField;
+    private TextField orarioField;
+    @FXML
+    private TextField pastoField;
 
 
     private Consumer<Rilevazione> salvataggio;
@@ -27,7 +33,11 @@ public class RilevazioneController {
 
     public void inizializza(
             Consumer<Rilevazione> salvataggio) {
-
+        this.glicemiaFormatter = new TextFormatter<>(new IntegerStringConverter(), 0, change -> {
+            if(change.getControlNewText().matches("\\d*")) return change;
+            return null;
+        });
+        this.glicemiaField.setTextFormatter(this.glicemiaFormatter);
         this.salvataggio = salvataggio;
     }
 
@@ -50,19 +60,22 @@ public class RilevazioneController {
                         );
 
 
-        String glicemia =
-                glicemiaField.getText();
+        int glicemia =
+                glicemiaFormatter.getValue();
 
+        String orarioRilevazione =
+                orarioField.getText();
 
-        String momento =
-                momentoField.getText();
+        String ultimoPasto =
+                pastoField.getText();
 
 
         Rilevazione rilevazione =
                 new Rilevazione(
                         data,
                         glicemia,
-                        momento
+                        orarioRilevazione,
+                        ultimoPasto
                 );
 
 
@@ -83,6 +96,12 @@ public class RilevazioneController {
             Rilevazione rilevazione,
             Runnable aggiornamento) {
 
+        this.glicemiaFormatter = new TextFormatter<>(new IntegerStringConverter(), 0, change -> {
+            if(change.getControlNewText().matches("\\d*")) return change;
+            return null;
+        });
+        this.glicemiaField.setTextFormatter(this.glicemiaFormatter);
+
         dataPicker.setValue(
                 java.time.LocalDate.parse(
                         rilevazione.getData(),
@@ -94,14 +113,17 @@ public class RilevazioneController {
 
 
         glicemiaField.setText(
-                rilevazione.getLivelloGlicemia()
+                String.valueOf(rilevazione.getLivelloGlicemia())
         );
 
 
-        momentoField.setText(
-                rilevazione.getMomentoGiornata()
+        pastoField.setText(
+                rilevazione.getOrarioPasto()
         );
 
+        orarioField.setText(
+                rilevazione.getOrarioRilevazione()
+        );
 
         this.salvataggio =
                 nuovaRilevazione -> {
@@ -115,9 +137,14 @@ public class RilevazioneController {
                                     .getLivelloGlicemia()
                     );
 
-                    rilevazione.setMomentoGiornata(
+                    rilevazione.setOrarioRilevazione(
                             nuovaRilevazione
-                                    .getMomentoGiornata()
+                                    .getOrarioRilevazione()
+                    );
+
+                    rilevazione.setOrarioPasto(
+                            nuovaRilevazione
+                                    .getOrarioPasto()
                     );
 
 

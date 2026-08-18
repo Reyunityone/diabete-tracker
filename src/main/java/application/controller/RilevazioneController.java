@@ -2,11 +2,16 @@ package application.controller;
 
 import application.classiGeneriche.Rilevazione;
 
+import com.sun.javafx.scene.control.IntegerField;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
+import javafx.util.converter.IntegerStringConverter;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 
@@ -17,17 +22,37 @@ public class RilevazioneController {
 
     @FXML
     private TextField glicemiaField;
+    private TextFormatter<Integer> glicemiaFormatter;
 
     @FXML
-    private TextField momentoField;
-
+    private TextField orarioField;
+    private TextFormatter<String> orarioFormatter;
+    @FXML
+    private TextField pastoField;
+    private TextFormatter<String> pastoFormatter;
 
     private Consumer<Rilevazione> salvataggio;
 
 
     public void inizializza(
             Consumer<Rilevazione> salvataggio) {
-
+        this.glicemiaFormatter = new TextFormatter<>(new IntegerStringConverter(), 0, change -> {
+            if(change.getControlNewText().matches("\\d*")) return change;
+            return null;
+        });
+        this.orarioFormatter = new TextFormatter<String>(change ->  {
+            if(change.getControlNewText().length() > 5) return null;
+            if(change.getControlNewText().matches("\\d{0,2}:?\\d{0,2}")) return change;
+            return null;
+        });
+        this.pastoFormatter = new TextFormatter<String>(change ->  {
+            if(change.getControlNewText().length() > 5) return null;
+            if(change.getControlNewText().matches("\\d{0,2}:?\\d{0,2}")) return change;
+            return null;
+        });
+        this.glicemiaField.setTextFormatter(this.glicemiaFormatter);
+        this.orarioField.setTextFormatter(orarioFormatter);
+        this.pastoField.setTextFormatter(pastoFormatter);
         this.salvataggio = salvataggio;
     }
 
@@ -40,29 +65,30 @@ public class RilevazioneController {
         }
 
 
-        String data =
-                dataPicker
-                        .getValue()
-                        .format(
-                                DateTimeFormatter.ofPattern(
-                                        "dd/MM/yyyy"
-                                )
-                        );
+        LocalDate data = dataPicker.getValue();
+        int glicemia =
+                glicemiaFormatter.getValue();
 
+        LocalTime orarioRilevazione =
+                null;
+        LocalTime ultimoPasto =
+                null;
+        try {
+            orarioRilevazione = LocalTime.parse(orarioField.getText(), DateTimeFormatter.ofPattern("HH:mm"));
 
-        String glicemia =
-                glicemiaField.getText();
-
-
-        String momento =
-                momentoField.getText();
+            ultimoPasto = LocalTime.parse(pastoField.getText(), DateTimeFormatter.ofPattern("HH:mm"));
+        } catch (Exception e) {
+            System.err.println("Orario non valido");
+            return;
+        }
 
 
         Rilevazione rilevazione =
                 new Rilevazione(
                         data,
                         glicemia,
-                        momento
+                        orarioRilevazione,
+                        ultimoPasto
                 );
 
 
@@ -83,25 +109,41 @@ public class RilevazioneController {
             Rilevazione rilevazione,
             Runnable aggiornamento) {
 
+        this.glicemiaFormatter = new TextFormatter<>(new IntegerStringConverter(), 0, change -> {
+            if(change.getControlNewText().matches("\\d*")) return change;
+            return null;
+        });
+        this.orarioFormatter = new TextFormatter<String>(change ->  {
+            if(change.getControlNewText().length() > 5) return null;
+            if(change.getControlNewText().matches("\\d{0,2}:?\\d{0,2}")) return change;
+            return null;
+        });
+        this.pastoFormatter = new TextFormatter<String>(change ->  {
+            if(change.getControlNewText().length() > 5) return null;
+            if(change.getControlNewText().matches("\\d{0,2}:?\\d{0,2}")) return change;
+            return null;
+        });
+        this.glicemiaField.setTextFormatter(this.glicemiaFormatter);
+        this.orarioField.setTextFormatter(orarioFormatter);
+        this.pastoField.setTextFormatter(pastoFormatter);
+
         dataPicker.setValue(
-                java.time.LocalDate.parse(
-                        rilevazione.getData(),
-                        DateTimeFormatter.ofPattern(
-                                "dd/MM/yyyy"
-                        )
-                )
+                rilevazione.getData()
         );
 
 
         glicemiaField.setText(
-                rilevazione.getLivelloGlicemia()
+                String.valueOf(rilevazione.getLivelloGlicemia())
         );
 
 
-        momentoField.setText(
-                rilevazione.getMomentoGiornata()
+        pastoField.setText(
+                rilevazione.getOrarioPasto().toString()
         );
 
+        orarioField.setText(
+                rilevazione.getOrarioRilevazione().toString()
+        );
 
         this.salvataggio =
                 nuovaRilevazione -> {
@@ -115,9 +157,14 @@ public class RilevazioneController {
                                     .getLivelloGlicemia()
                     );
 
-                    rilevazione.setMomentoGiornata(
+                    rilevazione.setOrarioRilevazione(
                             nuovaRilevazione
-                                    .getMomentoGiornata()
+                                    .getOrarioRilevazione()
+                    );
+
+                    rilevazione.setOrarioPasto(
+                            nuovaRilevazione
+                                    .getOrarioPasto()
                     );
 
 

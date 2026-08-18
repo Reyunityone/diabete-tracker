@@ -52,17 +52,25 @@
 
     <TextField
             fx:id="glicemiaField"
-            promptText="Inserisci il livello della glicemia"/>
+            promptText="Inserisci il livello della glicemia in mg/dL"/>
 
 
     <Label
-            text="Momento della giornata"
+            text="Orario della rilevazione (hh:mm/24)"
             styleClass="field-label"/>
 
 
     <TextField
-            fx:id="momentoField"
-            promptText="Es. mattina, dopo pranzo, sera..."/>
+            fx:id="orarioField"
+            promptText="00:00"/>
+    <Label
+            text="Orario dell'ultimo pasto (hh:mm/24)"
+            styleClass="field-label"/>
+
+
+    <TextField
+            fx:id="pastoField"
+            promptText="00:00"/>
 
 
     <Button

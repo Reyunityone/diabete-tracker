@@ -1,20 +1,26 @@
 package application.classiGeneriche;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class Rilevazione {
 
-    private String data;
-    private String livelloGlicemia;
-    private String momentoGiornata;
+    private LocalDate data;
+    private int livelloGlicemia;
+    private LocalTime orarioPasto;
+    private LocalTime orarioRilevazione;
 
 
     public Rilevazione(
-            String data,
-            String livelloGlicemia,
-            String momentoGiornata) {
+            LocalDate data,
+            int livelloGlicemia,
+            LocalTime orarioPasto,
+            LocalTime orarioRilevazione) {
 
         this.data = data;
         this.livelloGlicemia = livelloGlicemia;
-        this.momentoGiornata = momentoGiornata;
+        this.orarioRilevazione = orarioRilevazione;
+        this.orarioPasto = orarioPasto;
     }
 
 
@@ -22,42 +28,47 @@ public class Rilevazione {
     // GETTER
     // =========================================================
 
-    public String getData() {
+
+    public LocalDate getData() {
         return data;
     }
 
+    public LocalTime getOrarioPasto() {
+        return orarioPasto;
+    }
 
-    public String getLivelloGlicemia() {
+    public LocalTime getOrarioRilevazione() {
+        return orarioRilevazione;
+    }
+
+    public int getLivelloGlicemia() {
         return livelloGlicemia;
     }
 
-
-    public String getMomentoGiornata() {
-        return momentoGiornata;
-    }
 
 
     // =========================================================
     // SETTER
     // =========================================================
 
-    public void setData(String data) {
+
+    public void setOrarioRilevazione(LocalTime orarioRilevazione) {
+        this.orarioRilevazione = orarioRilevazione;
+    }
+
+    public void setOrarioPasto(LocalTime orarioPasto) {
+        this.orarioPasto = orarioPasto;
+    }
+
+    public void setData(LocalDate data) {
         this.data = data;
     }
 
-
     public void setLivelloGlicemia(
-            String livelloGlicemia) {
+            int livelloGlicemia) {
 
         this.livelloGlicemia =
                 livelloGlicemia;
     }
 
-
-    public void setMomentoGiornata(
-            String momentoGiornata) {
-
-        this.momentoGiornata =
-                momentoGiornata;
-    }
 }

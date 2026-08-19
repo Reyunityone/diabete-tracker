@@ -270,7 +270,7 @@
 
 
                         <!-- ================================================= -->
-                        <!-- SINTOMI / FARMACI -->
+                        <!-- ASSUNZIONE FARMACI -->
                         <!-- ================================================= -->
 
                         <HBox
@@ -285,11 +285,11 @@
                                     alignment="CENTER_LEFT">
 
                                 <Label
-                                        text="Sintomi / Farmaci"
+                                        text="Assunzione Farmaci"
                                         styleClass="section-title"/>
 
                                 <Label
-                                        text="Gestisci sintomi e farmaci assunti."
+                                        text="Gestisci i farmaci assunti."
                                         styleClass="section-description"/>
 
                             </VBox>

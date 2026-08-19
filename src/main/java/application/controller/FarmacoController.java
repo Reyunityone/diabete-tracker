@@ -1,17 +1,22 @@
 package application.controller;
 
-import application.classiGeneriche.SintomoFarmaco;
+import application.classiGeneriche.AssunzioneFarmaco;
 
+import application.classiGeneriche.Terapia;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
+import javafx.util.converter.IntegerStringConverter;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 
-public class SintomoFarmacoController {
+public class FarmacoController {
 
     // =========================================================
     // FXML
@@ -21,14 +26,21 @@ public class SintomoFarmacoController {
     private DatePicker dataPicker;
 
     @FXML
-    private TextArea indicazioneArea;
+    private TextField orarioField;
+    private TextFormatter<String> orarioFormatter;
 
+    @FXML
+    private TextField quantitaField;
+    private TextFormatter<Integer> quantitaFormatter;
+
+    @FXML
+    private ComboBox<Terapia> terapiaBox;
 
     // =========================================================
     // DATI
     // =========================================================
 
-    private Consumer<SintomoFarmaco> salvataggio;
+    private Consumer<AssunzioneFarmaco> salvataggio;
 
 
     // =========================================================
@@ -45,7 +57,7 @@ public class SintomoFarmacoController {
 
     private boolean modalitaModifica = false;
 
-    private SintomoFarmaco elementoDaModificare;
+    private AssunzioneFarmaco elementoDaModificare;
 
     private Runnable aggiornamento;
 
@@ -55,7 +67,22 @@ public class SintomoFarmacoController {
     // =========================================================
 
     public void inizializza(
-            Consumer<SintomoFarmaco> salvataggio) {
+            Consumer<AssunzioneFarmaco> salvataggio) {
+
+        this.orarioFormatter = new TextFormatter<String>( change -> {
+           String text = change.getControlNewText();
+           if(text.length() > 5) return null;
+           if(!text.matches("\\d{0,2}:?\\d{0,2}")) return null;
+           return change;
+        });
+        this.orarioField.setTextFormatter(orarioFormatter);
+
+        this.quantitaFormatter = new TextFormatter<Integer>(new IntegerStringConverter(), 0, change -> {
+            if(!change.getControlNewText().matches("\\d*")) return null;
+            return change;
+        });
+
+        this.quantitaField.setTextFormatter(quantitaFormatter);
 
         this.salvataggio = salvataggio;
 
@@ -68,8 +95,23 @@ public class SintomoFarmacoController {
     // =========================================================
 
     public void inizializzaModifica(
-            SintomoFarmaco elemento,
+            AssunzioneFarmaco elemento,
             Runnable aggiornamento) {
+        this.orarioFormatter = new TextFormatter<String>( change -> {
+            String text = change.getControlText();
+            if(text.length() > 5) return null;
+            if(!text.matches("\\d{0,2}:?\\d{0,2}")) return null;
+            return change;
+        });
+        this.orarioField.setTextFormatter(orarioFormatter);
+
+        this.quantitaFormatter = new TextFormatter<Integer>(new IntegerStringConverter(), 0, change -> {
+            if(!change.getControlNewText().matches("\\d*")) return null;
+            return change;
+        });
+
+        this.quantitaField.setTextFormatter(quantitaFormatter);
+
 
         this.modalitaModifica = true;
 
@@ -84,26 +126,25 @@ public class SintomoFarmacoController {
         // CARICA DATA
         // -----------------------------------------------------
 
-        if (elemento.getData() != null
-                && !elemento.getData().isEmpty()) {
+        if (elemento.getData() != null) {
 
-            LocalDate data =
-                    LocalDate.parse(
-                            elemento.getData(),
-                            formatoData
-                    );
+            LocalDate data = elemento.getData();
 
             dataPicker.setValue(data);
         }
 
 
         // -----------------------------------------------------
-        // CARICA INDICAZIONE
+        // CARICA QUANTITA
         // -----------------------------------------------------
 
-        indicazioneArea.setText(
-                elemento.getIndicazione()
+        quantitaField.setText(
+                "" + elemento.getQuantita()
         );
+
+        orarioField.setText(elemento.getOrarioAssunzione().toString());
+
+        terapiaBox.setValue(elemento.getTerapia());
     }
 
 
@@ -128,21 +169,27 @@ public class SintomoFarmacoController {
         // DATA
         // -----------------------------------------------------
 
-        String data =
+        LocalDate data =
                 dataPicker
-                        .getValue()
-                        .format(
-                                formatoData
-                        );
+                        .getValue();
 
-
+        //---------
+        // ORARIO
+        //---------
+        LocalTime orario=
+                LocalTime.parse(orarioField.getText(), DateTimeFormatter.ofPattern("HH:mm"));
         // -----------------------------------------------------
-        // INDICAZIONE
+        // QUANTITA
         // -----------------------------------------------------
 
-        String indicazione =
-                indicazioneArea.getText();
+        int quantita =
+                quantitaFormatter.getValue();
 
+        //-----------------------
+        //TERAPIA
+        //------------------------
+
+        Terapia terapia = terapiaBox.getValue();
 
         // =====================================================
         // MODIFICA
@@ -154,10 +201,15 @@ public class SintomoFarmacoController {
                     data
             );
 
-            elementoDaModificare.setIndicazione(
-                    indicazione
+            elementoDaModificare.setQuantita(
+                    quantita
             );
-
+            elementoDaModificare.setTerapia(
+                    terapia
+            );
+            elementoDaModificare.setOrarioAssunzione(
+                    orario
+            );
 
             // Aggiorna lo storico
 
@@ -177,10 +229,12 @@ public class SintomoFarmacoController {
         // NUOVO ELEMENTO
         // =====================================================
 
-        SintomoFarmaco elemento =
-                new SintomoFarmaco(
+        AssunzioneFarmaco elemento =
+                new AssunzioneFarmaco(
                         data,
-                        indicazione
+                        orario,
+                        quantita,
+                        terapia
                 );
 
 

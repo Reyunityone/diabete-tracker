@@ -8,7 +8,7 @@ import application.classiGeneriche.Chiamata;
 import application.classiGeneriche.Messaggio;
 import application.classiGeneriche.Rilevazione;
 import application.classiGeneriche.Segnalazione;
-import application.classiGeneriche.SintomoFarmaco;
+import application.classiGeneriche.AssunzioneFarmaco;
 
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
@@ -70,7 +70,6 @@ public class PazienteController {
     // =========================================================
 
     private String nomePaziente;
-
     private String cognomePaziente;
 
 
@@ -86,7 +85,7 @@ public class PazienteController {
     // STORICO SINTOMI / FARMACI
     // =========================================================
 
-    private final List<SintomoFarmaco> sintomiFarmaci =
+    private final List<AssunzioneFarmaco> assunzioniFarmaci =
             new ArrayList<>();
 
 
@@ -745,10 +744,7 @@ public class PazienteController {
 
 
             controller.inizializza(
-                    rilevazione ->
-                            rilevazioni.add(
-                                    rilevazione
-                            )
+                    rilevazioni::add
             );
 
 
@@ -792,7 +788,7 @@ public class PazienteController {
             FXMLLoader loader =
                     new FXMLLoader(
                             getClass().getResource(
-                                    "/application/view/SintomoFarmaco.fxml"
+                                    "/application/view/AssunzioneFarmaco.fxml"
                             )
                     );
 
@@ -801,15 +797,12 @@ public class PazienteController {
                     loader.load();
 
 
-            SintomoFarmacoController controller =
+            FarmacoController controller =
                     loader.getController();
 
 
             controller.inizializza(
-                    elemento ->
-                            sintomiFarmaci.add(
-                                    elemento
-                            )
+                    assunzioniFarmaci::add
             );
 
 
@@ -868,10 +861,7 @@ public class PazienteController {
 
 
             controller.inizializza(
-                    segnalazione ->
-                            segnalazioni.add(
-                                    segnalazione
-                            )
+                    segnalazioni::add
             );
 
 
@@ -1016,7 +1006,7 @@ public class PazienteController {
     private void apriStoricoSintomi() {
 
         apriStorico(
-                sintomiFarmaci,
+                assunzioniFarmaci,
                 "sintomi",
                 "Sintomi / Farmaci precedenti"
         );

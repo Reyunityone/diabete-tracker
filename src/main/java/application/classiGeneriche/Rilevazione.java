@@ -9,18 +9,21 @@ public class Rilevazione {
     private int livelloGlicemia;
     private LocalTime orarioPasto;
     private LocalTime orarioRilevazione;
+    private Paziente paziente;
 
 
     public Rilevazione(
             LocalDate data,
             int livelloGlicemia,
             LocalTime orarioPasto,
-            LocalTime orarioRilevazione) {
+            LocalTime orarioRilevazione,
+            Paziente paziente) {
 
         this.data = data;
         this.livelloGlicemia = livelloGlicemia;
         this.orarioRilevazione = orarioRilevazione;
         this.orarioPasto = orarioPasto;
+        this.paziente = paziente;
     }
 
 

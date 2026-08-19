@@ -1,5 +1,6 @@
 package application.controller;
 
+import application.classiGeneriche.Paziente;
 import javafx.fxml.FXML;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
@@ -40,7 +41,7 @@ public class AndamentoController {
     private Button avantiButton;
 
 
-    private DiabetologoController.Persona paziente;
+    private Paziente paziente;
 
     private boolean modalitaSettimana = true;
 
@@ -102,7 +103,7 @@ public class AndamentoController {
 
 
     public void inizializzaPaziente(
-            DiabetologoController.Persona paziente) {
+            Paziente paziente) {
 
         this.paziente = paziente;
 

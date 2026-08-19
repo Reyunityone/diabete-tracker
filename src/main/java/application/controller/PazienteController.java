@@ -4,11 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import application.classiGeneriche.Chiamata;
-import application.classiGeneriche.Messaggio;
-import application.classiGeneriche.Rilevazione;
-import application.classiGeneriche.Segnalazione;
-import application.classiGeneriche.AssunzioneFarmaco;
+import application.classiGeneriche.*;
 
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
@@ -69,8 +65,7 @@ public class PazienteController {
     // DATI PROFILO
     // =========================================================
 
-    private String nomePaziente;
-    private String cognomePaziente;
+    private Paziente user;
 
 
     // =========================================================
@@ -270,17 +265,13 @@ public class PazienteController {
     // PROFILO
     // =========================================================
 
-    public void inizializzaProfilo(
-            String nome,
-            String cognome) {
+    public void inizializzaProfilo(User user) {
 
-        this.nomePaziente = nome;
-
-        this.cognomePaziente = cognome;
+        if(user instanceof Paziente) this.user = (Paziente) user;
 
 
         nomeCognomeLabel.setText(
-                nome + " " + cognome
+                user.getNome() + " " + user.getCognome()
         );
 
 
@@ -744,6 +735,7 @@ public class PazienteController {
 
 
             controller.inizializza(
+                    user,
                     rilevazioni::add
             );
 
@@ -861,7 +853,9 @@ public class PazienteController {
 
 
             controller.inizializza(
+                    user,
                     segnalazioni::add
+
             );
 
 
@@ -961,6 +955,7 @@ public class PazienteController {
 
 
             controller.inizializza(
+                    user,
                     elementi,
                     tipo
             );

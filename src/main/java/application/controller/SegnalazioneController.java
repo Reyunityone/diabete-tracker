@@ -1,7 +1,9 @@
 package application.controller;
 
+import application.classiGeneriche.Paziente;
 import application.classiGeneriche.Segnalazione;
 
+import application.classiGeneriche.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
@@ -12,13 +14,17 @@ import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 
 public class SegnalazioneController {
+    private User user;
 
     // =========================================================
     // FXML
     // =========================================================
 
     @FXML
-    private DatePicker dataPicker;
+    private DatePicker dataInizioPicker;
+
+    @FXML
+    private DatePicker dataFinePicker;
 
     @FXML
     private TextArea testoArea;
@@ -54,8 +60,9 @@ public class SegnalazioneController {
     // INIZIALIZZAZIONE - NUOVA SEGNALAZIONE
     // =========================================================
 
-    public void inizializza(
-            Consumer<Segnalazione> salvataggio) {
+    public void inizializza(User user,
+                            Consumer<Segnalazione> salvataggio) {
+        this.user = user;
 
         this.salvataggio = salvataggio;
 
@@ -68,9 +75,10 @@ public class SegnalazioneController {
     // =========================================================
 
     public void inizializzaModifica(
+            User user,
             Segnalazione segnalazione,
             Runnable aggiornamento) {
-
+        this.user = user;
         this.modalitaModifica = true;
 
         this.segnalazioneDaModificare =
@@ -84,9 +92,9 @@ public class SegnalazioneController {
         // CARICA DATA
         // -----------------------------------------------------
 
-        if (segnalazione.getData() != null) {
+        if (segnalazione.getDataInizio() != null) {
 
-            dataPicker.setValue(segnalazione.getData());
+            dataInizioPicker.setValue(segnalazione.getDataInizio());
         }
 
 
@@ -111,7 +119,7 @@ public class SegnalazioneController {
         // CONTROLLO DATA
         // -----------------------------------------------------
 
-        if (dataPicker.getValue() == null) {
+        if (dataInizioPicker.getValue() == null) {
 
             return;
         }
@@ -121,11 +129,12 @@ public class SegnalazioneController {
         // DATA
         // -----------------------------------------------------
 
-        LocalDate data =
-                dataPicker
+        LocalDate dataInizio =
+                dataInizioPicker
                         .getValue();
 
-
+        LocalDate dataFine =
+                dataFinePicker.getValue();
         // -----------------------------------------------------
         // TESTO
         // -----------------------------------------------------
@@ -140,8 +149,8 @@ public class SegnalazioneController {
 
         if (modalitaModifica) {
 
-            segnalazioneDaModificare.setData(
-                    data
+            segnalazioneDaModificare.setDataInizio(
+                    dataInizio
             );
 
             segnalazioneDaModificare.setTesto(
@@ -168,10 +177,15 @@ public class SegnalazioneController {
         // =====================================================
 
         Segnalazione segnalazione =
-                new Segnalazione(
-                        data,
-                        testo
-                );
+                null;
+        if (user instanceof Paziente) {
+            segnalazione = new Segnalazione(
+                    dataInizio,
+                    dataFine,
+                    (Paziente) user,
+                    testo
+            );
+        }
 
 
         if (salvataggio != null) {
@@ -193,7 +207,7 @@ public class SegnalazioneController {
     private void chiudiFinestra() {
 
         Stage stage =
-                (Stage) dataPicker
+                (Stage) dataInizioPicker
                         .getScene()
                         .getWindow();
 

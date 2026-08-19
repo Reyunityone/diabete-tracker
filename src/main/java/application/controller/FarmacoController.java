@@ -98,7 +98,7 @@ public class FarmacoController {
             AssunzioneFarmaco elemento,
             Runnable aggiornamento) {
         this.orarioFormatter = new TextFormatter<String>( change -> {
-            String text = change.getControlText();
+            String text = change.getControlNewText();
             if(text.length() > 5) return null;
             if(!text.matches("\\d{0,2}:?\\d{0,2}")) return null;
             return change;

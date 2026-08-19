@@ -1,5 +1,6 @@
 package application.controller;
 
+import application.classiGeneriche.Paziente;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -34,7 +35,7 @@ public class InfoPazienteController {
 
 
     public void inizializzaPaziente(
-            DiabetologoController.Persona paziente) {
+            Paziente paziente) {
 
         titoloLabel.setText(
                 "Info paziente - "

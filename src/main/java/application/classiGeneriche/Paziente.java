@@ -7,7 +7,7 @@ public class Paziente extends User{
     private String comorbidita;
     private String dettagli;
 
-    public Paziente(String username,String codiceFiscale, String nome, String cognome, String email, RiskFactor[] fattoriDiRischio, Diabetologo medicoDiRiferimento, String patologiePregresse, String comorbidità, String dettagli){
+    public Paziente(String username,String codiceFiscale, String nome, String cognome, String email, RiskFactor[] fattoriDiRischio, Diabetologo medicoDiRiferimento, String patologiePregresse, String comorbidita, String dettagli){
         super(username, codiceFiscale, nome, cognome, email);
         this.fattoriDiRischio = fattoriDiRischio;
         this.medicoDiRiferimento = medicoDiRiferimento;
@@ -23,5 +23,45 @@ public class Paziente extends User{
         this.patologiePregresse = "Appendicite";
         this.comorbidita = "Nessuna";
         this.dettagli = "Asportata l'appendice a 15 anni";
+    }
+
+    public RiskFactor[] getFattoriDiRischio() {
+        return fattoriDiRischio;
+    }
+
+    public void setFattoriDiRischio(RiskFactor[] fattoriDiRischio) {
+        this.fattoriDiRischio = fattoriDiRischio;
+    }
+
+    public Diabetologo getMedicoDiRiferimento() {
+        return medicoDiRiferimento;
+    }
+
+    public void setMedicoDiRiferimento(Diabetologo medicoDiRiferimento) {
+        this.medicoDiRiferimento = medicoDiRiferimento;
+    }
+
+    public String getPatologiePregresse() {
+        return patologiePregresse;
+    }
+
+    public void setPatologiePregresse(String patologiePregresse) {
+        this.patologiePregresse = patologiePregresse;
+    }
+
+    public String getComorbidita() {
+        return comorbidita;
+    }
+
+    public void setComorbidita(String comorbidita) {
+        this.comorbidita = comorbidita;
+    }
+
+    public String getDettagli() {
+        return dettagli;
+    }
+
+    public void setDettagli(String dettagli) {
+        this.dettagli = dettagli;
     }
 }

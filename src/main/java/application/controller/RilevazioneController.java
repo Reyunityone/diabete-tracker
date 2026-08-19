@@ -1,8 +1,9 @@
 package application.controller;
 
+import application.classiGeneriche.Paziente;
 import application.classiGeneriche.Rilevazione;
 
-import com.sun.javafx.scene.control.IntegerField;
+import application.classiGeneriche.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -16,6 +17,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 
 public class RilevazioneController {
+
+    private User user;
 
     @FXML
     private DatePicker dataPicker;
@@ -35,6 +38,7 @@ public class RilevazioneController {
 
 
     public void inizializza(
+            User user,
             Consumer<Rilevazione> salvataggio) {
         this.glicemiaFormatter = new TextFormatter<>(new IntegerStringConverter(), 0, change -> {
             if(change.getControlNewText().matches("\\d*")) return change;
@@ -84,12 +88,16 @@ public class RilevazioneController {
 
 
         Rilevazione rilevazione =
-                new Rilevazione(
-                        data,
-                        glicemia,
-                        orarioRilevazione,
-                        ultimoPasto
-                );
+                null;
+        if (user instanceof Paziente) {
+            rilevazione = new Rilevazione(
+                    data,
+                    glicemia,
+                    orarioRilevazione,
+                    ultimoPasto,
+                    (Paziente) user
+            );
+        }
 
 
         salvataggio.accept(
@@ -106,6 +114,7 @@ public class RilevazioneController {
     }
     
     public void inizializzaModifica(
+            User user,
             Rilevazione rilevazione,
             Runnable aggiornamento) {
 
@@ -166,8 +175,6 @@ public class RilevazioneController {
                             nuovaRilevazione
                                     .getOrarioPasto()
                     );
-
-
                     aggiornamento.run();
                 };
     }

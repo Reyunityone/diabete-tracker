@@ -3,7 +3,6 @@ package application.controller;
 import application.classiGeneriche.Paziente;
 import application.classiGeneriche.Segnalazione;
 
-import application.classiGeneriche.Paziente;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
@@ -23,6 +22,7 @@ public class SegnalazioneController {
     @FXML
     private DatePicker dataInizioPicker;
 
+    //TODO Implementare data fine
     @FXML
     private DatePicker dataFinePicker;
 
@@ -176,16 +176,13 @@ public class SegnalazioneController {
         // NUOVA SEGNALAZIONE
         // =====================================================
 
-        Segnalazione segnalazione =
-                null;
-        if (user instanceof Paziente) {
-            segnalazione = new Segnalazione(
+
+            Segnalazione segnalazione = new Segnalazione(
                     dataInizio,
                     dataFine,
-                    (Paziente) user,
+                    user,
                     testo
             );
-        }
 
 
         if (salvataggio != null) {

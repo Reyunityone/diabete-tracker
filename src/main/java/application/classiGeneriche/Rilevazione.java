@@ -48,12 +48,18 @@ public class Rilevazione {
         return livelloGlicemia;
     }
 
-
+    public Paziente getPaziente() {
+        return paziente;
+    }
 
     // =========================================================
     // SETTER
     // =========================================================
 
+
+    public void setPaziente(Paziente paziente) {
+        this.paziente = paziente;
+    }
 
     public void setOrarioRilevazione(LocalTime orarioRilevazione) {
         this.orarioRilevazione = orarioRilevazione;

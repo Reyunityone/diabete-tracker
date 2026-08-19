@@ -39,7 +39,7 @@ public class LoginController {
 
         switch(loggedUser){
             case Paziente p -> cambiaSchermataPaziente(p);
-            case Diabetologo d -> cambiaSchermataDiabetologo(d.getNome(), d.getCognome());
+            case Diabetologo d -> cambiaSchermataDiabetologo(d);
         }
 
     }
@@ -99,7 +99,7 @@ public class LoginController {
      * Apre la schermata del Diabetologo
      * passando nome e cognome inseriti nel Login.
      */
-    private void cambiaSchermataDiabetologo(String nome, String cognome) {
+    private void cambiaSchermataDiabetologo(Diabetologo medico) {
     	try {
     	FXMLLoader loader =
                 new FXMLLoader(
@@ -117,8 +117,7 @@ public class LoginController {
 
 
         controller.inizializzaProfilo(
-                nome,
-                cognome
+                medico
         );
 
 

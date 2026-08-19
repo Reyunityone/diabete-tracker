@@ -1,6 +1,6 @@
 package application.classiGeneriche;
 
-public class User {
+public abstract sealed class User permits Paziente, Diabetologo{
     private String username, codiceFiscale, nome, cognome, email;
 
     public User(String username, String codiceFiscale, String nome, String cognome, String email){

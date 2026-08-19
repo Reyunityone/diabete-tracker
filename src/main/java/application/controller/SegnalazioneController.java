@@ -3,7 +3,7 @@ package application.controller;
 import application.classiGeneriche.Paziente;
 import application.classiGeneriche.Segnalazione;
 
-import application.classiGeneriche.User;
+import application.classiGeneriche.Paziente;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 
 public class SegnalazioneController {
-    private User user;
+    private Paziente user;
 
     // =========================================================
     // FXML
@@ -60,7 +60,7 @@ public class SegnalazioneController {
     // INIZIALIZZAZIONE - NUOVA SEGNALAZIONE
     // =========================================================
 
-    public void inizializza(User user,
+    public void inizializza(Paziente user,
                             Consumer<Segnalazione> salvataggio) {
         this.user = user;
 
@@ -75,7 +75,7 @@ public class SegnalazioneController {
     // =========================================================
 
     public void inizializzaModifica(
-            User user,
+            Paziente user,
             Segnalazione segnalazione,
             Runnable aggiornamento) {
         this.user = user;

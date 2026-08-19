@@ -7,7 +7,7 @@ import application.classiGeneriche.Rilevazione;
 import application.classiGeneriche.Segnalazione;
 import application.classiGeneriche.AssunzioneFarmaco;
 
-import application.classiGeneriche.User;
+import application.classiGeneriche.Paziente;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 
 public class StoricoController {
 
-    private User user;
+    private Paziente user;
     // =========================================================
     // FXML
     // =========================================================
@@ -51,12 +51,12 @@ public class StoricoController {
     // =========================================================
 
     public void inizializza(
-            User user,
+            Paziente user,
             List<?> elementi,
             String tipo) {
 
         this.elementi = elementi;
-
+        this.user = user;
         this.tipo = tipo;
 
         impostaTitolo();

@@ -1,6 +1,6 @@
 package application.classiGeneriche;
 
-public class Paziente extends User{
+public final class Paziente extends User{
     private RiskFactor[] fattoriDiRischio;
     private Diabetologo medicoDiRiferimento;
     private String patologiePregresse;

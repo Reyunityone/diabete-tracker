@@ -265,10 +265,8 @@ public class PazienteController {
     // PROFILO
     // =========================================================
 
-    public void inizializzaProfilo(User user) {
-
-        if(user instanceof Paziente) this.user = (Paziente) user;
-
+    public void inizializzaProfilo(Paziente user) {
+        this.user = user;
 
         nomeCognomeLabel.setText(
                 user.getNome() + " " + user.getCognome()

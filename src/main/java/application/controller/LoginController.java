@@ -37,12 +37,10 @@ public class LoginController {
         // TODO Validate user
         User loggedUser = new Paziente();
 
-        if(loggedUser instanceof Paziente)
-            cambiaSchermataPaziente(loggedUser);
-        if(loggedUser instanceof Diabetologo)
-            cambiaSchermataDiabetologo(loggedUser.getNome(), loggedUser.getCognome());
-        //if(loggedUser instanceof Responsabile)
-        //    cambiaSchermataResponsabile(loggedUser.getNome(), loggedUser.getCognome());
+        switch(loggedUser){
+            case Paziente p -> cambiaSchermataPaziente(p);
+            case Diabetologo d -> cambiaSchermataDiabetologo(d.getNome(), d.getCognome());
+        }
 
     }
 
@@ -148,7 +146,7 @@ public class LoginController {
      * Apre la schermata del Paziente
      * passando nome e cognome inseriti nel Login.
      */
-    private void cambiaSchermataPaziente(User loggedUser) {
+    private void cambiaSchermataPaziente(Paziente loggedUser) {
 
         try {
 

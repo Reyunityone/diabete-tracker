@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -38,12 +37,10 @@ public class LoginController {
         // TODO Validate user
         User loggedUser = new Paziente();
 
-        if(loggedUser instanceof Paziente)
-            cambiaSchermataPaziente(loggedUser.getNome(), loggedUser.getCognome());
-        if(loggedUser instanceof Diabetologo)
-            cambiaSchermataDiabetologo(loggedUser.getNome(), loggedUser.getCognome());
-        //if(loggedUser instanceof Responsabile)
-        //    cambiaSchermataResponsabile(loggedUser.getNome(), loggedUser.getCognome());
+        switch(loggedUser){
+            case Paziente p -> cambiaSchermataPaziente(p);
+            case Diabetologo d -> cambiaSchermataDiabetologo(d.getNome(), d.getCognome());
+        }
 
     }
 
@@ -149,9 +146,7 @@ public class LoginController {
      * Apre la schermata del Paziente
      * passando nome e cognome inseriti nel Login.
      */
-    private void cambiaSchermataPaziente(
-            String nome,
-            String cognome) {
+    private void cambiaSchermataPaziente(Paziente loggedUser) {
 
         try {
 
@@ -171,10 +166,9 @@ public class LoginController {
                     loader.getController();
 
 
-            // Passiamo nome e cognome
+            // Passiamo il profilo
             controller.inizializzaProfilo(
-                    nome,
-                    cognome
+                    loggedUser
             );
 
 

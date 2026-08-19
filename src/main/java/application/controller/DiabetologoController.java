@@ -1,5 +1,6 @@
 package application.controller;
 
+import application.classiGeneriche.Paziente;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +21,7 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import application.classiGeneriche.Chiamata;
 import application.classiGeneriche.Messaggio;
@@ -87,7 +89,7 @@ public class DiabetologoController {
     // DATI
     // =========================================================
 
-    private final List<Persona> pazienti =
+    private final List<Paziente> pazienti =
             new ArrayList<>();
 
     private String nomeMedico;
@@ -226,52 +228,7 @@ public class DiabetologoController {
     private void inizializzaPazienti() {
 
         pazienti.add(
-                new Persona(
-                        "Mario",
-                        "Rossi"
-                )
-        );
-
-        pazienti.add(
-                new Persona(
-                        "Luca",
-                        "Bianchi"
-                )
-        );
-
-        pazienti.add(
-                new Persona(
-                        "Anna",
-                        "Verdi"
-                )
-        );
-
-        pazienti.add(
-                new Persona(
-                        "Giulia",
-                        "Romano"
-                )
-        );
-
-        pazienti.add(
-                new Persona(
-                        "Marco",
-                        "Ferrari"
-                )
-        );
-        
-        pazienti.add(
-                new Persona(
-                        "Giovanni",
-                        "Ferro"
-                )
-        );
-        
-        pazienti.add(
-                new Persona(
-                        "Giuliano",
-                        "Marchiorre"
-                )
+                new Paziente()
         );
     }
 
@@ -337,7 +294,7 @@ public class DiabetologoController {
                         .toLowerCase()
                         .trim();
 
-        for (Persona paziente : pazienti) {
+        for (Paziente paziente : pazienti) {
 
             String nomeCompleto =
                     (
@@ -369,7 +326,7 @@ public class DiabetologoController {
     // =========================================================
 
     private HBox creaBoxPaziente(
-            Persona paziente) {
+            Paziente paziente) {
 
         HBox box =
                 new HBox();
@@ -392,10 +349,10 @@ public class DiabetologoController {
         ImageView avatar =
                 new ImageView(
                         new Image(
-                                getClass()
+                                Objects.requireNonNull(getClass()
                                         .getResourceAsStream(
                                                 "/application/images/avatar.png"
-                                        )
+                                        ))
                         )
                 );
 
@@ -503,11 +460,11 @@ public class DiabetologoController {
         ImageView image =
                 new ImageView(
                         new Image(
-                                getClass()
+                                Objects.requireNonNull(getClass()
                                         .getResourceAsStream(
                                                 "/application/images/"
                                                         + immagine
-                                        )
+                                        ))
                         )
                 );
 
@@ -783,7 +740,7 @@ public class DiabetologoController {
     private void apriFinestra(
             String fxml,
             String titolo,
-            Persona paziente) {
+            Paziente paziente) {
 
         try {
 
@@ -835,7 +792,7 @@ public class DiabetologoController {
         }
     }
     
-    private void apriAndamento(Persona paziente) {
+    private void apriAndamento(Paziente paziente) {
 
         apriFinestra(
                 "Andamento.fxml",
@@ -844,7 +801,7 @@ public class DiabetologoController {
         );
     }
     
-    private void apriTerapia(Persona paziente) {
+    private void apriTerapia(Paziente paziente) {
 
         apriFinestra(
                 "Terapia.fxml",
@@ -853,7 +810,7 @@ public class DiabetologoController {
         );
     }
     
-    private void apriInfoPaziente(Persona paziente) {
+    private void apriInfoPaziente(Paziente paziente) {
 
         apriFinestra(
                 "InfoPaziente.fxml",

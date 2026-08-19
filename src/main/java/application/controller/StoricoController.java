@@ -7,6 +7,7 @@ import application.classiGeneriche.Rilevazione;
 import application.classiGeneriche.Segnalazione;
 import application.classiGeneriche.AssunzioneFarmaco;
 
+import application.classiGeneriche.Paziente;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,6 +22,7 @@ import javafx.stage.Stage;
 
 public class StoricoController {
 
+    private Paziente user;
     // =========================================================
     // FXML
     // =========================================================
@@ -49,11 +51,12 @@ public class StoricoController {
     // =========================================================
 
     public void inizializza(
+            Paziente user,
             List<?> elementi,
             String tipo) {
 
         this.elementi = elementi;
-
+        this.user = user;
         this.tipo = tipo;
 
         impostaTitolo();
@@ -202,7 +205,7 @@ public class StoricoController {
         if (elemento instanceof Segnalazione) {
 
             return ((Segnalazione) elemento)
-                    .getData().toString();
+                    .getDataInizio().toString();
         }
 
 
@@ -322,7 +325,7 @@ public class StoricoController {
             Label data =
                     new Label(
                             "Data: "
-                                    + s.getData()
+                                    + s.getDataInizio()
                     );
 
 
@@ -453,6 +456,7 @@ public class StoricoController {
                     loader.getController();
 
             controller.inizializzaModifica(
+                    user,
                     rilevazione,
                     this::aggiornaLista
             );
@@ -546,6 +550,7 @@ public class StoricoController {
                     loader.getController();
 
             controller.inizializzaModifica(
+                    user,
                     segnalazione,
                     this::aggiornaLista
             );

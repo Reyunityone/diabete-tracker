@@ -1,6 +1,6 @@
 package application.classiGeneriche;
 
-public class User {
+public abstract sealed class User permits Paziente, Diabetologo{
     private String username, codiceFiscale, nome, cognome, email;
 
     public User(String username, String codiceFiscale, String nome, String cognome, String email){
@@ -17,5 +17,37 @@ public class User {
 
     public String getCognome() {
         return cognome;
+    }
+
+    public String getCodiceFiscale() {
+        return codiceFiscale;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setCodiceFiscale(String codiceFiscale) {
+        this.codiceFiscale = codiceFiscale;
+    }
+
+    public void setCognome(String cognome) {
+        this.cognome = cognome;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

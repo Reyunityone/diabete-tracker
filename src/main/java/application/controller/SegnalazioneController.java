@@ -84,16 +84,9 @@ public class SegnalazioneController {
         // CARICA DATA
         // -----------------------------------------------------
 
-        if (segnalazione.getData() != null
-                && !segnalazione.getData().isEmpty()) {
+        if (segnalazione.getData() != null) {
 
-            LocalDate data =
-                    LocalDate.parse(
-                            segnalazione.getData(),
-                            formatoData
-                    );
-
-            dataPicker.setValue(data);
+            dataPicker.setValue(segnalazione.getData());
         }
 
 
@@ -128,12 +121,9 @@ public class SegnalazioneController {
         // DATA
         // -----------------------------------------------------
 
-        String data =
+        LocalDate data =
                 dataPicker
-                        .getValue()
-                        .format(
-                                formatoData
-                        );
+                        .getValue();
 
 
         // -----------------------------------------------------

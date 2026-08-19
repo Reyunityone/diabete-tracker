@@ -5,7 +5,7 @@ import java.util.List;
 
 import application.classiGeneriche.Rilevazione;
 import application.classiGeneriche.Segnalazione;
-import application.classiGeneriche.SintomoFarmaco;
+import application.classiGeneriche.AssunzioneFarmaco;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -192,17 +192,17 @@ public class StoricoController {
         }
 
 
-        if (elemento instanceof SintomoFarmaco) {
+        if (elemento instanceof AssunzioneFarmaco) {
 
-            return ((SintomoFarmaco) elemento)
-                    .getData();
+            return ((AssunzioneFarmaco) elemento)
+                    .getData().toString();
         }
 
 
         if (elemento instanceof Segnalazione) {
 
             return ((Segnalazione) elemento)
-                    .getData();
+                    .getData().toString();
         }
 
 
@@ -280,7 +280,7 @@ public class StoricoController {
         // SINTOMO / FARMACO
         // =====================================================
 
-        else if (elemento instanceof SintomoFarmaco s) {
+        else if (elemento instanceof AssunzioneFarmaco s) {
 
 
             Label data =
@@ -292,7 +292,7 @@ public class StoricoController {
 
             Label contenuto =
                     new Label(
-                            s.getIndicazione()
+                            ""+ s.getQuantita()
                     );
 
 
@@ -412,10 +412,10 @@ public class StoricoController {
         }
 
 
-        if (elemento instanceof SintomoFarmaco) {
+        if (elemento instanceof AssunzioneFarmaco) {
 
             modificaSintomo(
-                    (SintomoFarmaco) elemento
+                    (AssunzioneFarmaco) elemento
             );
 
             return;
@@ -483,20 +483,20 @@ public class StoricoController {
     // =========================================================
 
     private void modificaSintomo(
-            SintomoFarmaco sintomo) {
+            AssunzioneFarmaco sintomo) {
 
         try {
 
             FXMLLoader loader =
                     new FXMLLoader(
                             getClass().getResource(
-                                    "/application/view/SintomoFarmaco.fxml"
+                                    "/application/view/AssunzioneFarmaco.fxml"
                             )
                     );
 
             Parent root = loader.load();
 
-            SintomoFarmacoController controller =
+            FarmacoController controller =
                     loader.getController();
 
             controller.inizializzaModifica(

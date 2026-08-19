@@ -51,7 +51,7 @@
 
     <TextArea
             fx:id="testoArea"
-            promptText="Descrivi la segnalazione..."
+            promptText="Descrivi la segnalazione di terapia precedente o sintomo avvertito.."
             wrapText="true"
             VBox.vgrow="ALWAYS"/>
 

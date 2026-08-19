@@ -1,13 +1,15 @@
 package application.classiGeneriche;
 
+import java.time.LocalDate;
+
 public class Segnalazione {
 
-    private String data;
+    private LocalDate data;
     private String testo;
 
 
     public Segnalazione(
-            String data,
+            LocalDate data,
             String testo) {
 
         this.data = data;
@@ -15,20 +17,17 @@ public class Segnalazione {
     }
 
 
-    public String getData() {
+    public LocalDate getData() {
         return data;
     }
-
 
     public String getTesto() {
         return testo;
     }
 
-
-    public void setData(String data) {
+    public void setData(LocalDate data) {
         this.data = data;
     }
-
 
     public void setTesto(String testo) {
         this.testo = testo;

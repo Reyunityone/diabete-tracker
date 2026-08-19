@@ -1,5 +1,6 @@
 package application.controller;
 
+import application.classiGeneriche.Diabetologo;
 import application.classiGeneriche.Paziente;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
@@ -92,8 +93,7 @@ public class DiabetologoController {
     private final List<Paziente> pazienti =
             new ArrayList<>();
 
-    private String nomeMedico;
-    private String cognomeMedico;
+    private Diabetologo medico;
     
     private final List<Messaggio> messaggi =
             new ArrayList<>();
@@ -238,14 +238,12 @@ public class DiabetologoController {
     // =========================================================
 
     public void inizializzaProfilo(
-            String nome,
-            String cognome) {
+            Diabetologo medico) {
 
-        this.nomeMedico = nome;
-        this.cognomeMedico = cognome;
+        this.medico = medico;
 
         nomeCognomeLabel.setText(
-                nome + " " + cognome
+                medico.getNome() + " " + medico.getCognome()
         );
 
         ruoloLabel.setText("Medico");

@@ -21,6 +21,7 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ResponsabileController {
 
@@ -220,8 +221,8 @@ public class ResponsabileController {
 
         ImageView avatar = new ImageView(
                 new Image(
-                        getClass()
-                                .getResource("/application/images/avatar.png")
+                        Objects.requireNonNull(getClass()
+                                        .getResource("/application/images/avatar.png"))
                                 .toExternalForm()
                 )
         );

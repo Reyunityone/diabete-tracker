@@ -3,7 +3,6 @@ package application.controller;
 import application.classiGeneriche.Paziente;
 import application.classiGeneriche.Rilevazione;
 
-import application.classiGeneriche.Paziente;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;

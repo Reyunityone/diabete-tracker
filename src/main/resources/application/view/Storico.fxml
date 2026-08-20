@@ -58,26 +58,21 @@
         <ScrollPane
                 fitToWidth="true"
                 hbarPolicy="NEVER"
-                vbarPolicy="AS_NEEDED"
                 styleClass="history-scroll">
 
-            <content>
+            <VBox
+                    fx:id="contenitoreStorico"
+                    spacing="12.0">
 
-                <VBox
-                        fx:id="contenitoreStorico"
-                        spacing="12.0">
+                <padding>
+                    <Insets
+                            top="10.0"
+                            bottom="20.0"
+                            left="25.0"
+                            right="25.0"/>
+                </padding>
 
-                    <padding>
-                        <Insets
-                                top="10.0"
-                                bottom="20.0"
-                                left="25.0"
-                                right="25.0"/>
-                    </padding>
-
-                </VBox>
-
-            </content>
+            </VBox>
 
         </ScrollPane>
 

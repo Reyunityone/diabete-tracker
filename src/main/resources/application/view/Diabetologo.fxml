@@ -20,373 +20,338 @@
             prefHeight="750.0"
             stylesheets="@../css/diabetologo.css">
 
-    <children>
+    <BorderPane
+            AnchorPane.topAnchor="0.0"
+            AnchorPane.bottomAnchor="0.0"
+            AnchorPane.leftAnchor="0.0"
+            AnchorPane.rightAnchor="0.0">
 
-        <BorderPane
-                AnchorPane.topAnchor="0.0"
-                AnchorPane.bottomAnchor="0.0"
-                AnchorPane.leftAnchor="0.0"
-                AnchorPane.rightAnchor="0.0">
+        <!-- ================================================= -->
+        <!-- BARRA SUPERIORE -->
+        <!-- ================================================= -->
 
-            <!-- ================================================= -->
-            <!-- BARRA SUPERIORE -->
-            <!-- ================================================= -->
+        <top>
 
-            <top>
+            <HBox alignment="CENTER_LEFT"
+                  spacing="15.0"
+                  prefHeight="90.0"
+                  styleClass="top-bar">
 
-                <HBox alignment="CENTER_LEFT"
-                      spacing="15.0"
-                      prefHeight="90.0"
-                      styleClass="top-bar">
+                <padding>
+                    <Insets left="25.0"
+                            right="25.0"
+                            top="15.0"
+                            bottom="15.0"/>
+                </padding>
+
+
+                <!-- AVATAR -->
+
+                <ImageView fx:id="profileImage"
+                           fitHeight="55.0"
+                           fitWidth="55.0"
+                           preserveRatio="true">
+
+                    <Image url="@../images/avatar.png"/>
+                </ImageView>
+
+
+                <!-- NOME + COGNOME + RUOLO -->
+
+                <VBox spacing="3.0">
+
+                    <Label fx:id="nomeCognomeLabel"
+                           text="Nome Cognome"
+                           styleClass="profile-name"/>
+
+                    <Label fx:id="ruoloLabel"
+                           text="Medico"
+                           styleClass="profile-role"/>
+
+                </VBox>
+
+
+                <!-- SPAZIO -->
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+
+                <!-- LOGOUT -->
+
+                <Button fx:id="logoutButton"
+                        onAction="#handleLogout"
+                        styleClass="logout-button">
+
+                    <graphic>
+
+                        <ImageView fitHeight="35.0"
+                                   fitWidth="35.0"
+                                   preserveRatio="true">
+
+                            <Image url="@../images/logout.png"/>
+                        </ImageView>
+
+                    </graphic>
+
+                </Button>
+
+            </HBox>
+
+        </top>
+
+
+        <!-- ================================================= -->
+        <!-- CONTENUTO CENTRALE -->
+        <!-- ================================================= -->
+
+        <center>
+
+            <AnchorPane>
+
+                <!-- ================================================= -->
+                <!-- CONTENUTO PAZIENTI -->
+                <!-- ================================================= -->
+
+                <VBox spacing="20.0"
+                      AnchorPane.topAnchor="0.0"
+                      AnchorPane.bottomAnchor="0.0"
+                      AnchorPane.leftAnchor="0.0"
+                      AnchorPane.rightAnchor="0.0">
 
                     <padding>
-                        <Insets left="25.0"
-                                right="25.0"
-                                top="15.0"
-                                bottom="15.0"/>
+                        <Insets top="30.0"
+                                bottom="30.0"
+                                left="40.0"
+                                right="40.0"/>
                     </padding>
 
 
-                    <!-- AVATAR -->
+                    <!-- TITOLO -->
 
-                    <ImageView fx:id="profileImage"
-                               fitHeight="55.0"
-                               fitWidth="55.0"
-                               preserveRatio="true">
-
-                        <image>
-                            <Image url="@../images/avatar.png"/>
-                        </image>
-
-                    </ImageView>
+                    <Label text="Pazienti"
+                           styleClass="section-title"/>
 
 
-                    <!-- NOME + COGNOME + RUOLO -->
+                    <!-- RICERCA -->
 
-                    <VBox spacing="3.0">
-
-                        <Label fx:id="nomeCognomeLabel"
-                               text="Nome Cognome"
-                               styleClass="profile-name"/>
-
-                        <Label fx:id="ruoloLabel"
-                               text="Medico"
-                               styleClass="profile-role"/>
-
-                    </VBox>
+                    <TextField fx:id="searchField"
+                               promptText="Cerca paziente per nome o cognome..."
+                               prefHeight="42.0"
+                               styleClass="search-field"/>
 
 
-                    <!-- SPAZIO -->
+                    <!-- LISTA PAZIENTI -->
 
-                    <Region HBox.hgrow="ALWAYS"/>
+                    <ScrollPane fx:id="pazientiScrollPane"
+                                fitToWidth="true"
+                                hbarPolicy="NEVER"
+                                VBox.vgrow="ALWAYS"
+                                styleClass="list-scroll">
+
+                        <VBox fx:id="pazientiContainer"
+                              spacing="10.0"
+                        >
+
+                            <padding>
+                                <Insets top="5.0"
+                                        bottom="5.0"
+                                        left="5.0"
+                                        right="5.0"/>
+                            </padding>
+
+                        </VBox>
+
+                    </ScrollPane>
+
+                </VBox>
 
 
-                    <!-- LOGOUT -->
+                <!-- ================================================= -->
+                <!-- MAIL -->
+                <!-- ================================================= -->
 
-                    <Button fx:id="logoutButton"
-                            onAction="#handleLogout"
-                            styleClass="logout-button">
+                <AnchorPane fx:id="mailContainer"
+
+                            prefWidth="75.0"
+                            prefHeight="75.0"
+
+                            minWidth="75.0"
+                            maxWidth="75.0"
+
+                            minHeight="75.0"
+                            maxHeight="75.0"
+
+                            translateX="70.0"
+
+                            AnchorPane.topAnchor="10.0"
+                            AnchorPane.rightAnchor="110.0">
+
+
+                    <!-- ================================================= -->
+                    <!-- PULSANTE MAIL -->
+                    <!-- ================================================= -->
+
+                    <Button fx:id="mailButton"
+
+                            prefWidth="55.0"
+                            prefHeight="55.0"
+
+                            AnchorPane.topAnchor="0.0"
+                            AnchorPane.rightAnchor="0.0"
+
+                            styleClass="mail-button">
 
                         <graphic>
 
-                            <ImageView fitHeight="35.0"
-                                       fitWidth="35.0"
+                            <ImageView fitHeight="45.0"
+                                       fitWidth="45.0"
                                        preserveRatio="true">
 
-                                <image>
-                                    <Image url="@../images/logout.png"/>
-                                </image>
-
+                                <Image url="@../images/mail.png"/>
                             </ImageView>
 
                         </graphic>
 
                     </Button>
 
-                </HBox>
+                    <ImageView fx:id="mailNotification"
 
-            </top>
+                               fitWidth="18"
+                               fitHeight="18"
 
+                               preserveRatio="true"
 
-            <!-- ================================================= -->
-            <!-- CONTENUTO CENTRALE -->
-            <!-- ================================================= -->
+                               visible="false"
 
-            <center>
+                               AnchorPane.topAnchor="-2"
+                               AnchorPane.rightAnchor="-2">
 
-                <AnchorPane>
+                        <Image url="@../images/daLeggere.png"/>
 
-                    <!-- ================================================= -->
-                    <!-- CONTENUTO PAZIENTI -->
-                    <!-- ================================================= -->
-
-                    <VBox spacing="20.0"
-                          AnchorPane.topAnchor="0.0"
-                          AnchorPane.bottomAnchor="0.0"
-                          AnchorPane.leftAnchor="0.0"
-                          AnchorPane.rightAnchor="0.0">
-
-                        <padding>
-                            <Insets top="30.0"
-                                    bottom="30.0"
-                                    left="40.0"
-                                    right="40.0"/>
-                        </padding>
-
-
-                        <!-- TITOLO -->
-
-                        <Label text="Pazienti"
-                               styleClass="section-title"/>
-
-
-                        <!-- RICERCA -->
-
-                        <TextField fx:id="searchField"
-                                   promptText="Cerca paziente per nome o cognome..."
-                                   prefHeight="42.0"
-                                   styleClass="search-field"/>
-
-
-                        <!-- LISTA PAZIENTI -->
-
-                        <ScrollPane fx:id="pazientiScrollPane"
-                                    fitToWidth="true"
-                                    hbarPolicy="NEVER"
-                                    vbarPolicy="AS_NEEDED"
-                                    VBox.vgrow="ALWAYS"
-                                    styleClass="list-scroll">
-
-                            <content>
-
-                                <VBox fx:id="pazientiContainer"
-                                      spacing="10.0"
-                                      fillWidth="true">
-
-                                    <padding>
-                                        <Insets top="5.0"
-                                                bottom="5.0"
-                                                left="5.0"
-                                                right="5.0"/>
-                                    </padding>
-
-                                </VBox>
-
-                            </content>
-
-                        </ScrollPane>
-
-                    </VBox>
+                    </ImageView>
 
 
                     <!-- ================================================= -->
-                    <!-- MAIL -->
+                    <!-- MENU MAIL -->
                     <!-- ================================================= -->
 
-                    <AnchorPane fx:id="mailContainer"
+                    <HBox fx:id="mailMenu"
 
-                                prefWidth="75.0"
-                                prefHeight="75.0"
+                          spacing="10.0"
 
-                                minWidth="75.0"
-                                maxWidth="75.0"
+                          prefWidth="250.0"
+                          prefHeight="60.0"
 
-                                minHeight="75.0"
-                                maxHeight="75.0"
-                                
-                                translateX="70.0"
+                          minWidth="250.0"
+                          maxWidth="250.0"
 
-                                AnchorPane.topAnchor="10.0"
-                                AnchorPane.rightAnchor="110.0">
+                          minHeight="60.0"
+                          maxHeight="60.0"
+
+                          layoutX="-250.0"
+                          layoutY="60.0"
+
+                          visible="false"
+                          managed="false"
+
+                          styleClass="mail-menu">
 
 
-                        <!-- ================================================= -->
-                        <!-- PULSANTE MAIL -->
-                        <!-- ================================================= -->
+                        <!-- TELEFONO -->
 
-                        <Button fx:id="mailButton"
+                        <Button fx:id="telefonoButton"
 
-                                prefWidth="55.0"
-                                prefHeight="55.0"
+                                text="Telefono"
 
-                                AnchorPane.topAnchor="0.0"
-                                AnchorPane.rightAnchor="0.0"
+                                prefWidth="115.0"
+                                prefHeight="45.0"
 
-                                styleClass="mail-button">
+                                minWidth="115.0"
+                                maxWidth="115.0"
+
+                                minHeight="45.0"
+                                maxHeight="45.0"
+
+                                styleClass="mail-menu-button">
 
                             <graphic>
 
-                                <ImageView fitHeight="45.0"
-                                           fitWidth="45.0"
+                                <ImageView fitHeight="28.0"
+                                           fitWidth="28.0"
                                            preserveRatio="true">
 
-                                    <image>
-                                        <Image url="@../images/mail.png"/>
-                                    </image>
-
+                                    <Image url="@../images/telefono.png"/>
                                 </ImageView>
 
                             </graphic>
 
                         </Button>
-                        
-                         <ImageView fx:id="mailNotification"
 
-               fitWidth="18"
-               fitHeight="18"
+                        <ImageView fx:id="telefonoNotification"
 
-               preserveRatio="true"
+                                   fitWidth="16"
+                                   fitHeight="16"
 
-               visible="false"
+                                   visible="false"
 
-               AnchorPane.topAnchor="-2"
-               AnchorPane.rightAnchor="-2">
+                                   AnchorPane.topAnchor="-4"
+                                   AnchorPane.rightAnchor="-4">
 
-        <image>
-
-            <Image url="@../images/daLeggere.png"/>
-
-        </image>
-
-    </ImageView>
+                            <Image url="@../images/daLeggere.png"/>
+                        </ImageView>
 
 
-                        <!-- ================================================= -->
-                        <!-- MENU MAIL -->
-                        <!-- ================================================= -->
+                        <!-- MESSAGGIO -->
 
-                        <HBox fx:id="mailMenu"
+                        <Button fx:id="messaggioButton"
 
-                              spacing="10.0"
+                                text="Messaggio"
 
-                              prefWidth="250.0"
-                              prefHeight="60.0"
+                                prefWidth="115.0"
+                                prefHeight="45.0"
 
-                              minWidth="250.0"
-                              maxWidth="250.0"
+                                minWidth="115.0"
+                                maxWidth="115.0"
 
-                              minHeight="60.0"
-                              maxHeight="60.0"
+                                minHeight="45.0"
+                                maxHeight="45.0"
 
-                              layoutX="-250.0"
-                              layoutY="60.0"
+                                styleClass="mail-menu-button">
 
-                              visible="false"
-                              managed="false"
-                              mouseTransparent="false"
+                            <graphic>
 
-                              styleClass="mail-menu">
+                                <ImageView fitHeight="28.0"
+                                           fitWidth="28.0"
+                                           preserveRatio="true">
 
+                                    <Image url="@../images/messaggio.png"/>
+                                </ImageView>
 
-                            <!-- TELEFONO -->
+                            </graphic>
 
-                            <Button fx:id="telefonoButton"
+                        </Button>
 
-                                    text="Telefono"
+                        <ImageView fx:id="messaggioNotification"
 
-                                    prefWidth="115.0"
-                                    prefHeight="45.0"
+                                   fitWidth="16"
+                                   fitHeight="16"
 
-                                    minWidth="115.0"
-                                    maxWidth="115.0"
+                                   visible="false"
 
-                                    minHeight="45.0"
-                                    maxHeight="45.0"
+                                   AnchorPane.topAnchor="-4"
+                                   AnchorPane.rightAnchor="-4">
 
-                                    styleClass="mail-menu-button">
+                            <Image url="@../images/daLeggere.png"/>
+                        </ImageView>
 
-                                <graphic>
-
-                                    <ImageView fitHeight="28.0"
-                                               fitWidth="28.0"
-                                               preserveRatio="true">
-
-                                        <image>
-                                            <Image url="@../images/telefono.png"/>
-                                        </image>
-
-                                    </ImageView>
-
-                                </graphic>
-
-                            </Button>
-                            
-                            <ImageView fx:id="telefonoNotification"
-
-           fitWidth="16"
-           fitHeight="16"
-
-           visible="false"
-
-           AnchorPane.topAnchor="-4"
-           AnchorPane.rightAnchor="-4">
-
-    <image>
-        <Image url="@../images/daLeggere.png"/>
-    </image>
-
-</ImageView>
-
-
-                            <!-- MESSAGGIO -->
-
-                            <Button fx:id="messaggioButton"
-
-                                    text="Messaggio"
-
-                                    prefWidth="115.0"
-                                    prefHeight="45.0"
-
-                                    minWidth="115.0"
-                                    maxWidth="115.0"
-
-                                    minHeight="45.0"
-                                    maxHeight="45.0"
-
-                                    styleClass="mail-menu-button">
-
-                                <graphic>
-
-                                    <ImageView fitHeight="28.0"
-                                               fitWidth="28.0"
-                                               preserveRatio="true">
-
-                                        <image>
-                                            <Image url="@../images/messaggio.png"/>
-                                        </image>
-
-                                    </ImageView>
-
-                                </graphic>
-
-                            </Button>
-                            
-                            <ImageView fx:id="messaggioNotification"
-
-               fitWidth="16"
-               fitHeight="16"
-
-               visible="false"
-
-               AnchorPane.topAnchor="-4"
-               AnchorPane.rightAnchor="-4">
-
-        <image>
-            <Image url="@../images/daLeggere.png"/>
-        </image>
-
-    </ImageView>
-
-                        </HBox>
-
-                    </AnchorPane>
+                    </HBox>
 
                 </AnchorPane>
 
-            </center>
+            </AnchorPane>
 
-        </BorderPane>
+        </center>
 
-    </children>
+    </BorderPane>
 
 </AnchorPane>

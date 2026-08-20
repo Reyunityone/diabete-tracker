@@ -61,7 +61,7 @@
             <LineChart fx:id="grafico"
                        VBox.vgrow="ALWAYS"
                        animated="false"
-                       createSymbols="true">
+            >
 
                 <xAxis>
 

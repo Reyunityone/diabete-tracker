@@ -22,224 +22,206 @@
             prefHeight="750.0"
             stylesheets="@../css/responsabile.css">
 
-    <children>
+    <BorderPane AnchorPane.topAnchor="0.0"
+                AnchorPane.bottomAnchor="0.0"
+                AnchorPane.leftAnchor="0.0"
+                AnchorPane.rightAnchor="0.0">
 
-        <BorderPane AnchorPane.topAnchor="0.0"
-                    AnchorPane.bottomAnchor="0.0"
-                    AnchorPane.leftAnchor="0.0"
-                    AnchorPane.rightAnchor="0.0">
+        <!-- ================================================= -->
+        <!-- BARRA SUPERIORE -->
+        <!-- ================================================= -->
 
-            <!-- ================================================= -->
-            <!-- BARRA SUPERIORE -->
-            <!-- ================================================= -->
+        <top>
 
-            <top>
+            <HBox alignment="CENTER_LEFT"
+                  spacing="15.0"
+                  prefHeight="90.0"
+                  styleClass="top-bar">
 
-                <HBox alignment="CENTER_LEFT"
-                      spacing="15.0"
-                      prefHeight="90.0"
-                      styleClass="top-bar">
+                <padding>
+                    <Insets left="25.0"
+                            right="25.0"
+                            top="15.0"
+                            bottom="15.0"/>
+                </padding>
 
-                    <padding>
-                        <Insets left="25.0"
-                                right="25.0"
-                                top="15.0"
-                                bottom="15.0"/>
-                    </padding>
+                <!-- IMMAGINE PROFILO -->
 
-                    <!-- IMMAGINE PROFILO -->
+                <ImageView fx:id="profileImage"
+                           fitHeight="55.0"
+                           fitWidth="55.0"
+                           preserveRatio="true">
 
-                    <ImageView fx:id="profileImage"
-                               fitHeight="55.0"
-                               fitWidth="55.0"
-                               preserveRatio="true">
+                    <Image url="@../images/avatar.png"/>
+                </ImageView>
 
-                        <image>
-                            <Image url="@../images/avatar.png"/>
-                        </image>
+                <!-- NOME + COGNOME + RUOLO -->
 
-                    </ImageView>
+                <VBox spacing="3.0">
 
-                    <!-- NOME + COGNOME + RUOLO -->
+                    <Label fx:id="nomeCognomeLabel"
+                           text="Nome Cognome"
+                           styleClass="profile-name"/>
 
-                    <VBox spacing="3.0">
-
-                        <Label fx:id="nomeCognomeLabel"
-                               text="Nome Cognome"
-                               styleClass="profile-name"/>
-
-                        <Label fx:id="ruoloLabel"
-                               text="Responsabile"
-                               styleClass="profile-role"/>
-
-                    </VBox>
-
-                    <!-- SPAZIO -->
-
-                    <Region HBox.hgrow="ALWAYS"/>
-
-                    <!-- LOGOUT -->
-
-                    <Button fx:id="logoutButton"
-                            onAction="#handleLogout"
-                            styleClass="logout-button">
-
-                        <graphic>
-
-                            <ImageView fitHeight="40.0"
-                                       fitWidth="40.0"
-                                       preserveRatio="true">
-
-                                <image>
-                                    <Image url="@../images/logout.png"/>
-                                </image>
-
-                            </ImageView>
-
-                        </graphic>
-
-                    </Button>
-
-                </HBox>
-
-            </top>
-
-
-            <!-- ================================================= -->
-            <!-- CONTENUTO CENTRALE -->
-            <!-- ================================================= -->
-
-            <center>
-
-                <VBox spacing="25.0">
-
-                    <padding>
-                        <Insets top="25.0"
-                                bottom="25.0"
-                                left="40.0"
-                                right="40.0"/>
-                    </padding>
-
-
-                    <!-- ================================================= -->
-                    <!-- BARRA DI RICERCA -->
-                    <!-- ================================================= -->
-
-                    <TextField fx:id="searchField"
-                               promptText="Cerca medico o paziente per nome o cognome..."
-                               prefHeight="40.0"
-                               styleClass="search-field"/>
-
-
-                    <!-- ================================================= -->
-                    <!-- SEZIONE MEDICI -->
-                    <!-- ================================================= -->
-
-                    <VBox spacing="12.0"
-                          VBox.vgrow="ALWAYS">
-
-                        <HBox alignment="CENTER_LEFT"
-                              spacing="15.0">
-
-                            <Label text="Medici"
-                                   styleClass="section-title"/>
-
-                            <Region HBox.hgrow="ALWAYS"/>
-
-                            <Button text="Aggiungi medici"
-                                    onAction="#handleAggiungiMedico"
-                                    styleClass="add-button"/>
-
-                        </HBox>
-
-
-                        <!-- LISTA MEDICI -->
-
-                        <ScrollPane fx:id="mediciScrollPane"
-                                    fitToWidth="true"
-                                    hbarPolicy="NEVER"
-                                    VBox.vgrow="ALWAYS"
-                                    styleClass="list-scroll">
-
-                            <content>
-
-                                <VBox fx:id="mediciContainer"
-                                      spacing="10.0"
-                                      fillWidth="true">
-
-                                    <padding>
-                                        <Insets top="5.0"
-                                                bottom="5.0"
-                                                left="5.0"
-                                                right="5.0"/>
-                                    </padding>
-
-                                </VBox>
-
-                            </content>
-
-                        </ScrollPane>
-
-                    </VBox>
-
-
-                    <!-- ================================================= -->
-                    <!-- SEZIONE PAZIENTI -->
-                    <!-- ================================================= -->
-
-                    <VBox spacing="12.0"
-                          VBox.vgrow="ALWAYS">
-
-                        <HBox alignment="CENTER_LEFT"
-                              spacing="15.0">
-
-                            <Label text="Pazienti"
-                                   styleClass="section-title"/>
-
-                            <Region HBox.hgrow="ALWAYS"/>
-
-                            <Button text="Aggiungi pazienti"
-                                    onAction="#handleAggiungiPaziente"
-                                    styleClass="add-button"/>
-
-                        </HBox>
-
-
-                        <!-- LISTA PAZIENTI -->
-
-                        <ScrollPane fx:id="pazientiScrollPane"
-                                    fitToWidth="true"
-                                    hbarPolicy="NEVER"
-                                    VBox.vgrow="ALWAYS"
-                                    styleClass="list-scroll">
-
-                            <content>
-
-                                <VBox fx:id="pazientiContainer"
-                                      spacing="10.0"
-                                      fillWidth="true">
-
-                                    <padding>
-                                        <Insets top="5.0"
-                                                bottom="5.0"
-                                                left="5.0"
-                                                right="5.0"/>
-                                    </padding>
-
-                                </VBox>
-
-                            </content>
-
-                        </ScrollPane>
-
-                    </VBox>
+                    <Label fx:id="ruoloLabel"
+                           text="Responsabile"
+                           styleClass="profile-role"/>
 
                 </VBox>
 
-            </center>
+                <!-- SPAZIO -->
 
-        </BorderPane>
+                <Region HBox.hgrow="ALWAYS"/>
 
-    </children>
+                <!-- LOGOUT -->
+
+                <Button fx:id="logoutButton"
+                        onAction="#handleLogout"
+                        styleClass="logout-button">
+
+                    <graphic>
+
+                        <ImageView fitHeight="40.0"
+                                   fitWidth="40.0"
+                                   preserveRatio="true">
+
+                            <Image url="@../images/logout.png"/>
+                        </ImageView>
+
+                    </graphic>
+
+                </Button>
+
+            </HBox>
+
+        </top>
+
+
+        <!-- ================================================= -->
+        <!-- CONTENUTO CENTRALE -->
+        <!-- ================================================= -->
+
+        <center>
+
+            <VBox spacing="25.0">
+
+                <padding>
+                    <Insets top="25.0"
+                            bottom="25.0"
+                            left="40.0"
+                            right="40.0"/>
+                </padding>
+
+
+                <!-- ================================================= -->
+                <!-- BARRA DI RICERCA -->
+                <!-- ================================================= -->
+
+                <TextField fx:id="searchField"
+                           promptText="Cerca medico o paziente per nome o cognome..."
+                           prefHeight="40.0"
+                           styleClass="search-field"/>
+
+
+                <!-- ================================================= -->
+                <!-- SEZIONE MEDICI -->
+                <!-- ================================================= -->
+
+                <VBox spacing="12.0"
+                      VBox.vgrow="ALWAYS">
+
+                    <HBox alignment="CENTER_LEFT"
+                          spacing="15.0">
+
+                        <Label text="Medici"
+                               styleClass="section-title"/>
+
+                        <Region HBox.hgrow="ALWAYS"/>
+
+                        <Button text="Aggiungi medici"
+                                onAction="#handleAggiungiMedico"
+                                styleClass="add-button"/>
+
+                    </HBox>
+
+
+                    <!-- LISTA MEDICI -->
+
+                    <ScrollPane fx:id="mediciScrollPane"
+                                fitToWidth="true"
+                                hbarPolicy="NEVER"
+                                VBox.vgrow="ALWAYS"
+                                styleClass="list-scroll">
+
+                        <VBox fx:id="mediciContainer"
+                              spacing="10.0"
+                        >
+
+                            <padding>
+                                <Insets top="5.0"
+                                        bottom="5.0"
+                                        left="5.0"
+                                        right="5.0"/>
+                            </padding>
+
+                        </VBox>
+
+                    </ScrollPane>
+
+                </VBox>
+
+
+                <!-- ================================================= -->
+                <!-- SEZIONE PAZIENTI -->
+                <!-- ================================================= -->
+
+                <VBox spacing="12.0"
+                      VBox.vgrow="ALWAYS">
+
+                    <HBox alignment="CENTER_LEFT"
+                          spacing="15.0">
+
+                        <Label text="Pazienti"
+                               styleClass="section-title"/>
+
+                        <Region HBox.hgrow="ALWAYS"/>
+
+                        <Button text="Aggiungi pazienti"
+                                onAction="#handleAggiungiPaziente"
+                                styleClass="add-button"/>
+
+                    </HBox>
+
+
+                    <!-- LISTA PAZIENTI -->
+
+                    <ScrollPane fx:id="pazientiScrollPane"
+                                fitToWidth="true"
+                                hbarPolicy="NEVER"
+                                VBox.vgrow="ALWAYS"
+                                styleClass="list-scroll">
+
+                        <VBox fx:id="pazientiContainer"
+                              spacing="10.0"
+                        >
+
+                            <padding>
+                                <Insets top="5.0"
+                                        bottom="5.0"
+                                        left="5.0"
+                                        right="5.0"/>
+                            </padding>
+
+                        </VBox>
+
+                    </ScrollPane>
+
+                </VBox>
+
+            </VBox>
+
+        </center>
+
+    </BorderPane>
 
 </AnchorPane>

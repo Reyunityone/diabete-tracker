@@ -22,7 +22,6 @@ public class SegnalazioneController {
     @FXML
     private DatePicker dataInizioPicker;
 
-    //TODO Implementare data fine
     @FXML
     private DatePicker dataFinePicker;
 
@@ -35,15 +34,6 @@ public class SegnalazioneController {
     // =========================================================
 
     private Consumer<Segnalazione> salvataggio;
-
-
-    // =========================================================
-    // FORMATO DATA
-    // =========================================================
-
-    private final DateTimeFormatter formatoData =
-            DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
 
     // =========================================================
     // MODALITÀ MODIFICA
@@ -97,7 +87,9 @@ public class SegnalazioneController {
             dataInizioPicker.setValue(segnalazione.getDataInizio());
         }
 
-
+        if(segnalazione.getDataFine() != null){
+            dataFinePicker.setValue(segnalazione.getDataFine());
+        }
         // -----------------------------------------------------
         // CARICA TESTO
         // -----------------------------------------------------
@@ -130,8 +122,7 @@ public class SegnalazioneController {
         // -----------------------------------------------------
 
         LocalDate dataInizio =
-                dataInizioPicker
-                        .getValue();
+                dataInizioPicker.getValue();
 
         LocalDate dataFine =
                 dataFinePicker.getValue();

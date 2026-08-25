@@ -64,6 +64,11 @@ public class Terapia {
     public void setPaziente(Paziente paziente) {
         this.paziente = paziente;
     }
+
+    @Override
+    public String toString() {
+        return "[" + farmaco.toUpperCase() + "] dose: " + dose + "mg " + numeroAssunzioniGiornaliere + " volte al giorno, " + indicazioni;
+    }
 }
 
 

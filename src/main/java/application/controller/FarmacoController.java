@@ -2,8 +2,11 @@ package application.controller;
 
 import application.classiGeneriche.AssunzioneFarmaco;
 
+import application.classiGeneriche.Diabetologo;
+import application.classiGeneriche.Paziente;
 import application.classiGeneriche.Terapia;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -11,12 +14,15 @@ import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
-public class FarmacoController {
+public class FarmacoController implements Initializable {
 
     // =========================================================
     // FXML
@@ -42,15 +48,6 @@ public class FarmacoController {
 
     private Consumer<AssunzioneFarmaco> salvataggio;
 
-
-    // =========================================================
-    // FORMATO DATA
-    // =========================================================
-
-    private final DateTimeFormatter formatoData =
-            DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-
     // =========================================================
     // MODALITÀ MODIFICA
     // =========================================================
@@ -65,6 +62,17 @@ public class FarmacoController {
     // =========================================================
     // INIZIALIZZAZIONE - NUOVO ELEMENTO
     // =========================================================
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        ArrayList<Terapia> terapie = new ArrayList<>();
+        terapie.add(new Terapia("dolipran", 12, 3, new Diabetologo(), new Paziente(), "prima dei pasti"));
+        terapie.add(new Terapia("tachi", 15, 2, new Diabetologo(), new Paziente(), "prima dei pasti"));
+        terapie.add(new Terapia("wewe", 25, 1, new Diabetologo(), new Paziente(), "prima dei pasti"));
+        terapiaBox.getItems().addAll(terapie);
+
+    }
 
     public void inizializza(
             Consumer<AssunzioneFarmaco> salvataggio) {
@@ -83,6 +91,7 @@ public class FarmacoController {
         });
 
         this.quantitaField.setTextFormatter(quantitaFormatter);
+
 
         this.salvataggio = salvataggio;
 
@@ -159,10 +168,7 @@ public class FarmacoController {
         // CONTROLLO DATA
         // -----------------------------------------------------
 
-        if (dataPicker.getValue() == null) {
-
-            return;
-        }
+        if (dataPicker.getValue() == null || orarioField.getText().isEmpty() || quantitaField.getText().isEmpty() || terapiaBox.getSelectionModel().isEmpty()) return;
 
 
         // -----------------------------------------------------
@@ -176,21 +182,33 @@ public class FarmacoController {
         //---------
         // ORARIO
         //---------
-        LocalTime orario=
-                LocalTime.parse(orarioField.getText(), DateTimeFormatter.ofPattern("HH:mm"));
+        LocalTime orario;
+
+        try {
+            orario = LocalTime.parse(orarioField.getText(), DateTimeFormatter.ofPattern("HH:mm"));
+        } catch (Exception e) {
+            System.err.println("ORARIO INVALIDO");
+            return;
+        }
         // -----------------------------------------------------
         // QUANTITA
         // -----------------------------------------------------
 
         int quantita =
                 quantitaFormatter.getValue();
-
         //-----------------------
         //TERAPIA
         //------------------------
 
         Terapia terapia = terapiaBox.getValue();
-
+        if(quantita > terapia.getDose()){
+            System.err.println("SOVRADOSAGGIO RILEVATO");
+            return;
+        }
+        if(quantita < terapia.getDose()){
+            System.err.println("SOTTODOSAGGIO RILEVATO");
+            return;
+        }
         // =====================================================
         // MODIFICA
         // =====================================================

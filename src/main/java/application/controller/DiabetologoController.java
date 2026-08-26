@@ -93,7 +93,7 @@ public class DiabetologoController {
     private final List<Paziente> pazienti =
             new ArrayList<>();
 
-    private Diabetologo medico;
+//    private Diabetologo medico;
     
     private final List<Messaggio> messaggi =
             new ArrayList<>();
@@ -119,7 +119,7 @@ public class DiabetologoController {
     @FXML
     public void initialize() {
 
-        ruoloLabel.setText("Medico");
+        ruoloLabel.setText("Diabetologo");
 
         inizializzaPazienti();
 
@@ -240,7 +240,7 @@ public class DiabetologoController {
     public void inizializzaProfilo(
             Diabetologo medico) {
 
-        this.medico = medico;
+//        this.medico = medico;
 
         nomeCognomeLabel.setText(
                 medico.getNome() + " " + medico.getCognome()

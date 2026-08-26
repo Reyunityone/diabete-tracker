@@ -35,8 +35,10 @@ public class LoginController {
         String password = passwordField.getText();
 
         // TODO Validate user
-        User loggedUser = new Paziente();
-
+//        User loggedUser = new Paziente();
+        
+        User loggedUser = new Diabetologo();
+        
         switch(loggedUser){
             case Paziente p -> cambiaSchermataPaziente(p);
             case Diabetologo d -> cambiaSchermataDiabetologo(d);

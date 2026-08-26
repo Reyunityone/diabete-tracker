@@ -11,7 +11,7 @@ public class AssunzioneFarmaco {
     private Terapia terapia;
 
 
-    public AssunzioneFarmaco (LocalDate data, LocalTime orarioAssunzione , int quantita, Terapia terapia) {
+    public AssunzioneFarmaco (LocalDate data, LocalTime orarioAssunzione ,int quantita, Terapia terapia) {
 
         this.data = data;
         this.orarioAssunzione = orarioAssunzione;

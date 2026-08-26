@@ -9,20 +9,16 @@ public class Rilevazione {
     private int livelloGlicemia;
     private LocalTime orarioPasto;
     private LocalTime orarioRilevazione;
+    private MomentoRilevazione momentoAssunzione;
     private Paziente paziente;
 
 
-    public Rilevazione(
-            LocalDate data,
-            int livelloGlicemia,
-            LocalTime orarioPasto,
-            LocalTime orarioRilevazione,
-            Paziente paziente) {
-
+    public Rilevazione(LocalDate data, int livelloGlicemia, LocalTime orarioPasto, LocalTime orarioRilevazione, MomentoRilevazione momentoAssunzione, Paziente paziente) {
         this.data = data;
         this.livelloGlicemia = livelloGlicemia;
         this.orarioRilevazione = orarioRilevazione;
         this.orarioPasto = orarioPasto;
+        this.momentoAssunzione=momentoAssunzione;
         this.paziente = paziente;
     }
 
@@ -51,6 +47,11 @@ public class Rilevazione {
     public Paziente getPaziente() {
         return paziente;
     }
+    
+
+	public MomentoRilevazione getMomentoRilevazione() {
+		return momentoAssunzione;
+	}
 
     // =========================================================
     // SETTER
@@ -79,5 +80,10 @@ public class Rilevazione {
         this.livelloGlicemia =
                 livelloGlicemia;
     }
+
+
+	public void setMomentoRilevazione(MomentoRilevazione momentoAssunzione) {
+		this.momentoAssunzione = momentoAssunzione;
+	}
 
 }

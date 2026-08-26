@@ -214,6 +214,10 @@
 
                     </Button>
 
+                    <!-- ================================================= -->
+                    <!-- PALLINO NOTIFICA MAIL -->
+                    <!-- ================================================= -->
+
                     <ImageView fx:id="mailNotification"
 
                                fitWidth="18"
@@ -239,11 +243,11 @@
 
                           spacing="10.0"
 
-                          prefWidth="250.0"
+                          prefWidth="240.0"
                           prefHeight="60.0"
 
-                          minWidth="250.0"
-                          maxWidth="250.0"
+                          minWidth="240.0"
+                          maxWidth="240.0"
 
                           minHeight="60.0"
                           maxHeight="60.0"
@@ -259,90 +263,80 @@
 
                         <!-- TELEFONO -->
 
-                        <Button fx:id="telefonoButton"
+                        <AnchorPane prefWidth="115.0"
+                                    prefHeight="45.0">
 
-                                text="Telefono"
+                            <Button fx:id="telefonoButton"
+                                    text="Telefono"
+                                    prefWidth="115.0"
+                                    prefHeight="45.0"
+                                    styleClass="mail-menu-button"
+                                    AnchorPane.topAnchor="0.0"
+                                    AnchorPane.leftAnchor="0.0">
 
-                                prefWidth="115.0"
-                                prefHeight="45.0"
+                                <graphic>
+                                    <ImageView fitHeight="28.0"
+                                               fitWidth="28.0"
+                                               preserveRatio="true">
+                                        <Image url="@../images/telefono.png"/>
+                                    </ImageView>
+                                </graphic>
 
-                                minWidth="115.0"
-                                maxWidth="115.0"
+                            </Button>
 
-                                minHeight="45.0"
-                                maxHeight="45.0"
+                            <!-- ================================================= -->
+                            <!-- PALLINO TELEFONO -->
+                            <!-- ================================================= -->
 
-                                styleClass="mail-menu-button">
+                            <ImageView fx:id="telefonoNotification"
+                                       fitWidth="16.0"
+                                       fitHeight="16.0"
+                                       preserveRatio="true"
+                                       visible="false"
+                                       AnchorPane.topAnchor="-4.0"
+                                       AnchorPane.rightAnchor="-4.0">
 
-                            <graphic>
+                                <Image url="@../images/daLeggere.png"/>
+                            </ImageView>
 
-                                <ImageView fitHeight="28.0"
-                                           fitWidth="28.0"
-                                           preserveRatio="true">
-
-                                    <Image url="@../images/telefono.png"/>
-                                </ImageView>
-
-                            </graphic>
-
-                        </Button>
-
-                        <ImageView fx:id="telefonoNotification"
-
-                                   fitWidth="16"
-                                   fitHeight="16"
-
-                                   visible="false"
-
-                                   AnchorPane.topAnchor="-4"
-                                   AnchorPane.rightAnchor="-4">
-
-                            <Image url="@../images/daLeggere.png"/>
-                        </ImageView>
+                        </AnchorPane>
 
 
                         <!-- MESSAGGIO -->
 
-                        <Button fx:id="messaggioButton"
+                        <AnchorPane prefWidth="115.0"
+                                    prefHeight="45.0">
 
-                                text="Messaggio"
+                            <Button fx:id="messaggioButton"
+                                    text="Messaggio"
+                                    prefWidth="115.0"
+                                    prefHeight="45.0"
+                                    styleClass="mail-menu-button"
+                                    AnchorPane.topAnchor="0.0"
+                                    AnchorPane.leftAnchor="0.0">
 
-                                prefWidth="115.0"
-                                prefHeight="45.0"
+                                <graphic>
+                                    <ImageView fitHeight="28.0"
+                                               fitWidth="28.0"
+                                               preserveRatio="true">
+                                        <Image url="@../images/messaggio.png"/>
+                                    </ImageView>
+                                </graphic>
 
-                                minWidth="115.0"
-                                maxWidth="115.0"
+                            </Button>
 
-                                minHeight="45.0"
-                                maxHeight="45.0"
+                            <ImageView fx:id="messaggioNotification"
+                                       fitWidth="16.0"
+                                       fitHeight="16.0"
+                                       preserveRatio="true"
+                                       visible="false"
+                                       AnchorPane.topAnchor="-4.0"
+                                       AnchorPane.rightAnchor="-4.0">
 
-                                styleClass="mail-menu-button">
+                                <Image url="@../images/daLeggere.png"/>
+                            </ImageView>
 
-                            <graphic>
-
-                                <ImageView fitHeight="28.0"
-                                           fitWidth="28.0"
-                                           preserveRatio="true">
-
-                                    <Image url="@../images/messaggio.png"/>
-                                </ImageView>
-
-                            </graphic>
-
-                        </Button>
-
-                        <ImageView fx:id="messaggioNotification"
-
-                                   fitWidth="16"
-                                   fitHeight="16"
-
-                                   visible="false"
-
-                                   AnchorPane.topAnchor="-4"
-                                   AnchorPane.rightAnchor="-4">
-
-                            <Image url="@../images/daLeggere.png"/>
-                        </ImageView>
+                        </AnchorPane>
 
                     </HBox>
 

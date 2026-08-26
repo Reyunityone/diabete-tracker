@@ -70,3 +70,14 @@
 
     -fx-background-color: #eeeeee;
 }
+
+.history-item {
+
+    -fx-background-color: white;
+
+    -fx-border-color: transparent transparent black transparent;
+
+    -fx-border-width: 0 0 1 0;
+
+    -fx-padding: 12px;
+}

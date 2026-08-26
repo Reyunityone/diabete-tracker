@@ -230,6 +230,9 @@ public class DiabetologoController {
         pazienti.add(
                 new Paziente()
         );
+        pazienti.add(
+                new Paziente()
+        );
     }
 
 
@@ -760,10 +763,13 @@ public class DiabetologoController {
                         .inizializzaPaziente(paziente);
             }
 
-            if (controller instanceof TerapiaController) {
+            if (controller instanceof StoricoTerapieController) {
 
-                ((TerapiaController) controller)
-                        .inizializzaPaziente(paziente);
+                ((StoricoTerapieController) controller)
+                        .inizializza(
+                                paziente,
+                                medico
+                        );
             }
 
             if (controller instanceof InfoPazienteController) {
@@ -802,7 +808,7 @@ public class DiabetologoController {
     private void apriTerapia(Paziente paziente) {
 
         apriFinestra(
-                "Terapia.fxml",
+                "StoricoTerapie.fxml",
                 "Terapia",
                 paziente
         );

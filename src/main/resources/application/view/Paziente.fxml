@@ -533,129 +533,107 @@
                     <!-- MENU MAIL -->
                     <!-- ================================================= -->
 
-                    <HBox
-                            fx:id="mailMenu"
+                    <HBox fx:id="mailMenu"
 
-                            spacing="10.0"
+                          spacing="10.0"
 
-                            prefWidth="250.0"
-                            prefHeight="60.0"
+                          prefWidth="240.0"
+                          prefHeight="60.0"
 
-                            minWidth="250.0"
-                            maxWidth="250.0"
+                          minWidth="240.0"
+                          maxWidth="240.0"
 
-                            minHeight="60.0"
-                            maxHeight="60.0"
+                          minHeight="60.0"
+                          maxHeight="60.0"
 
-                            layoutX="-250.0"
-                            layoutY="60.0"
+                          layoutX="-250.0"
+                          layoutY="60.0"
 
-                            visible="false"
-                            managed="false"
+                          visible="false"
+                          managed="false"
 
-                            styleClass="mail-menu">
+                          styleClass="mail-menu">
 
 
-                        <!-- ================================================= -->
-                        <!-- TELEFONO -->
-                        <!-- ================================================= -->
+                    <!-- TELEFONO -->
 
-                        <Button
-                                fx:id="telefonoButton"
+                    <AnchorPane prefWidth="115.0"
+                                prefHeight="45.0">
 
+                        <Button fx:id="telefonoButton"
                                 text="Telefono"
-
                                 prefWidth="115.0"
                                 prefHeight="45.0"
-
-                                styleClass="mail-menu-button">
+                                styleClass="mail-menu-button"
+                                AnchorPane.topAnchor="0.0"
+                                AnchorPane.leftAnchor="0.0">
 
                             <graphic>
-
-                                <ImageView
-                                        fitHeight="28.0"
-                                        fitWidth="28.0"
-                                        preserveRatio="true">
-
-                                    <Image
-                                            url="@../images/telefono.png"/>
+                                <ImageView fitHeight="28.0"
+                                           fitWidth="28.0"
+                                           preserveRatio="true">
+                                    <Image url="@../images/telefono.png"/>
                                 </ImageView>
-
                             </graphic>
 
                         </Button>
-
 
                         <!-- ================================================= -->
                         <!-- PALLINO TELEFONO -->
                         <!-- ================================================= -->
 
-                        <ImageView
-                                fx:id="telefonoNotification"
+                        <ImageView fx:id="telefonoNotification"
+                                   fitWidth="16.0"
+                                   fitHeight="16.0"
+                                   preserveRatio="true"
+                                   visible="false"
+                                   AnchorPane.topAnchor="-4.0"
+                                   AnchorPane.rightAnchor="-4.0">
 
-                                fitHeight="12.0"
-                                fitWidth="12.0"
-
-                                preserveRatio="true"
-
-                                translateX="-25.0"
-                                translateY="-17.0">
-
-                            <Image
-                                    url="@../images/daLeggere.png"/>
+                            <Image url="@../images/daLeggere.png"/>
                         </ImageView>
 
+                    </AnchorPane>
 
-                        <!-- ================================================= -->
-                        <!-- MESSAGGIO -->
-                        <!-- ================================================= -->
 
-                        <Button
-                                fx:id="messaggioButton"
+                    <!-- MESSAGGIO -->
 
+                    <AnchorPane prefWidth="115.0"
+                                prefHeight="45.0">
+
+                        <Button fx:id="messaggioButton"
                                 text="Messaggio"
-
                                 prefWidth="115.0"
                                 prefHeight="45.0"
-
-                                styleClass="mail-menu-button">
+                                styleClass="mail-menu-button"
+                                AnchorPane.topAnchor="0.0"
+                                AnchorPane.leftAnchor="0.0">
 
                             <graphic>
-
-                                <ImageView
-                                        fitHeight="28.0"
-                                        fitWidth="28.0"
-                                        preserveRatio="true">
-
-                                    <Image
-                                            url="@../images/messaggio.png"/>
+                                <ImageView fitHeight="28.0"
+                                           fitWidth="28.0"
+                                           preserveRatio="true">
+                                    <Image url="@../images/messaggio.png"/>
                                 </ImageView>
-
                             </graphic>
 
                         </Button>
 
+                        <ImageView fx:id="messaggioNotification"
+                                   fitWidth="16.0"
+                                   fitHeight="16.0"
+                                   preserveRatio="true"
+                                   visible="false"
+                                   AnchorPane.topAnchor="-4.0"
+                                   AnchorPane.rightAnchor="-4.0">
 
-                        <!-- ================================================= -->
-                        <!-- PALLINO MESSAGGIO -->
-                        <!-- ================================================= -->
-
-                        <ImageView
-                                fx:id="messaggioNotification"
-
-                                fitHeight="12.0"
-                                fitWidth="12.0"
-
-                                preserveRatio="true"
-
-                                translateX="-25.0"
-                                translateY="-17.0">
-
-                            <Image
-                                    url="@../images/daLeggere.png"/>
+                            <Image url="@../images/daLeggere.png"/>
                         </ImageView>
 
+                    </AnchorPane>
+
                     </HBox>
+
 
                 </AnchorPane>
 

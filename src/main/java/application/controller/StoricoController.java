@@ -3,11 +3,8 @@ package application.controller;
 import java.io.IOException;
 import java.util.List;
 
-import application.classiGeneriche.Rilevazione;
-import application.classiGeneriche.Segnalazione;
-import application.classiGeneriche.AssunzioneFarmaco;
+import application.classiGeneriche.*;
 
-import application.classiGeneriche.Paziente;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -51,12 +48,10 @@ public class StoricoController {
     // =========================================================
 
     public void inizializza(
-            Paziente user,
             List<?> elementi,
             String tipo) {
 
         this.elementi = elementi;
-        this.user = user;
         this.tipo = tipo;
 
         impostaTitolo();
@@ -456,7 +451,6 @@ public class StoricoController {
                     loader.getController();
 
             controller.inizializzaModifica(
-                    user,
                     rilevazione,
                     this::aggiornaLista
             );
@@ -550,7 +544,6 @@ public class StoricoController {
                     loader.getController();
 
             controller.inizializzaModifica(
-                    user,
                     segnalazione,
                     this::aggiornaLista
             );

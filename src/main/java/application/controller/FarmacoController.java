@@ -1,10 +1,7 @@
 package application.controller;
 
-import application.classiGeneriche.AssunzioneFarmaco;
+import application.classiGeneriche.*;
 
-import application.classiGeneriche.Diabetologo;
-import application.classiGeneriche.Paziente;
-import application.classiGeneriche.Terapia;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -66,11 +63,14 @@ public class FarmacoController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ArrayList<Terapia> terapie = new ArrayList<>();
-        terapie.add(new Terapia("dolipran", 12, 3, new Diabetologo(), new Paziente(), "prima dei pasti"));
-        terapie.add(new Terapia("tachi", 15, 2, new Diabetologo(), new Paziente(), "prima dei pasti"));
-        terapie.add(new Terapia("wewe", 25, 1, new Diabetologo(), new Paziente(), "prima dei pasti"));
-        terapiaBox.getItems().addAll(terapie);
+        Paziente currentUser = (Paziente) Session.getInstance().getCurrentUser();
+        ArrayList<Paziente> pazientiTerapia = new ArrayList<>();
+        pazientiTerapia.add(currentUser);
+        Terapia t1 = new Terapia("dolipran", 12, 3, new Diabetologo(), pazientiTerapia, "prima dei pasti");
+        Terapia t2 = new Terapia("tachi", 10, 2, new Diabetologo(), pazientiTerapia, "dopo i pasti");
+        Database.getInstance().addTerapia(t1);
+        Database.getInstance().addTerapia(t2);
+        terapiaBox.getItems().addAll(Database.getInstance().getTerapieByPaziente(currentUser));
 
     }
 
@@ -214,25 +214,13 @@ public class FarmacoController implements Initializable {
         // =====================================================
 
         if (modalitaModifica) {
-
-            elementoDaModificare.setData(
-                    data
-            );
-
-            elementoDaModificare.setQuantita(
-                    quantita
-            );
-            elementoDaModificare.setTerapia(
-                    terapia
-            );
-            elementoDaModificare.setOrarioAssunzione(
-                    orario
-            );
-
+            Database.getInstance().updateAssunzione(elementoDaModificare, new AssunzioneFarmaco((Paziente) Session.getInstance().getCurrentUser(), data, orario, quantita, terapia));
+            elementoDaModificare.setOrarioAssunzione(orario);
+            elementoDaModificare.setData(data);
+            elementoDaModificare.setQuantita(quantita);
+            elementoDaModificare.setTerapia(terapia);
             // Aggiorna lo storico
-
             if (aggiornamento != null) {
-
                 aggiornamento.run();
             }
 
@@ -249,6 +237,7 @@ public class FarmacoController implements Initializable {
 
         AssunzioneFarmaco elemento =
                 new AssunzioneFarmaco(
+                        (Paziente) Session.getInstance().getCurrentUser(),
                         data,
                         orario,
                         quantita,

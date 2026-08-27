@@ -1,8 +1,9 @@
 package application.classiGeneriche;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Segnalazione {
+public class Segnalazione implements Serializable {
 
     private LocalDate dataInizio;
     private LocalDate dataFine;

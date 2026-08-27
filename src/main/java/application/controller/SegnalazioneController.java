@@ -1,8 +1,10 @@
 package application.controller;
 
+import application.classiGeneriche.Database;
 import application.classiGeneriche.Paziente;
 import application.classiGeneriche.Segnalazione;
 
+import application.classiGeneriche.Session;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
@@ -50,9 +52,8 @@ public class SegnalazioneController {
     // INIZIALIZZAZIONE - NUOVA SEGNALAZIONE
     // =========================================================
 
-    public void inizializza(Paziente user,
-                            Consumer<Segnalazione> salvataggio) {
-        this.user = user;
+    public void inizializza(
+            Consumer<Segnalazione> salvataggio) {
 
         this.salvataggio = salvataggio;
 
@@ -65,10 +66,8 @@ public class SegnalazioneController {
     // =========================================================
 
     public void inizializzaModifica(
-            Paziente user,
             Segnalazione segnalazione,
             Runnable aggiornamento) {
-        this.user = user;
         this.modalitaModifica = true;
 
         this.segnalazioneDaModificare =
@@ -139,7 +138,7 @@ public class SegnalazioneController {
         // =====================================================
 
         if (modalitaModifica) {
-
+            Database.getInstance().updateSegnalazione(segnalazioneDaModificare, new Segnalazione(dataInizio,dataFine , (Paziente) Session.getInstance().getCurrentUser(),testo));
             segnalazioneDaModificare.setDataInizio(
                     dataInizio
             );
@@ -171,7 +170,7 @@ public class SegnalazioneController {
             Segnalazione segnalazione = new Segnalazione(
                     dataInizio,
                     dataFine,
-                    user,
+                    (Paziente) Session.getInstance().getCurrentUser(),
                     testo
             );
 

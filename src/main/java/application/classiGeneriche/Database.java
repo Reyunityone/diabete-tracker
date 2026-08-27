@@ -5,7 +5,8 @@ import java.util.ArrayList;
 
 public class Database {
     private static Database database;
-    private final String fileName = "database.data";
+    private final static String DEFAULT_FILE_NAME = "database.data";
+    private final String fileName;
     private ArrayList<Diabetologo> diabetologi;
     private ArrayList<Paziente> pazienti;
     private ArrayList<Terapia> terapie;
@@ -14,8 +15,13 @@ public class Database {
     private ArrayList<Segnalazione> segnalazioni;
     private ArrayList<Responsabile> responsabili;
 
-    private Database(){
+    Database(String fileName){
+        this.fileName = fileName;
         load();
+    }
+
+    private Database(){
+        this(DEFAULT_FILE_NAME);
     }
 
     public static synchronized Database getInstance(){
@@ -103,7 +109,7 @@ public class Database {
         }
     }
     public void addResponsabile(Responsabile responsabile) {
-        if(!pazienti.contains(responsabile)){
+        if(!responsabili.contains(responsabile)){
             this.responsabili.add(responsabile);
             save();
         }

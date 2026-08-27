@@ -4,7 +4,7 @@ public class Session {
     private static Session session;
     private User user;
 
-    private Session(){};
+    Session(){};
 
     public static synchronized Session getInstance(){
         if(session == null) session = new Session();

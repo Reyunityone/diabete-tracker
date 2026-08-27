@@ -14,6 +14,8 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 public class TerapieEsistentiController {
 
     @FXML
@@ -52,15 +54,15 @@ public class TerapieEsistentiController {
 
         terapieContainer.getChildren().clear();
 
-        for (Terapia terapia :
-                medico.getTerapieAssegnate()) {
-
-            terapieContainer.getChildren().add(
-                    creaBoxTerapia(
-                            terapia
-                    )
-            );
-        }
+//        for (Terapia terapia :
+//                medico.getTerapieAssegnate()) {
+//
+//            terapieContainer.getChildren().add(
+//                    creaBoxTerapia(
+//                            terapia
+//                    )
+//            );
+//        }
     }
 
 
@@ -176,7 +178,7 @@ public class TerapieEsistentiController {
                         terapiaEsistente
                                 .getNumeroAssunzioniGiornaliere(),
                         medico,
-                        paziente,
+                        new ArrayList<>(),
                         terapiaEsistente.getIndicazioni()
                 );
 

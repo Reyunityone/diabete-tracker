@@ -1,10 +1,13 @@
 package application.classiGeneriche;
 
-public abstract sealed class User permits Paziente, Diabetologo{
-    private String username, codiceFiscale, nome, cognome, email;
+import java.io.Serializable;
 
-    public User(String username, String codiceFiscale, String nome, String cognome, String email){
+public abstract sealed class User implements Serializable permits Paziente, Diabetologo {
+    private String username, password,codiceFiscale, nome, cognome, email;
+
+    public User(String username, String password, String codiceFiscale, String nome, String cognome, String email){
         if(!username.isEmpty()) this.username = username;
+        if(!password.isEmpty()) this.password = password;
         if(!codiceFiscale.isEmpty()) this.codiceFiscale = codiceFiscale;
         if(!nome.isEmpty()) this.nome = nome;
         if(!cognome.isEmpty()) this.cognome = cognome;
@@ -17,6 +20,10 @@ public abstract sealed class User permits Paziente, Diabetologo{
 
     public String getCognome() {
         return cognome;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getCodiceFiscale() {
@@ -37,6 +44,10 @@ public abstract sealed class User permits Paziente, Diabetologo{
 
     public void setCognome(String cognome) {
         this.cognome = cognome;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setEmail(String email) {

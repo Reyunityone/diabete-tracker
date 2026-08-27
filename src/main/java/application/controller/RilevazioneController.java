@@ -1,9 +1,11 @@
 package application.controller;
 
 import application.classiGeneriche.MomentoRilevazione;
+import application.classiGeneriche.Database;
 import application.classiGeneriche.Paziente;
 import application.classiGeneriche.Rilevazione;
 
+import application.classiGeneriche.Session;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -19,7 +21,6 @@ import java.util.function.Consumer;
 
 public class RilevazioneController {
 
-    private Paziente user;
 
     @FXML
     private DatePicker dataPicker;
@@ -30,14 +31,12 @@ public class RilevazioneController {
 
     @FXML
     private TextField orarioField;
-    private TextFormatter<String> orarioFormatter;
 
     @FXML
     private ComboBox<MomentoRilevazione> momentoComboBox;
 
     @FXML
     private TextField pastoField;
-    private TextFormatter<String> pastoFormatter;
 
     private Consumer<Rilevazione> salvataggio;
 
@@ -46,10 +45,7 @@ public class RilevazioneController {
 
 
     public void inizializza(
-            Paziente user,
             Consumer<Rilevazione> salvataggio) {
-
-        this.user = user;
 
         inizializzaFormattatori();
 
@@ -79,36 +75,34 @@ public class RilevazioneController {
                 );
 
 
-        this.orarioFormatter =
-                new TextFormatter<String>(change -> {
+        TextFormatter<String> orarioFormatter = new TextFormatter<>(change -> {
 
-                    if (change.getControlNewText().length() > 5) {
-                        return null;
-                    }
+            if (change.getControlNewText().length() > 5) {
+                return null;
+            }
 
-                    if (change.getControlNewText()
-                            .matches("\\d{0,2}:?\\d{0,2}")) {
-                        return change;
-                    }
+            if (change.getControlNewText()
+                    .matches("\\d{0,2}:?\\d{0,2}")) {
+                return change;
+            }
 
-                    return null;
-                });
+            return null;
+        });
 
 
-        this.pastoFormatter =
-                new TextFormatter<String>(change -> {
+        TextFormatter<String> pastoFormatter = new TextFormatter<>(change -> {
 
-                    if (change.getControlNewText().length() > 5) {
-                        return null;
-                    }
+            if (change.getControlNewText().length() > 5) {
+                return null;
+            }
 
-                    if (change.getControlNewText()
-                            .matches("\\d{0,2}:?\\d{0,2}")) {
-                        return change;
-                    }
+            if (change.getControlNewText()
+                    .matches("\\d{0,2}:?\\d{0,2}")) {
+                return change;
+            }
 
-                    return null;
-                });
+            return null;
+        });
 
 
         glicemiaField.setTextFormatter(
@@ -181,8 +175,9 @@ public class RilevazioneController {
                         orarioRilevazione,
                         ultimoPasto,
                         momento,
-                        user
+                        (Paziente) Session.getInstance().getCurrentUser()
                 );
+
 
 
         salvataggio.accept(
@@ -200,14 +195,9 @@ public class RilevazioneController {
 
 
     public void inizializzaModifica(
-            Paziente user,
-            Rilevazione rilevazione,
-            Runnable aggiornamento) {
-
-        this.user = user;
+            Rilevazione rilevazione, Runnable aggiornamento) {
 
         inizializzaFormattatori();
-
 
         momentoComboBox.getItems().setAll(
                 MomentoRilevazione.values()
@@ -247,6 +237,7 @@ public class RilevazioneController {
 
         this.salvataggio =
                 nuovaRilevazione -> {
+                    Database.getInstance().updateRilevazione(rilevazione, nuovaRilevazione);
 
                     rilevazione.setData(
                             nuovaRilevazione.getData()
@@ -280,4 +271,6 @@ public class RilevazioneController {
                     aggiornamento.run();
                 };
     }
+    
+    
 }

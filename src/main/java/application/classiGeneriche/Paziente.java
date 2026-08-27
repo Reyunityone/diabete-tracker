@@ -82,4 +82,16 @@ public final class Paziente extends User{
 
         terapie.remove(terapia);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj) return true;
+        if(!(obj instanceof Paziente p)) return false;
+        return this.getCodiceFiscale().equals(p.getCodiceFiscale());
+    }
+
+    @Override
+    public int hashCode() {
+        return getCodiceFiscale().hashCode();
+    }
 }

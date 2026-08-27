@@ -61,4 +61,6 @@ public abstract sealed class User implements Serializable permits Paziente, Diab
     public void setUsername(String username) {
         this.username = username;
     }
+
+
 }

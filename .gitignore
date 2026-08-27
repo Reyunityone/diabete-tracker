@@ -6,4 +6,6 @@ Ingegneria_provaInterfaces.iml
 .settings
 bin/
 /database.data
+
+/database.data
 /cp.txt

@@ -197,11 +197,9 @@ public class StoricoTerapieController {
                     loader.getController();
 
             controller.inizializzaNuova(
-                    paziente,
                     medico,
                     terapia -> {
                         paziente.aggiungiTerapia(terapia);
-                        medico.aggiungiTerapiaAssegnata(terapia);
                         aggiornaLista();
                     }
             );

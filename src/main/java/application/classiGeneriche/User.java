@@ -1,11 +1,13 @@
 package application.classiGeneriche;
 
-public abstract sealed class User permits Paziente, Diabetologo, Responsabile{
-    private String username, password, codiceFiscale, nome, cognome, email;
+import java.io.Serializable;
+
+public abstract sealed class User implements Serializable permits Paziente, Diabetologo {
+    private String username, password,codiceFiscale, nome, cognome, email;
 
     public User(String username, String password, String codiceFiscale, String nome, String cognome, String email){
         if(!username.isEmpty()) this.username = username;
-        if(!password.isEmpty()) this.setPassword(password);
+        if(!password.isEmpty()) this.password = password;
         if(!codiceFiscale.isEmpty()) this.codiceFiscale = codiceFiscale;
         if(!nome.isEmpty()) this.nome = nome;
         if(!cognome.isEmpty()) this.cognome = cognome;
@@ -20,6 +22,10 @@ public abstract sealed class User permits Paziente, Diabetologo, Responsabile{
         return cognome;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public String getCodiceFiscale() {
         return codiceFiscale;
     }
@@ -32,16 +38,16 @@ public abstract sealed class User permits Paziente, Diabetologo, Responsabile{
         return username;
     }
 
-	public String getPassword() {
-		return password;
-	}
-
     public void setCodiceFiscale(String codiceFiscale) {
         this.codiceFiscale = codiceFiscale;
     }
 
     public void setCognome(String cognome) {
         this.cognome = cognome;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setEmail(String email) {
@@ -55,13 +61,4 @@ public abstract sealed class User permits Paziente, Diabetologo, Responsabile{
     public void setUsername(String username) {
         this.username = username;
     }
-    
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	@Override
-	public String toString() {
-	    return nome + " " + cognome;
-	}
 }

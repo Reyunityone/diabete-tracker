@@ -12,6 +12,7 @@ import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 
+import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public class TerapiaController {
@@ -34,7 +35,7 @@ public class TerapiaController {
     @FXML
     private Button salvaButton;
 
-    private Paziente paziente;
+    private ArrayList<Paziente> pazienti;
     private Diabetologo medico;
     private Terapia terapiaDaModificare;
 
@@ -67,11 +68,9 @@ public class TerapiaController {
     }
 
     public void inizializzaNuova(
-            Paziente paziente,
             Diabetologo medico,
             Consumer<Terapia> salvataggio) {
 
-        this.paziente = paziente;
         this.medico = medico;
         this.salvataggio = salvataggio;
         this.aggiornamento = null;
@@ -79,9 +78,7 @@ public class TerapiaController {
         this.modalitaModifica = false;
 
         titoloLabel.setText(
-                "Nuova terapia - "
-                        + paziente.getNome() + " "
-                        + paziente.getCognome()
+                "Nuova terapia"
         );
 
         farmacoField.clear();
@@ -94,7 +91,6 @@ public class TerapiaController {
             Terapia terapia,
             Runnable aggiornamento) {
 
-        this.paziente = terapia.getPaziente();
         this.medico = terapia.getMedicoAssegnante();
         this.terapiaDaModificare = terapia;
         this.aggiornamento = aggiornamento;
@@ -102,9 +98,7 @@ public class TerapiaController {
         this.modalitaModifica = true;
 
         titoloLabel.setText(
-                "Modifica terapia - "
-                        + terapia.getPaziente().getNome() + " "
-                        + terapia.getPaziente().getCognome()
+                "Modifica terapia"
         );
 
         farmacoField.setText(terapia.getFarmaco());
@@ -160,7 +154,7 @@ public class TerapiaController {
                     dose,
                     assunzioni,
                     medico,
-                    paziente,
+                    new ArrayList<>(),
                     indicazioni
             );
 

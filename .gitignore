@@ -5,3 +5,4 @@ Ingegneria_provaInterfaces.iml
 .project
 .settings
 bin/
+/database.data

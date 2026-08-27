@@ -1,5 +1,7 @@
 package application.controller;
 
+import application.classiGeneriche.Database;
+import application.classiGeneriche.Session;
 import application.classiGeneriche.Diabetologo;
 import application.classiGeneriche.Paziente;
 import application.classiGeneriche.Responsabile;
@@ -31,18 +33,25 @@ public class LoginController {
 
     @FXML
     private void handleLogin() {
-
+        Database db = Database.getInstance();
         String username = usernameField.getText();
         String password = passwordField.getText();
 
         // TODO Validate user
-        User loggedUser = new Responsabile();
 
-        switch(loggedUser){
-            case Paziente p -> cambiaSchermataPaziente(p);
-            case Diabetologo d -> cambiaSchermataDiabetologo(d);
-            case Responsabile r -> cambiaSchermataResponsabile(r);
+        User loggedUser = db.login(username, password);
+        if(loggedUser != null){
+            Session.getInstance().getLoggedUser();
+            switch(loggedUser){
+                case Paziente p -> cambiaSchermataPaziente(p);
+                case Diabetologo d -> cambiaSchermataDiabetologo(d);
+                case Responsabile r -> cambiaSchermataResponsabile(r);
+            }
         }
+        else{
+            System.err.println("CREDENZIALI NON VALIDE");
+        }
+
 
     }
 

@@ -59,15 +59,6 @@ public class PazienteController {
 
     @FXML
     private Button messaggioButton;
-
-
-    // =========================================================
-    // DATI PROFILO
-    // =========================================================
-
-    private Paziente user;
-
-
     // =========================================================
     // STORICO RILEVAZIONI
     // =========================================================
@@ -265,9 +256,8 @@ public class PazienteController {
     // PROFILO
     // =========================================================
 
-    public void inizializzaProfilo(Paziente user) {
-        this.user = user;
-
+    public void inizializzaProfilo() {
+        User user = Session.getInstance().getCurrentUser();
         nomeCognomeLabel.setText(
                 user.getNome() + " " + user.getCognome()
         );
@@ -733,8 +723,7 @@ public class PazienteController {
 
 
             controller.inizializza(
-                    user,
-                    rilevazioni::add
+                    Database.getInstance()::addRilevazione
             );
 
 
@@ -792,7 +781,7 @@ public class PazienteController {
 
 
             controller.inizializza(
-                    assunzioniFarmaci::add
+                    Database.getInstance()::addAssunzione
             );
 
 
@@ -851,8 +840,7 @@ public class PazienteController {
 
 
             controller.inizializza(
-                    user,
-                    segnalazioni::add
+                    Database.getInstance()::addSegnalazione
 
             );
 
@@ -953,7 +941,6 @@ public class PazienteController {
 
 
             controller.inizializza(
-                    user,
                     elementi,
                     tipo
             );
@@ -988,7 +975,7 @@ public class PazienteController {
     private void apriStoricoRilevazioni() {
 
         apriStorico(
-                rilevazioni,
+                Database.getInstance().getRilevazioni(),
                 "rilevazioni",
                 "Rilevazioni precedenti"
         );
@@ -999,7 +986,7 @@ public class PazienteController {
     private void apriStoricoSintomi() {
 
         apriStorico(
-                assunzioniFarmaci,
+                Database.getInstance().getAssunzioni(),
                 "sintomi",
                 "Sintomi / Farmaci precedenti"
         );
@@ -1010,7 +997,7 @@ public class PazienteController {
     private void apriStoricoSegnalazioni() {
 
         apriStorico(
-                segnalazioni,
+                Database.getInstance().getSegnalazioni(),
                 "segnalazioni",
                 "Segnalazioni precedenti"
         );

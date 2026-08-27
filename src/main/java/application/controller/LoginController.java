@@ -1,11 +1,6 @@
 package application.controller;
 
-import application.classiGeneriche.Database;
-import application.classiGeneriche.Session;
-import application.classiGeneriche.Diabetologo;
-import application.classiGeneriche.Paziente;
-import application.classiGeneriche.Responsabile;
-import application.classiGeneriche.User;
+import application.classiGeneriche.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -27,7 +22,8 @@ public class LoginController {
 
     @FXML
     public void initialize() {
-
+        Database.getInstance().addDiabetologo(new Diabetologo());
+        Database.getInstance().addPaziente(new Paziente());
     }
 
 
@@ -37,7 +33,6 @@ public class LoginController {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-        // TODO Validate user
 
         User loggedUser = db.login(username, password);
         if(loggedUser != null){
@@ -49,7 +44,7 @@ public class LoginController {
             }
         }
         else{
-            System.err.println("CREDENZIALI NON VALIDE");
+            System.out.println("CREDENZIALI NON VALIDE");
         }
 
 
@@ -155,7 +150,6 @@ public class LoginController {
 
             // Passiamo il profilo
             controller.inizializzaProfilo(
-                    loggedUser
             );
 
 

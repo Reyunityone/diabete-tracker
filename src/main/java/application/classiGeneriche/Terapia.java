@@ -2,6 +2,7 @@ package application.classiGeneriche;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Terapia implements Serializable {
     private String farmaco;
@@ -66,6 +67,18 @@ public class Terapia implements Serializable {
 
     public void setPazienti(ArrayList<Paziente> pazienti) {
         this.pazienti = pazienti;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj) return true;
+        if(!(obj instanceof Terapia t)) return false;
+        return this.getFarmaco().equals(t.getFarmaco()) && this.getDose() == t.getDose() && this.getNumeroAssunzioniGiornaliere() == t.getNumeroAssunzioniGiornaliere() && this.getIndicazioni().equals(t.getIndicazioni());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getFarmaco(), getDose(), getNumeroAssunzioniGiornaliere(), getIndicazioni());
     }
 
     @Override

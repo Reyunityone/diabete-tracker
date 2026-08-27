@@ -1,9 +1,10 @@
 package application.classiGeneriche;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class Rilevazione {
+public class Rilevazione implements Serializable {
 
     private LocalDate data;
     private int livelloGlicemia;

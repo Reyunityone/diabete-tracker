@@ -1,19 +1,22 @@
 package application.classiGeneriche;
 
-public class Terapia {
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public class Terapia implements Serializable {
     private String farmaco;
     private int dose;
     private int numeroAssunzioniGiornaliere;
     private Diabetologo medicoAssegnante;
-    private Paziente paziente;
+    private ArrayList<Paziente> pazienti;
     private String indicazioni;
 
-    public Terapia(String farmaco, int dose, int numeroAssunzioniGiornaliere, Diabetologo medicoAssegnante, Paziente paziente, String indicazioni){
+    public Terapia(String farmaco, int dose, int numeroAssunzioniGiornaliere, Diabetologo medicoAssegnante, ArrayList<Paziente> pazienti, String indicazioni){
         this.farmaco = farmaco;
         this.dose = dose;
         this.numeroAssunzioniGiornaliere = numeroAssunzioniGiornaliere;
         this.medicoAssegnante = medicoAssegnante;
-        this.paziente = paziente;
+        this.pazienti = pazienti;
         this.indicazioni = indicazioni;
     }
 
@@ -29,8 +32,8 @@ public class Terapia {
         return numeroAssunzioniGiornaliere;
     }
 
-    public Paziente getPaziente() {
-        return paziente;
+    public ArrayList<Paziente> getPazienti() {
+        return pazienti;
     }
 
     public String getFarmaco() {
@@ -61,8 +64,8 @@ public class Terapia {
         this.numeroAssunzioniGiornaliere = numeroAssunzioniGiornaliere;
     }
 
-    public void setPaziente(Paziente paziente) {
-        this.paziente = paziente;
+    public void setPazienti(ArrayList<Paziente> pazienti) {
+        this.pazienti = pazienti;
     }
 
     @Override

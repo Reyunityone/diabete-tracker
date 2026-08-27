@@ -67,10 +67,13 @@ public class FarmacoController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ArrayList<Terapia> terapie = new ArrayList<>();
-        terapie.add(new Terapia("dolipran", 12, 3, new Diabetologo(), new Paziente(), "prima dei pasti"));
-        terapie.add(new Terapia("tachi", 15, 2, new Diabetologo(), new Paziente(), "prima dei pasti"));
-        terapie.add(new Terapia("wewe", 25, 1, new Diabetologo(), new Paziente(), "prima dei pasti"));
-        terapiaBox.getItems().addAll(terapie);
+        ArrayList<Paziente> pazientiDellaTerapia = new ArrayList<>();
+        Paziente luca = new Paziente();
+        pazientiDellaTerapia.add(luca);
+        terapie.add(new Terapia("dolipran", 12, 3, new Diabetologo(), pazientiDellaTerapia, "prima dei pasti"));
+        terapie.add(new Terapia("tachi", 15, 2, new Diabetologo(), pazientiDellaTerapia, "prima dei pasti"));
+        terapie.add(new Terapia("wewe", 25, 1, new Diabetologo(), pazientiDellaTerapia, "prima dei pasti"));
+        terapiaBox.getItems().addAll(terapie.stream().filter( (t) -> t.getPazienti().contains(luca)).toList());
 
     }
 

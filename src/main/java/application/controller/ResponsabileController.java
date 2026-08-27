@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 import javafx.fxml.FXMLLoader;
@@ -23,7 +24,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import application.classiGeneriche.Diabetologo;
+import application.classiGeneriche.Paziente;
+import application.classiGeneriche.Responsabile;
+import application.classiGeneriche.User;
+
 public class ResponsabileController {
+
+	// =========================================================
+    // ELEMENTI FXML: PROFILO
+    // =========================================================
 
     @FXML
     private ImageView profileImage;
@@ -37,6 +47,10 @@ public class ResponsabileController {
     @FXML
     private Button logoutButton;
 
+    // =========================================================
+    // ELEMENTI FXML: COMPONENTI
+    // =========================================================
+    
     @FXML
     private TextField searchField;
 
@@ -51,270 +65,157 @@ public class ResponsabileController {
 
     @FXML
     private VBox pazientiContainer;
+   
+    // =========================================================
+    // DATI
+    // =========================================================
+    
+    private Responsabile responsabile;
 
+    private final List<User> medici = new ArrayList<>();
 
-    // Liste temporanee.
-    // In futuro arriveranno dal database.
+    private final List<User> pazienti = new ArrayList<>();
 
-    private final List<Persona> medici = new ArrayList<>();
-
-    private final List<Persona> pazienti = new ArrayList<>();
-
+    
+    // =========================================================
+    // INITIALIZE
+    // =========================================================
 
     @FXML
     public void initialize() {
-
-        // Dati temporanei di prova
-
-    	medici.add(
-    	        new Persona(
-    	                "Mario",
-    	                "Rossi",
-    	                "password"
-    	        )
-    	);
-
-    	medici.add(
-    	        new Persona(
-    	                "Luca",
-    	                "Bianchi",
-    	                "password"
-    	        )
-    	);
-
-    	medici.add(
-    	        new Persona(
-    	                "Anna",
-    	                "Verdi",
-    	                "password"
-    	        )
-    	);
-
-    	pazienti.add(
-    	        new Persona(
-    	                "Marco",
-    	                "Rossi",
-    	                "password"
-    	        )
-    	);
-
-    	pazienti.add(
-    	        new Persona(
-    	                "Giulia",
-    	                "Bianchi",
-    	                "password"
-    	        )
-    	);
-
-    	pazienti.add(
-    	        new Persona(
-    	                "Andrea",
-    	                "Verdi",
-    	                "password"
-    	        )
-    	);
-
-
-        // Informazioni del responsabile
+    	
+    	aggiungiMediciPazienti();
+    	
         ruoloLabel.setText("Responsabile");
-
-
-        // Costruzione iniziale delle liste
 
         aggiornaListe();
 
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {aggiornaListe();});
+    }
+    
+    public void aggiungiMediciPazienti() {
+    	Diabetologo medicoMarco = new Diabetologo("mariorossi", "mariorossi", "MMMMMM", "Mario","Rossi","mail@gmail.com");
+    	Paziente pazienteMatteo=new Paziente("matteobianchi", "matteobianchi", "MMMMMM", "Matteo","Bianchi","mail@gmail.com", null, medicoMarco, null, null, null);
+    	
+    	medici.add(medicoMarco);
+    	pazienti.add(pazienteMatteo);
+    }
+    
+    // =========================================================
+    // INIZIALIZZA PROFILO
+    // =========================================================
 
-        // Ricerca dinamica
+    public void inizializzaProfilo(Responsabile responsabile) {
+        this.responsabile = responsabile;
 
-        searchField.textProperty().addListener(
-                (observable, oldValue, newValue) -> {
+        nomeCognomeLabel.setText(responsabile.getNome() + " " + responsabile.getCognome());
 
-                    aggiornaListe();
-
-                }
-        );
+        ruoloLabel.setText("Responsabile");
     }
 
 
-    /**
-     * Aggiorna entrambe le liste in base alla ricerca.
-     */
     private void aggiornaListe() {
-
         String ricerca = searchField.getText();
 
-        if (ricerca == null) {
-            ricerca = "";
-        }
+        if (ricerca == null) ricerca = "";
 
         ricerca = ricerca.toLowerCase().trim();
-
 
         mediciContainer.getChildren().clear();
         pazientiContainer.getChildren().clear();
 
 
-        // MEDICI
-
-        for (Persona medico : medici) {
-
+        // RICERCA TRA I MEDICI
+        for (User medico : medici) {
             if (corrisponde(medico, ricerca)) {
-
-                mediciContainer.getChildren().add(
-                        creaBoxPersona(medico, true)
-                );
-
+                mediciContainer.getChildren().add(creaBoxPersona(medico, true));
             }
-
         }
 
 
-        // PAZIENTI
-
-        for (Persona paziente : pazienti) {
-
+        // RICERCA TRA I PAZIENTI
+        for (User paziente : pazienti) {
             if (corrisponde(paziente, ricerca)) {
-
-                pazientiContainer.getChildren().add(
-                        creaBoxPersona(paziente, false)
-                );
-
+                pazientiContainer.getChildren().add(creaBoxPersona(paziente, false));
             }
-
         }
     }
 
 
-    /**
-     * Controlla se nome o cognome corrispondono
-     * al testo inserito nella ricerca.
-     */
-    private boolean corrisponde(Persona persona, String ricerca) {
+    // =========================================================
+    // CORRISPONDENZA PERSONA INSERITA CON LA RICERCA EFFETTUATA
+    // =========================================================
 
-        if (ricerca.isEmpty()) {
-            return true;
-        }
+    private boolean corrisponde(User persona, String ricerca) {
+        if (ricerca.isEmpty()) return true;
 
         String nome = persona.getNome().toLowerCase();
         String cognome = persona.getCognome().toLowerCase();
 
-        return nome.contains(ricerca)
-                || cognome.contains(ricerca)
-                || (nome + " " + cognome).contains(ricerca);
+        return nome.contains(ricerca)|| cognome.contains(ricerca)|| (nome + " " + cognome).contains(ricerca);
     }
 
 
-    /**
-     * Crea graficamente il box di un medico o paziente.
-     */
-    private HBox creaBoxPersona(Persona persona, boolean medico) {
+    // =========================================================
+    // CREAZIONE BOX PER LA PERSONA
+    // =========================================================
 
+    private HBox creaBoxPersona(User persona, boolean medico) {
         HBox box = new HBox();
-
         box.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
         box.setSpacing(15);
-
         box.getStyleClass().add("person-box");
 
-
         // AVATAR
-
-        ImageView avatar = new ImageView(
-                new Image(
-                        Objects.requireNonNull(getClass()
-                                        .getResource("/application/images/avatar.png"))
-                                .toExternalForm()
-                )
-        );
-
+        ImageView avatar = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/application/images/avatar.png")).toExternalForm()));
         avatar.setFitWidth(45);
         avatar.setFitHeight(45);
         avatar.setPreserveRatio(true);
 
-
         // NOME E COGNOME
-
-        Label nome = new Label(
-                persona.getNome() + " " + persona.getCognome()
-        );
-
+        Label nome = new Label(persona.getNome() + " " + persona.getCognome());
         nome.getStyleClass().add("person-name");
 
-
         // SPAZIO
-
-        javafx.scene.layout.Region spazio =
-                new javafx.scene.layout.Region();
-
-        HBox.setHgrow(
-                spazio,
-                Priority.ALWAYS
-        );
-
+        Region spazio =new Region();
+        HBox.setHgrow(spazio,Priority.ALWAYS);
 
         // BOTTONE
+        Button cambiaCredenziali =new Button("Cambia credenziali");
+        cambiaCredenziali.getStyleClass().add("credentials-button");
+        cambiaCredenziali.setOnAction(event ->apriFinestra("modificaCredenziali", true, persona, "/application/view/ModificaCredenziali.fxml"));
 
-        Button cambiaCredenziali =
-                new Button("Cambia credenziali");
-
-        cambiaCredenziali.getStyleClass().add(
-                "credentials-button"
-        );
-        
-        cambiaCredenziali.setOnAction(event ->
-        apriFinestraCredenziali(persona)
-        		);
-
-
-        box.getChildren().addAll(
-                avatar,
-                nome,
-                spazio,
-                cambiaCredenziali
-        );
-
+        box.getChildren().addAll(avatar,nome,spazio,cambiaCredenziali);
 
         return box;
     }
 
+    
+    // =========================================================
+    // HANDLE DI SUPPORTO PER L'FXML
+    // =========================================================
 
     @FXML
     private void handleAggiungiMedico() {
-
-        apriFinestraAggiunta(true);
+        apriFinestra("aggiungiPersona", true, null, "/application/view/AggiungiPersona.fxml");
     }
-
 
     @FXML
     private void handleAggiungiPaziente() {
-
-        apriFinestraAggiunta(false);
+        apriFinestra("aggiungiPersona", false, null, "/application/view/AggiungiPersona.fxml");
     }
 
 
     @FXML
     private void handleLogout() {
-
         try {
-
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource(
-                            "/application/view/Login.fxml"
-                    )
-            );
-
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/Login.fxml"));
+            
             Parent root = loader.load();
+            
+            Stage stage =(Stage) logoutButton.getScene().getWindow();
 
-
-            Stage stage =
-                    (Stage) logoutButton
-                            .getScene()
-                            .getWindow();
-
-
-            Scene scene =
-                    new Scene(root);
-
+            Scene scene =new Scene(root);
 
             stage.setScene(scene);
 
@@ -331,208 +232,128 @@ public class ResponsabileController {
         }
     }
     
-    private void apriFinestraAggiunta(boolean medico) {
+    // =========================================================
+    // APERTURA FINESTRA GENERICA
+    // =========================================================
 
+    private void apriFinestra(String controller, boolean medico, User persona, String percorsoFXML) {
         try {
-
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource(
-                            "/application/view/AggiungiPersona.fxml"
-                    )
-            );
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(percorsoFXML));
 
             Parent root = loader.load();
-
-
-            AggiungiPersonaController controller =
-                    loader.getController();
-
-
-            controller.inizializza(
-                    this,
-                    medico
-            );
-
-
+            
             Stage stage = new Stage();
 
-            stage.setTitle(
-                    medico
-                            ? "Aggiungi medico"
-                            : "Aggiungi paziente"
-            );
+            if(controller.equals("aggiungiPersona")) {
+            	AggiungiPersonaController aggiungiPersonaController =loader.getController();
+            	aggiungiPersonaController.inizializza(this,medico);
+            	stage.setTitle(medico? "Aggiungi medico": "Aggiungi paziente");
+            	
+            }else if(controller.equals("modificaCredenziali")){
+                ModificaCredenzialiController modificaCredenzialiController =loader.getController();
+                modificaCredenzialiController.inizializza(this,persona);
+                stage.setTitle("Modifica credenziali");
+            }
 
-            stage.setScene(
-                    new Scene(root)
-            );
-
-            stage.initModality(
-                    Modality.APPLICATION_MODAL
-            );
-
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.setResizable(false);
-
             stage.showAndWait();
 
-
         } catch (IOException e) {
-
             e.printStackTrace();
         }
     }
     
-    public void aggiungiPersona(
-            String nome,
-            String cognome,
-            String credenziali,
-            boolean medico) {
+    
+    // =========================================================
+    // METODO DI SUPPORTO PER AGGIUNGERE ALLA LISTA IN HOME UNA PERSONA
+    // =========================================================
 
-        Persona persona =
-                new Persona(
-                        nome,
-                        cognome,
-                        credenziali
-                );
-
-
-        if (medico) {
-
-            medici.add(persona);
-
-        } else {
-
-            pazienti.add(persona);
-        }
-
-
-        aggiornaListe();
-    }
-
-
-    /**
-     * Classe temporanea per rappresentare
-     * un medico o un paziente.
-     *
-     * In futuro verrà sostituita dal modello
-     * collegato al database.
-     */
-    public static class Persona {
-
-        private final String nome;
-
-        private final String cognome;
-
-        private String credenziali;
-
-
-        public Persona(
-                String nome,
-                String cognome,
-                String credenziali) {
-
-            this.nome = nome;
-            this.cognome = cognome;
-            this.credenziali = credenziali;
-        }
-
-
-        public String getNome() {
-            return nome;
-        }
-
-
-        public String getCognome() {
-            return cognome;
-        }
-
-
-        public String getCredenziali() {
-            return credenziali;
-        }
-
-
-        public void setCredenziali(
-                String credenziali) {
-
-            this.credenziali = credenziali;
-        }
+//    public void aggiungiPersona(String nome,String cognome,String credenziali,boolean medico) {
+//        Persona persona =new Persona(nome,cognome,credenziali);
+//        
+//        if (medico) {
+//            medici.add(persona);
+//
+//        } else {
+//            pazienti.add(persona);
+//        }
+//
+//        aggiornaListe();
+//    }
+    
+    public List<User> getMedici(){
+    	return medici;
     }
     
-    public void impostaProfilo(String nome, String cognome) {
-        nomeCognomeLabel.setText(nome + " " + cognome);
+    public List<User> getPazienti(){
+    	return pazienti;
     }
     
-    private void apriFinestraCredenziali(
-            Persona persona) {
-
-        try {
-
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource(
-                            "/application/view/ModificaCredenziali.fxml"
-                    )
-            );
-
-            Parent root = loader.load();
-
-
-            ModificaCredenzialiController controller =
-                    loader.getController();
-
-
-            controller.inizializza(
-                    this,
-                    persona
-            );
-
-
-            Stage stage = new Stage();
-
-            stage.setTitle("Modifica credenziali");
-
-            stage.setScene(
-                    new Scene(root)
-            );
-
-            stage.initModality(
-                    Modality.APPLICATION_MODAL
-            );
-
-            stage.setResizable(false);
-
-            stage.showAndWait();
-
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
+    public void aggiungiMedico(String nome, String password, String cognome, String codiceFiscale, String email, String username, List<User> pazientiSelezionati) {
+    	User medico = new Diabetologo(username, password, codiceFiscale, nome, cognome, email);
+    	
+    	//Implementare come il diabetologo accoglie i nuovi pazienti aggiunti
+//    	medico.addPazienti(pazientiSelezionati);
+    	
+    	medici.add(medico);
+    	
+    	aggiornaListe();
     }
     
-    public void modificaCredenziali(
-            Persona persona,
-            String vecchieCredenziali,
-            String nuoveCredenziali) {
+    public void aggiungiPaziente(String nome, String password, String cognome, String codiceFiscale, String email, String username, User medicoSelezionato) {
+    	pazienti.add(new Paziente(username, password, codiceFiscale, nome, cognome, email, null, (Diabetologo)medicoSelezionato, null, null, null));
+    
+    	aggiornaListe();
+    }
 
 
-        if (!persona.getCredenziali()
-                .equals(vecchieCredenziali)) {
+    // =========================================================
+    // CLASSE PER RAPPRESENTARE UNA PERSONA
+    // =========================================================
 
-            System.out.println(
-                    "Le vecchie credenziali non sono corrette."
-            );
+//    public static class Persona {
+//        private final String nome;
+//        private final String cognome;
+//        private String credenziali;
+//
+//        public Persona(String nome,String cognome,String credenziali) {
+//            this.nome = nome;
+//            this.cognome = cognome;
+//            this.credenziali = credenziali;
+//        }
+//
+//        public String getNome() {
+//            return nome;
+//        }
+//
+//        public String getCognome() {
+//            return cognome;
+//        }
+//
+//        public String getCredenziali() {
+//            return credenziali;
+//        }
+//
+//        public void setCredenziali(String credenziali) {
+//            this.credenziali = credenziali;
+//        }
+//    }
+    
+    // =========================================================
+    // MODIFICA DELLE CREDENZIALI DI UNA PERSONA
+    // =========================================================
 
-            return;
-        }
-
-
-        persona.setCredenziali(
-                nuoveCredenziali
-        );
-
-
-        System.out.println(
-                "Credenziali modificate."
-        );
+    public void modificaCredenziali(User persona, String password, List<User> pazientiSelezionati, User medicoSelezionato) {
+    	persona.setPassword(password);
+    	
+    	if(persona instanceof Diabetologo) {
+    		//metodo da implementare
+//    		persona.aggiornaListaPazienti(pazientiSelezionati);
+    		
+    	}else if(persona instanceof Paziente) {
+    		((Paziente) persona).setMedicoDiRiferimento((Diabetologo)medicoSelezionato);
+    	}
     }
 }

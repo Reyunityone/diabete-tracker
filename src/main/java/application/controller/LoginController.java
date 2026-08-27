@@ -2,6 +2,7 @@ package application.controller;
 
 import application.classiGeneriche.Diabetologo;
 import application.classiGeneriche.Paziente;
+import application.classiGeneriche.Responsabile;
 import application.classiGeneriche.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,11 +36,12 @@ public class LoginController {
         String password = passwordField.getText();
 
         // TODO Validate user
-        User loggedUser = new Diabetologo();
+        User loggedUser = new Responsabile();
 
         switch(loggedUser){
             case Paziente p -> cambiaSchermataPaziente(p);
             case Diabetologo d -> cambiaSchermataDiabetologo(d);
+            case Responsabile r -> cambiaSchermataResponsabile(r);
         }
 
     }
@@ -49,51 +51,28 @@ public class LoginController {
      * Apre la schermata del Responsabile
      * passando nome e cognome inseriti nel Login.
      */
-//    private void cambiaSchermataResponsabile(
-//            String nome,
-//            String cognome) {
-//
-//        try {
-//
-//            FXMLLoader loader = new FXMLLoader(
-//                    getClass().getResource(
-//                            "/application/view/Responsabile.fxml"
-//                    )
-//            );
-//
-//            Parent root = loader.load();
-//
-//
-//            // Recuperiamo il controller
-//            ResponsabileController controller =
-//                    loader.getController();
-//
-//
-//            // Passiamo nome e cognome
-//            controller.impostaProfilo(
-//                    nome,
-//                    cognome
-//            );
-//
-//
-//            Stage stage =
-//                    (Stage) ruoloComboBox
-//                            .getScene()
-//                            .getWindow();
-//
-//
-//            Scene scene = new Scene(root);
-//
-//            stage.setScene(scene);
-//
-//
-//            stage.show();
-//
-//        } catch (IOException e) {
-//
-//            e.printStackTrace();
-//        }
-//    }
+    private void cambiaSchermataResponsabile(Responsabile responsabile) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/Responsabile.fxml"));
+
+            Parent root = loader.load();
+
+            ResponsabileController controller =loader.getController();
+
+            controller.inizializzaProfilo(responsabile);
+
+            Stage stage =(Stage)usernameField.getScene().getWindow();
+
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     
     /**
      * Apre la schermata del Diabetologo

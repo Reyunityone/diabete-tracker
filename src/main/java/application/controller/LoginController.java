@@ -33,7 +33,6 @@ public class LoginController {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
-
         User loggedUser = db.login(username, password);
         if(loggedUser != null){
             Session.getInstance().getLoggedUser();

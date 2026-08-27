@@ -13,6 +13,7 @@ public class Database {
     private ArrayList<Rilevazione> rilevazioni;
     private ArrayList<Segnalazione> segnalazioni;
 
+
     private Database(){
         load();
     }
@@ -24,7 +25,7 @@ public class Database {
 
     @SuppressWarnings("unchecked")
     public void load(){
-        try (FileInputStream file = new FileInputStream(fileName); ObjectInputStream ois = new ObjectInputStream(file)){
+        try (FileInputStream file = new FileInputStream(fileName); ObjectInputStream ois = new ObjectInputStream(file);){
             this.diabetologi = (ArrayList<Diabetologo>) ois.readObject();
             this.pazienti = (ArrayList<Paziente>) ois.readObject();
             this.terapie = (ArrayList<Terapia>) ois.readObject();
@@ -33,7 +34,7 @@ public class Database {
             this.segnalazioni = (ArrayList<Segnalazione>) ois.readObject();
             System.out.println("LETTURA COMPLETATA");
         } catch (IOException | ClassNotFoundException e) {
-            System.err.println("ERRORE NELLA LETTURA DB, inizializzo liste vuote");
+            System.err.println("ERRORE NELLA LETTURA DB");
             this.diabetologi = new ArrayList<>();
             this.pazienti = new ArrayList<>();
             this.terapie = new ArrayList<>();
@@ -41,6 +42,7 @@ public class Database {
             this.rilevazioni = new ArrayList<>();
             this.segnalazioni = new ArrayList<>();
         }
+
     }
 
     public void save(){

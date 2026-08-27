@@ -172,8 +172,8 @@ public class RilevazioneController {
                 new Rilevazione(
                         data,
                         glicemia,
-                        orarioRilevazione,
                         ultimoPasto,
+                        orarioRilevazione,
                         momento,
                         (Paziente) Session.getInstance().getCurrentUser()
                 );

@@ -2,7 +2,7 @@ package application.classiGeneriche;
 
 import java.io.Serializable;
 
-public abstract sealed class User implements Serializable permits Paziente, Diabetologo {
+public abstract sealed class User implements Serializable permits Paziente, Diabetologo,Responsabile {
     private String username, password,codiceFiscale, nome, cognome, email;
 
     public User(String username, String password, String codiceFiscale, String nome, String cognome, String email){

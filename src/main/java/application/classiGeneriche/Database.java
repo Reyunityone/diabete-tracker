@@ -12,7 +12,7 @@ public class Database {
     private ArrayList<AssunzioneFarmaco> assunzioni;
     private ArrayList<Rilevazione> rilevazioni;
     private ArrayList<Segnalazione> segnalazioni;
-
+    private ArrayList<Responsabile> responsabili;
 
     private Database(){
         load();
@@ -32,6 +32,7 @@ public class Database {
             this.assunzioni = (ArrayList<AssunzioneFarmaco>) ois.readObject();
             this.rilevazioni = (ArrayList<Rilevazione>) ois.readObject();
             this.segnalazioni = (ArrayList<Segnalazione>) ois.readObject();
+            this.responsabili = (ArrayList<Responsabile>) ois.readObject();
             System.out.println("LETTURA COMPLETATA");
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("ERRORE NELLA LETTURA DB");
@@ -41,6 +42,7 @@ public class Database {
             this.assunzioni = new ArrayList<>();
             this.rilevazioni = new ArrayList<>();
             this.segnalazioni = new ArrayList<>();
+            this.responsabili = new ArrayList<>();
         }
 
     }
@@ -53,6 +55,7 @@ public class Database {
             oos.writeObject(this.assunzioni);
             oos.writeObject(this.rilevazioni);
             oos.writeObject(this.segnalazioni);
+            oos.writeObject(this.responsabili);
             System.out.println("SCRITTURA COMPLETATA");
         } catch(IOException e){
             System.err.println("ERRORE NELLA SCRITTURA DEL DATABASE");
@@ -84,6 +87,7 @@ public class Database {
         return new ArrayList<>(segnalazioni);
     }
 
+    public ArrayList<Responsabile> getResponsabili(){ return new ArrayList<>(responsabili);}
 
     public void addDiabetologo(Diabetologo d){
         if (!diabetologi.contains(d)) {
@@ -95,6 +99,12 @@ public class Database {
     public void addPaziente(Paziente p){
         if (!pazienti.contains(p)) {
             this.pazienti.add(p);
+            save();
+        }
+    }
+    public void addResponsabile(Responsabile responsabile) {
+        if(!pazienti.contains(responsabile)){
+            this.responsabili.add(responsabile);
             save();
         }
     }
@@ -120,6 +130,7 @@ public class Database {
         this.segnalazioni.add(s);
         save();
     }
+
 
 
     public ArrayList<Terapia> getTerapieByPaziente(Paziente p){
@@ -161,6 +172,9 @@ public class Database {
         for(Paziente p : pazienti){
             if(p.getUsername().equals(username) && p.getPassword().equals(password)) return p;
         }
+        for(Responsabile r: responsabili){
+            if(r.getUsername().equals(username) && r.getPassword().equals(password)) return r;
+        }
         return null;
     }
 
@@ -187,4 +201,6 @@ public class Database {
             save();
         }
     }
+
+
 }

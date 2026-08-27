@@ -24,6 +24,7 @@ public class LoginController {
     public void initialize() {
         Database.getInstance().addDiabetologo(new Diabetologo());
         Database.getInstance().addPaziente(new Paziente());
+        Database.getInstance().addResponsabile(new Responsabile());
     }
 
 
@@ -35,7 +36,7 @@ public class LoginController {
 
         User loggedUser = db.login(username, password);
         if(loggedUser != null){
-            Session.getInstance().getLoggedUser();
+            Session.getInstance().setCurrentUser(loggedUser);
             switch(loggedUser){
                 case Paziente p -> cambiaSchermataPaziente(p);
                 case Diabetologo d -> cambiaSchermataDiabetologo(d);

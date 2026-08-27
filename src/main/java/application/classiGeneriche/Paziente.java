@@ -11,8 +11,8 @@ public final class Paziente extends User{
     private String dettagli;
     private final List<Terapia> terapie = new ArrayList<>();
 
-    public Paziente(String username,String codiceFiscale, String nome, String cognome, String email, RiskFactor[] fattoriDiRischio, Diabetologo medicoDiRiferimento, String patologiePregresse, String comorbidita, String dettagli){
-        super(username, codiceFiscale, nome, cognome, email);
+    public Paziente(String username, String password, String codiceFiscale, String nome, String cognome, String email, RiskFactor[] fattoriDiRischio, Diabetologo medicoDiRiferimento, String patologiePregresse, String comorbidita, String dettagli){
+        super(username, password, codiceFiscale, nome, cognome, email);
         this.fattoriDiRischio = fattoriDiRischio;
         this.medicoDiRiferimento = medicoDiRiferimento;
         this.patologiePregresse = patologiePregresse;
@@ -21,7 +21,7 @@ public final class Paziente extends User{
     }
 
     public Paziente(){
-        super("luigiverdi1", "LLLLLL", "Luigi", "Verdi", "luigiverdi@libero.it");
+        super("luigiverdi1", "luigiverdi1", "LLLLLL", "Luigi", "Verdi", "luigiverdi@libero.it");
         this.fattoriDiRischio = new RiskFactor[]{RiskFactor.EX_DIPENDENZA_STUPEFACENTI, RiskFactor.FUMATORE};
         this.medicoDiRiferimento = new Diabetologo();
         this.patologiePregresse = "Appendicite";

@@ -7,13 +7,13 @@ public final class Diabetologo extends User{
 
     private final List<Terapia> terapieAssegnate = new ArrayList<>();
 
-    public Diabetologo(String username, String codiceFiscale, String nome, String cognome, String email){
-        super(username, codiceFiscale, nome, cognome, email);
+    public Diabetologo(String username, String password, String codiceFiscale, String nome, String cognome, String email){
+        super(username, password, codiceFiscale, nome, cognome, email);
 
     }
 
     public Diabetologo(){
-        super("mariorossi1", "MMMMMM", "Mario", "Rossi", "rossimario@ulss9.it");
+        super("mariorossi1","mariorossi1" ,"MMMMMM", "Mario", "Rossi", "rossimario@ulss9.it");
     }
 
     public List<Terapia> getTerapieAssegnate() {

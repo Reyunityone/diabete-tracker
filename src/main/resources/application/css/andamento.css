@@ -1,0 +1,90 @@
+/* =========================================================
+   TITOLO
+   ========================================================= */
+
+.title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+
+/* =========================================================
+   GRAFICO
+   ========================================================= */
+
+.chart {
+    -fx-padding: 10px;
+}
+
+
+/* =========================================================
+   LINEE DELLE SERIE
+   ========================================================= */
+
+/* Prima del pasto - BLU */
+.chart-series-line.default-color0 {
+    -fx-stroke: #2196F3;
+    -fx-stroke-width: 2px;
+}
+
+/* Dopo il pasto - VERDE */
+.chart-series-line.default-color1 {
+    -fx-stroke: #4CAF50;
+    -fx-stroke-width: 2px;
+}
+
+
+/* =========================================================
+   PUNTI DEL GRAFICO
+   ========================================================= */
+
+.chart-line-symbol.default-color0 {
+    -fx-background-color: #2196F3;
+    -fx-background-radius: 5px;
+}
+
+.chart-line-symbol.default-color1 {
+    -fx-background-color: #4CAF50;
+    -fx-background-radius: 5px;
+}
+
+
+/* =========================================================
+   LEGENDA
+   ========================================================= */
+
+.chart-legend {
+    -fx-background-color: transparent;
+}
+
+
+/* =========================================================
+   ASSI
+   ========================================================= */
+
+.axis-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.axis {
+    -fx-tick-label-font-size: 12px;
+}
+
+
+/* =========================================================
+   PULSANTI
+   ========================================================= */
+
+.button {
+    -fx-cursor: hand;
+}
+
+
+/* =========================================================
+   DATA PICKER
+   ========================================================= */
+
+.date-picker {
+    -fx-cursor: hand;
+}

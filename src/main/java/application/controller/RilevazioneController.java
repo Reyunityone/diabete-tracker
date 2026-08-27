@@ -1,9 +1,11 @@
 package application.controller;
 
+import application.classiGeneriche.MomentoRilevazione;
 import application.classiGeneriche.Paziente;
 import application.classiGeneriche.Rilevazione;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
@@ -29,34 +31,97 @@ public class RilevazioneController {
     @FXML
     private TextField orarioField;
     private TextFormatter<String> orarioFormatter;
+
+    @FXML
+    private ComboBox<MomentoRilevazione> momentoComboBox;
+
     @FXML
     private TextField pastoField;
     private TextFormatter<String> pastoFormatter;
 
     private Consumer<Rilevazione> salvataggio;
 
+    private final DateTimeFormatter timeFormatter =
+            DateTimeFormatter.ofPattern("HH:mm");
+
 
     public void inizializza(
             Paziente user,
             Consumer<Rilevazione> salvataggio) {
-        this.glicemiaFormatter = new TextFormatter<>(new IntegerStringConverter(), 0, change -> {
-            if(change.getControlNewText().matches("\\d*")) return change;
-            return null;
-        });
-        this.orarioFormatter = new TextFormatter<String>(change ->  {
-            if(change.getControlNewText().length() > 5) return null;
-            if(change.getControlNewText().matches("\\d{0,2}:?\\d{0,2}")) return change;
-            return null;
-        });
-        this.pastoFormatter = new TextFormatter<String>(change ->  {
-            if(change.getControlNewText().length() > 5) return null;
-            if(change.getControlNewText().matches("\\d{0,2}:?\\d{0,2}")) return change;
-            return null;
-        });
-        this.glicemiaField.setTextFormatter(this.glicemiaFormatter);
-        this.orarioField.setTextFormatter(orarioFormatter);
-        this.pastoField.setTextFormatter(pastoFormatter);
+
+        this.user = user;
+
+        inizializzaFormattatori();
+
+        momentoComboBox.getItems().setAll(
+                MomentoRilevazione.values()
+        );
+
         this.salvataggio = salvataggio;
+    }
+
+
+    private void inizializzaFormattatori() {
+
+        this.glicemiaFormatter =
+                new TextFormatter<>(
+                        new IntegerStringConverter(),
+                        0,
+                        change -> {
+
+                            if (change.getControlNewText()
+                                    .matches("\\d*")) {
+                                return change;
+                            }
+
+                            return null;
+                        }
+                );
+
+
+        this.orarioFormatter =
+                new TextFormatter<String>(change -> {
+
+                    if (change.getControlNewText().length() > 5) {
+                        return null;
+                    }
+
+                    if (change.getControlNewText()
+                            .matches("\\d{0,2}:?\\d{0,2}")) {
+                        return change;
+                    }
+
+                    return null;
+                });
+
+
+        this.pastoFormatter =
+                new TextFormatter<String>(change -> {
+
+                    if (change.getControlNewText().length() > 5) {
+                        return null;
+                    }
+
+                    if (change.getControlNewText()
+                            .matches("\\d{0,2}:?\\d{0,2}")) {
+                        return change;
+                    }
+
+                    return null;
+                });
+
+
+        glicemiaField.setTextFormatter(
+                glicemiaFormatter
+        );
+
+        orarioField.setTextFormatter(
+                orarioFormatter
+        );
+
+        pastoField.setTextFormatter(
+                pastoFormatter
+        );
     }
 
 
@@ -67,33 +132,57 @@ public class RilevazioneController {
             return;
         }
 
+        if (momentoComboBox.getValue() == null) {
+            return;
+        }
 
-        LocalDate data = dataPicker.getValue();
+        LocalDate data =
+                dataPicker.getValue();
+
         int glicemia =
                 glicemiaFormatter.getValue();
 
-        LocalTime orarioRilevazione =
-                null;
-        LocalTime ultimoPasto =
-                null;
-        try {
-            orarioRilevazione = LocalTime.parse(orarioField.getText(), DateTimeFormatter.ofPattern("HH:mm"));
 
-            ultimoPasto = LocalTime.parse(pastoField.getText(), DateTimeFormatter.ofPattern("HH:mm"));
+        LocalTime orarioRilevazione;
+        LocalTime ultimoPasto;
+
+        try {
+
+            orarioRilevazione =
+                    LocalTime.parse(
+                            orarioField.getText(),
+                            timeFormatter
+                    );
+
+            ultimoPasto =
+                    LocalTime.parse(
+                            pastoField.getText(),
+                            timeFormatter
+                    );
+
         } catch (Exception e) {
-            System.err.println("Orario non valido");
+
+            System.err.println(
+                    "Orario non valido"
+            );
+
             return;
         }
 
 
-            Rilevazione rilevazione = new Rilevazione(
-                    data,
-                    glicemia,
-                    orarioRilevazione,
-                    ultimoPasto,
-                    user
-            );
+        MomentoRilevazione momento =
+                momentoComboBox.getValue();
 
+
+        Rilevazione rilevazione =
+                new Rilevazione(
+                        data,
+                        glicemia,
+                        orarioRilevazione,
+                        ultimoPasto,
+                        momento,
+                        user
+                );
 
 
         salvataggio.accept(
@@ -108,29 +197,22 @@ public class RilevazioneController {
 
         stage.close();
     }
-    
+
+
     public void inizializzaModifica(
             Paziente user,
             Rilevazione rilevazione,
             Runnable aggiornamento) {
 
-        this.glicemiaFormatter = new TextFormatter<>(new IntegerStringConverter(), 0, change -> {
-            if(change.getControlNewText().matches("\\d*")) return change;
-            return null;
-        });
-        this.orarioFormatter = new TextFormatter<String>(change ->  {
-            if(change.getControlNewText().length() > 5) return null;
-            if(change.getControlNewText().matches("\\d{0,2}:?\\d{0,2}")) return change;
-            return null;
-        });
-        this.pastoFormatter = new TextFormatter<String>(change ->  {
-            if(change.getControlNewText().length() > 5) return null;
-            if(change.getControlNewText().matches("\\d{0,2}:?\\d{0,2}")) return change;
-            return null;
-        });
-        this.glicemiaField.setTextFormatter(this.glicemiaFormatter);
-        this.orarioField.setTextFormatter(orarioFormatter);
-        this.pastoField.setTextFormatter(pastoFormatter);
+        this.user = user;
+
+        inizializzaFormattatori();
+
+
+        momentoComboBox.getItems().setAll(
+                MomentoRilevazione.values()
+        );
+
 
         dataPicker.setValue(
                 rilevazione.getData()
@@ -138,17 +220,30 @@ public class RilevazioneController {
 
 
         glicemiaField.setText(
-                String.valueOf(rilevazione.getLivelloGlicemia())
+                String.valueOf(
+                        rilevazione.getLivelloGlicemia()
+                )
         );
 
 
         pastoField.setText(
-                rilevazione.getOrarioPasto().toString()
+                rilevazione
+                        .getOrarioPasto()
+                        .toString()
         );
 
+
         orarioField.setText(
-                rilevazione.getOrarioRilevazione().toString()
+                rilevazione
+                        .getOrarioRilevazione()
+                        .toString()
         );
+
+
+        momentoComboBox.setValue(
+                rilevazione.getMomentoRilevazione()
+        );
+
 
         this.salvataggio =
                 nuovaRilevazione -> {
@@ -157,23 +252,32 @@ public class RilevazioneController {
                             nuovaRilevazione.getData()
                     );
 
+
                     rilevazione.setLivelloGlicemia(
                             nuovaRilevazione
                                     .getLivelloGlicemia()
                     );
+
 
                     rilevazione.setOrarioRilevazione(
                             nuovaRilevazione
                                     .getOrarioRilevazione()
                     );
 
+
                     rilevazione.setOrarioPasto(
                             nuovaRilevazione
                                     .getOrarioPasto()
                     );
+
+
+                    rilevazione.setMomentoRilevazione(
+                            nuovaRilevazione
+                                    .getMomentoRilevazione()
+                    );
+
+
                     aggiornamento.run();
                 };
     }
-    
-    
 }

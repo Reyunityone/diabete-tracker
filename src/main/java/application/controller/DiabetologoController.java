@@ -121,8 +121,6 @@ public class DiabetologoController {
 
         ruoloLabel.setText("Medico");
 
-        inizializzaPazienti();
-
         aggiornaListaPazienti();
 
         configuraRicerca();
@@ -221,20 +219,6 @@ public class DiabetologoController {
         );
     }
 
-    // =========================================================
-    // DATI DI PROVA
-    // =========================================================
-
-    private void inizializzaPazienti() {
-
-        pazienti.add(
-                new Paziente()
-        );
-        pazienti.add(
-                new Paziente()
-        );
-    }
-
 
     // =========================================================
     // PROFILO
@@ -250,6 +234,9 @@ public class DiabetologoController {
         );
 
         ruoloLabel.setText("Medico");
+        pazienti.clear();
+        pazienti.addAll(medico.getPazienti());
+        aggiornaListaPazienti();
     }
 
 
@@ -283,41 +270,12 @@ public class DiabetologoController {
     }
 
 
-    private void aggiornaListaPazienti(
-            String ricerca) {
+    private void aggiornaListaPazienti(String ricerca) {
 
-        pazientiContainer
-                .getChildren()
-                .clear();
+        pazientiContainer.getChildren().clear();
 
-        String testo =
-                ricerca
-                        .toLowerCase()
-                        .trim();
-
-        for (Paziente paziente : pazienti) {
-
-            String nomeCompleto =
-                    (
-                            paziente.getNome()
-                                    + " "
-                                    + paziente.getCognome()
-                    )
-                            .toLowerCase();
-
-            if (!testo.isEmpty()
-                    && !nomeCompleto.contains(testo)) {
-
-                continue;
-            }
-
-            pazientiContainer
-                    .getChildren()
-                    .add(
-                            creaBoxPaziente(
-                                    paziente
-                            )
-                    );
+        for(Paziente p : medico.getFilteredPazienti(ricerca)){
+            pazientiContainer.getChildren().add(creaBoxPaziente(p));
         }
     }
 

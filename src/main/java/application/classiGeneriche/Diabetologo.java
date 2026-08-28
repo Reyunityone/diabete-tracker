@@ -30,6 +30,14 @@ public final class Diabetologo extends User {
         return getCodiceFiscale().hashCode();
     }
 
+    public boolean isMioPaziente(Paziente p){
+        return p.getMedicoDiRiferimento().equals(this);
+    }
+
+    public int getNumeroPazienti(){
+        return this.getPazienti().size();
+    }
+
     public ArrayList<Paziente> getPazienti(){
         return db.getPazienti().stream().filter(p -> p.getMedicoDiRiferimento().equals(this)).collect(Collectors.toCollection(ArrayList::new));
     }
@@ -45,7 +53,19 @@ public final class Diabetologo extends User {
     }
 
     public void creaTerapia(Paziente p, String farmaco, int dose, int numeroAssunzioniGiornaliere, String indicazioni){
+        ArrayList<Paziente> pazienti = new ArrayList<>();
+        pazienti.add(p);
 
+        Terapia terapia = new Terapia(farmaco, dose, numeroAssunzioniGiornaliere, this, pazienti, indicazioni);
+
+        db.assegnaTerapia(terapia, p);
     }
+
+    public void modificaTerapia (Terapia vecchiaTerapia, Terapia nuovaTerapia){
+        //db.updateTerapia(vecchiaTerapia, nuovaTerapia);
+    }
+
+    //getTerapiaByPaziente(Paziente p)
+
 
 }

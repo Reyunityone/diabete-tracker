@@ -1,5 +1,6 @@
 package application.controller;
 
+import application.classiGeneriche.Database;
 import application.classiGeneriche.Diabetologo;
 import application.classiGeneriche.Paziente;
 import application.classiGeneriche.Terapia;
@@ -92,25 +93,22 @@ public class StoricoTerapieController {
             aggiornaLista("");
         }
 
-    private void aggiornaLista(
-            String ricerca) {
+    private void aggiornaLista(String ricerca) {
 
         terapieContainer.getChildren().clear();
 
         String testo =
-                ricerca
-                        .toLowerCase()
-                        .trim();
+                ricerca.toLowerCase().trim();
 
-        for (Terapia terapia : paziente.getTerapie()) {
+        for (Terapia terapia :
+                Database.getInstance()
+                        .getTerapieByPaziente(paziente)) {
 
             String nomeFarmaco =
-                    terapia.getFarmaco()
-                            .toLowerCase();
+                    terapia.getFarmaco().toLowerCase();
 
             if (!testo.isEmpty()
                     && !nomeFarmaco.contains(testo)) {
-
                 continue;
             }
 
@@ -199,7 +197,12 @@ public class StoricoTerapieController {
             controller.inizializzaNuova(
                     medico,
                     terapia -> {
-                        paziente.aggiungiTerapia(terapia);
+
+                        Database.getInstance().assegnaTerapia(
+                                terapia,
+                                paziente
+                        );
+
                         aggiornaLista();
                     }
             );
@@ -275,7 +278,10 @@ public class StoricoTerapieController {
         alert.showAndWait().ifPresent(
                 risposta -> {
                     if (risposta == javafx.scene.control.ButtonType.OK) {
-                        paziente.rimuoviTerapia(terapia);
+                        terapia.getPazienti().remove(paziente);
+
+                        Database.getInstance().save();
+
                         aggiornaLista();
                     }
                 }

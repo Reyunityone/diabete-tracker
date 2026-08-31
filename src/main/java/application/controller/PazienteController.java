@@ -18,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.Duration;
 
 
@@ -87,8 +88,7 @@ public class PazienteController {
     // MESSAGGI
     // =========================================================
 
-    private final List<Messaggio> messaggi =
-            new ArrayList<>();
+    private List<Messaggio> messaggi;
 
 
     // =========================================================
@@ -181,8 +181,6 @@ public class PazienteController {
         // DATI DI PROVA
         // -----------------------------------------------------
 
-        inizializzaMessaggi();
-
         inizializzaChiamate();
 
 
@@ -203,37 +201,10 @@ public class PazienteController {
         // -----------------------------------------------------
         // NOTIFICHE
         // -----------------------------------------------------
-
+        GestoreAlert.verificaAssunzioniGiornaliere((Paziente) Session.getInstance().getCurrentUser());
+        this.messaggi = Database.getInstance().getMessaggiFromPaziente((Paziente) Session.getInstance().getCurrentUser());
         aggiornaPallinoNotifiche();
     }
-
-
-    // =========================================================
-    // MESSAGGI DI PROVA
-    // =========================================================
-
-    private void inizializzaMessaggi() {
-
-        messaggi.add(
-                new Messaggio(
-                        "Diabetologo",
-                        "Rossi",
-                        "Buongiorno, come sta andando il monitoraggio della glicemia?",
-                        false
-                )
-        );
-
-
-        messaggi.add(
-                new Messaggio(
-                        "Diabetologo",
-                        "Rossi",
-                        "Ricordo di effettuare le rilevazioni giornaliere.",
-                        true
-                )
-        );
-    }
-
 
     // =========================================================
     // CHIAMATE DI PROVA
@@ -877,6 +848,10 @@ public class PazienteController {
 
     @FXML
     private void handleLogout() {
+        List<Window> windows = new ArrayList<>(Window.getWindows());
+        for(Window w : windows){
+            w.hide();
+        }
 
         try {
 

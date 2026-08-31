@@ -250,4 +250,32 @@ class DatabaseTest {
 
         assertEquals("testo aggiornato", db.getSegnalazioni().getFirst().getTesto());
     }
+
+    @Test
+    void getMessaggioFromMedicoRitornaMessaggiDelMedico(){
+        Diabetologo d1 = new Diabetologo("a", "a", "a", "a", "a", "a");
+        Diabetologo d2 = new Diabetologo("b","b","b","b","b","b");
+        Messaggio m1 = new Messaggio(new Paziente(), d1, "messaggio per a", TipoAlert.PAZIENTE_MEDICO, UrgenzaAlert.LOW);
+        Messaggio m2 = new Messaggio(null, d2, "messaggio per b", TipoAlert.SISTEMA_MEDICO, UrgenzaAlert.LOW);
+        Messaggio m3 = new Messaggio(new Paziente(), d2, "messaggio per paziente", TipoAlert.MEDICO_PAZIENTE, UrgenzaAlert.LOW);
+        db.addMessaggio(m1);
+        db.addMessaggio(m2);
+        db.addMessaggio(m3);
+        assertEquals(1, db.getMessaggiFromMedico(d2).size());
+        assertTrue(db.getMessaggiFromMedico(d2).contains(m2));
+    }
+
+    @Test
+    void getMessaggioFromPazienteRitornaMessaggiDelPaziente(){
+        Paziente p1 = new Paziente("a", "a", "a", "a", "a", "a", null, new Diabetologo(), null, null, null);
+        Paziente p2 = new Paziente("b","b","b","b","b","b", null, new Diabetologo(), null, null, null);
+        Messaggio m1 = new Messaggio(p1, new Diabetologo(), "messaggio per a", TipoAlert.MEDICO_PAZIENTE, UrgenzaAlert.LOW);
+        Messaggio m2 = new Messaggio(p2, null, "messaggio per b", TipoAlert.SISTEMA_PAZIENTE, UrgenzaAlert.LOW);
+        Messaggio m3 = new Messaggio(p2, new Diabetologo(), "messaggio per paziente", TipoAlert.PAZIENTE_MEDICO, UrgenzaAlert.LOW);
+        db.addMessaggio(m1);
+        db.addMessaggio(m2);
+        db.addMessaggio(m3);
+        assertEquals(1, db.getMessaggiFromPaziente(p2).size());
+        assertTrue(db.getMessaggiFromPaziente(p2).contains(m2));
+    }
 }

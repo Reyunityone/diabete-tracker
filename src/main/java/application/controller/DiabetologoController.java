@@ -1,8 +1,8 @@
 package application.controller;
 
-import application.classiGeneriche.Diabetologo;
-import application.classiGeneriche.Paziente;
+import application.classiGeneriche.*;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,15 +17,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.Duration;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import application.classiGeneriche.Chiamata;
-import application.classiGeneriche.Messaggio;
 
 public class DiabetologoController {
 
@@ -52,26 +49,18 @@ public class DiabetologoController {
 
     @FXML
     private AnchorPane mailContainer;
-
     @FXML
     private Button mailButton;
-
     @FXML
     private HBox mailMenu;
-
     @FXML
     private Button telefonoButton;
-
     @FXML
     private Button messaggioButton;
-    
     @FXML
     private ImageView messaggioNotification;
-
     @FXML
     private ImageView telefonoNotification;
-
-
     // =========================================================
     // PAZIENTI
     // =========================================================
@@ -89,81 +78,29 @@ public class DiabetologoController {
     // =========================================================
     // DATI
     // =========================================================
-
-    private final List<Paziente> pazienti =
-            new ArrayList<>();
-
-    private Diabetologo medico;
-    
-    private final List<Messaggio> messaggi =
-            new ArrayList<>();
-
-    private final List<Chiamata> chiamate =
-            new ArrayList<>();
-    
+    private final Diabetologo medico = (Diabetologo) Session.getInstance().getCurrentUser();
+    private final List<Paziente> pazienti = Database.getInstance().getPazientiByMedico(medico);
+    private List<Messaggio> messaggi;
+    private final List<Chiamata> chiamate = new ArrayList<>();
     @FXML
     private ImageView mailNotification;
-
-
     // =========================================================
     // TIMER CHIUSURA MENU
     // =========================================================
-
     private PauseTransition chiusuraMenu;
-
-
     // =========================================================
     // INITIALIZE
     // =========================================================
-
     @FXML
     public void initialize() {
-
         ruoloLabel.setText("Medico");
-
-        inizializzaPazienti();
-
         aggiornaListaPazienti();
-
         configuraRicerca();
-
         configuraMenuMail();
-        
-        inizializzaMessaggi();
-
         inizializzaChiamate();
-
+        GestoreAlert.verificaTuttiIPazienti(medico);
+        this.messaggi = Database.getInstance().getMessaggiFromMedico(medico);
         aggiornaPallinoNotifiche();
-    }
-    
-    private void inizializzaMessaggi() {
-
-        messaggi.add(
-                new Messaggio(
-                        "Mario",
-                        "Rossi",
-                        "Buongiorno dottore, volevo chiederle informazioni sulla terapia.",
-                        false
-                )
-        );
-
-        messaggi.add(
-                new Messaggio(
-                        "Luca",
-                        "Bianchi",
-                        "Ho effettuato gli esami richiesti.",
-                        true
-                )
-        );
-
-        messaggi.add(
-                new Messaggio(
-                        "Anna",
-                        "Verdi",
-                        "Quando posso fissare il prossimo controllo?",
-                        false
-                )
-        );
     }
     
     private void inizializzaChiamate() {
@@ -222,28 +159,10 @@ public class DiabetologoController {
     }
 
     // =========================================================
-    // DATI DI PROVA
-    // =========================================================
-
-    private void inizializzaPazienti() {
-
-        pazienti.add(
-                new Paziente()
-        );
-        pazienti.add(
-                new Paziente()
-        );
-    }
-
-
-    // =========================================================
     // PROFILO
     // =========================================================
 
-    public void inizializzaProfilo(
-            Diabetologo medico) {
-
-        this.medico = medico;
+    public void inizializzaProfilo() {
 
         nomeCognomeLabel.setText(
                 medico.getNome() + " " + medico.getCognome()
@@ -701,9 +620,12 @@ public class DiabetologoController {
 
     @FXML
     private void handleLogout() {
+        List<Window> windows = new ArrayList<>(Window.getWindows());
+        for(Window w: windows){
+            w.hide();
+        }
 
         try {
-
             FXMLLoader loader =
                     new FXMLLoader(
                             getClass().getResource(
@@ -822,37 +744,5 @@ public class DiabetologoController {
                 paziente
         );
     }
-    
-    // =========================================================
-    // CLASSE PERSONA
-    // =========================================================
 
-    public static class Persona {
-
-        private final String nome;
-
-        private final String cognome;
-
-
-        public Persona(
-                String nome,
-                String cognome) {
-
-            this.nome = nome;
-
-            this.cognome = cognome;
-        }
-
-
-        public String getNome() {
-
-            return nome;
-        }
-
-
-        public String getCognome() {
-
-            return cognome;
-        }
-    }
 }

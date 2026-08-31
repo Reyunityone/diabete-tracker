@@ -21,6 +21,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -30,6 +31,7 @@ import application.classiGeneriche.Diabetologo;
 import application.classiGeneriche.Paziente;
 import application.classiGeneriche.Responsabile;
 import application.classiGeneriche.User;
+import javafx.stage.Window;
 
 public class ResponsabileController {
 
@@ -209,7 +211,7 @@ public class ResponsabileController {
     	//CONTROLLO SE É POSSIBILE ELIMINARE UN DIABETOLOGO
     	if (medico) {
     	    Diabetologo diabetologo =(Diabetologo) persona;
-    	    List<Paziente> pazientiSeguiti =Database.getInstance().getPazientiByDiabetologo(diabetologo);
+    	    List<Paziente> pazientiSeguiti =Database.getInstance().getPazientiByMedico(diabetologo);
 
     	    if (!pazientiSeguiti.isEmpty()) {
     	    	System.out.println("Impossibile eliminare un diabetologo che segue dei pazienti");
@@ -218,6 +220,22 @@ public class ResponsabileController {
     	}
     	
     	//CREAZIONE ALR+ERT PER ELIMINAZIONE
+        Optional<ButtonType> risultato = getRisultato(persona);
+
+        //CHIAMO IL DB PER AGGIORNAMENTO LISTE
+        if (risultato.isPresent()&& risultato.get() == ButtonType.OK) {
+            if (medico) {
+                Database.getInstance().deleteDiabetologo((Diabetologo) persona);
+
+            } else {
+                Database.getInstance().deletePaziente((Paziente) persona);
+            }
+
+            aggiornaListe();
+        }
+    }
+
+    private static Optional<ButtonType> getRisultato(User persona) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
         alert.setTitle("Eliminazione account");
@@ -232,19 +250,7 @@ public class ResponsabileController {
         );
 
 
-        Optional<ButtonType> risultato =alert.showAndWait();
-
-        //CHIAMO IL DB PER AGGIORNAMENTO LISTE
-        if (risultato.isPresent()&& risultato.get() == ButtonType.OK) {
-            if (medico) {
-                Database.getInstance().deleteDiabetologo((Diabetologo) persona);
-
-            } else {
-                Database.getInstance().deletePaziente((Paziente) persona);
-            }
-
-            aggiornaListe();
-        }
+        return alert.showAndWait();
     }
 
 
@@ -269,6 +275,10 @@ public class ResponsabileController {
     // =========================================================
     @FXML
     private void handleLogout() {
+        List<Window> windows = new ArrayList<>(Window.getWindows());
+        for(Window w : windows){
+            w.hide();
+        }
         try {
             FXMLLoader loader =new FXMLLoader(getClass().getResource("/application/view/Login.fxml"));
 

@@ -15,6 +15,7 @@ public class Database {
     private ArrayList<Rilevazione> rilevazioni;
     private ArrayList<Segnalazione> segnalazioni;
     private ArrayList<Responsabile> responsabili;
+    private ArrayList<Messaggio> messaggi;
 
     Database(String fileName){
         this.fileName = fileName;
@@ -32,7 +33,7 @@ public class Database {
 
     @SuppressWarnings("unchecked")
     public void load(){
-        try (FileInputStream file = new FileInputStream(fileName); ObjectInputStream ois = new ObjectInputStream(file);){
+        try (FileInputStream file = new FileInputStream(fileName); ObjectInputStream ois = new ObjectInputStream(file)){
             this.diabetologi = (ArrayList<Diabetologo>) ois.readObject();
             this.pazienti = (ArrayList<Paziente>) ois.readObject();
             this.terapie = (ArrayList<Terapia>) ois.readObject();
@@ -40,6 +41,7 @@ public class Database {
             this.rilevazioni = (ArrayList<Rilevazione>) ois.readObject();
             this.segnalazioni = (ArrayList<Segnalazione>) ois.readObject();
             this.responsabili = (ArrayList<Responsabile>) ois.readObject();
+            this.messaggi = (ArrayList<Messaggio>) ois.readObject();
             System.out.println("LETTURA COMPLETATA");
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("ERRORE NELLA LETTURA DB");
@@ -50,6 +52,7 @@ public class Database {
             this.rilevazioni = new ArrayList<>();
             this.segnalazioni = new ArrayList<>();
             this.responsabili = new ArrayList<>();
+            this.messaggi = new ArrayList<>();
         }
 
     }
@@ -63,6 +66,7 @@ public class Database {
             oos.writeObject(this.rilevazioni);
             oos.writeObject(this.segnalazioni);
             oos.writeObject(this.responsabili);
+            oos.writeObject(this.messaggi);
             System.out.println("SCRITTURA COMPLETATA");
         } catch(IOException e){
             System.err.println("ERRORE NELLA SCRITTURA DEL DATABASE");
@@ -95,6 +99,10 @@ public class Database {
     }
 
     public ArrayList<Responsabile> getResponsabili(){ return new ArrayList<>(responsabili);}
+
+    public ArrayList<Messaggio> getAllMessaggi(){
+        return new ArrayList<>(messaggi);
+    }
 
     public void addDiabetologo(Diabetologo d){
         if (!diabetologi.contains(d)) {
@@ -138,7 +146,10 @@ public class Database {
         save();
     }
 
-
+    public void addMessaggio(Messaggio m){
+        this.messaggi.add(m);
+        save();
+    }
 
     public ArrayList<Terapia> getTerapieByPaziente(Paziente p){
         ArrayList<Terapia> result = new ArrayList<>();
@@ -171,17 +182,42 @@ public class Database {
         }
         return result;
     }
-    
-    public ArrayList<Paziente> getPazientiByDiabetologo(Diabetologo diabetologo) {
-        ArrayList<Paziente> result = new ArrayList<>();
 
-        for (Paziente p : pazienti) {
-            if (p.getMedicoDiRiferimento() != null &&p.getMedicoDiRiferimento().equals(diabetologo)) {
-                result.add(p);
+    public ArrayList<Paziente> getPazientiByMedico(Diabetologo d){
+        ArrayList<Paziente> result = new ArrayList<>();
+        for(Paziente p : pazienti){
+            if(p.getMedicoDiRiferimento().equals(d)) result.add(p);
+        }
+        return result;
+    }
+
+    public ArrayList<Messaggio> getMessaggiFromMedico(Diabetologo d){
+        ArrayList<Messaggio> result = new ArrayList<>();
+        for(Messaggio m: messaggi){
+            if(m.getDiabetologo() != null){
+                if(m.getDiabetologo().equals(d) && (m.getTipo() == TipoAlert.PAZIENTE_MEDICO || m.getTipo() == TipoAlert.SISTEMA_MEDICO)) result.add(m);
             }
         }
-
         return result;
+    }
+
+    public ArrayList<Messaggio> getMessaggiFromPaziente(Paziente p){
+        ArrayList<Messaggio> result = new ArrayList<>();
+        for(Messaggio m: messaggi){
+            if(m.getPaziente() != null){
+                if(m.getPaziente().equals(p) && (m.getTipo() == TipoAlert.MEDICO_PAZIENTE || m.getTipo() == TipoAlert.SISTEMA_PAZIENTE)) result.add(m);
+            }
+
+        }
+        return result;
+    }
+
+    public void setMessaggioLetto(Messaggio m){
+        if(!this.messaggi.contains(m)) return;
+        int i = this.messaggi.indexOf(m);
+        m.setLetto(true);
+        this.messaggi.set(i, m);
+        save();
     }
 
     public User login(String username, String password){

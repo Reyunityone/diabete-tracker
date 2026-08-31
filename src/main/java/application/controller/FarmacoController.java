@@ -64,12 +64,6 @@ public class FarmacoController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Paziente currentUser = (Paziente) Session.getInstance().getCurrentUser();
-        ArrayList<Paziente> pazientiTerapia = new ArrayList<>();
-        pazientiTerapia.add(currentUser);
-        Terapia t1 = new Terapia("dolipran", 12, 3, new Diabetologo(), pazientiTerapia, "prima dei pasti");
-        Terapia t2 = new Terapia("tachi", 10, 2, new Diabetologo(), pazientiTerapia, "dopo i pasti");
-        Database.getInstance().addTerapia(t1);
-        Database.getInstance().addTerapia(t2);
         terapiaBox.getItems().addAll(Database.getInstance().getTerapieByPaziente(currentUser));
 
     }

@@ -1,5 +1,6 @@
 package application.controller;
 
+import application.classiGeneriche.Database;
 import application.classiGeneriche.Diabetologo;
 import application.classiGeneriche.Paziente;
 import application.classiGeneriche.Terapia;
@@ -54,15 +55,16 @@ public class TerapieEsistentiController {
 
         terapieContainer.getChildren().clear();
 
-//        for (Terapia terapia :
-//                medico.getTerapieAssegnate()) {
-//
-//            terapieContainer.getChildren().add(
-//                    creaBoxTerapia(
-//                            terapia
-//                    )
-//            );
-//        }
+        for (Terapia terapia :
+                Database.getInstance().getTerapie()) {
+
+            if (terapia.getMedicoAssegnante().equals(medico)) {
+
+                terapieContainer.getChildren().add(
+                        creaBoxTerapia(terapia)
+                );
+            }
+        }
     }
 
 
@@ -134,28 +136,25 @@ public class TerapieEsistentiController {
         );
 
 
-        Button assegnaButton =
-                new Button(
-                        "Assegna"
-                );
-
-        assegnaButton.getStyleClass().add(
-                "open-button"
+        Button assegnaButton = new Button("Assegna");
+        assegnaButton.getStyleClass().add("open-button");
+        assegnaButton.setOnAction(
+                event -> assegnaTerapia(terapia)
         );
 
-        assegnaButton.setOnAction(
-                event -> assegnaTerapia(
-                        terapia
-                )
+        Button rimuoviButton = new Button("Rimuovi");
+        rimuoviButton.getStyleClass().add("open-button");
+        rimuoviButton.setOnAction(
+                event -> rimuoviTerapia(terapia)
         );
 
 
         box.getChildren().addAll(
                 informazioni,
                 spazio,
-                assegnaButton
+                assegnaButton,
+                rimuoviButton
         );
-
 
         return box;
     }
@@ -164,39 +163,30 @@ public class TerapieEsistentiController {
     private void assegnaTerapia(
             Terapia terapiaEsistente) {
 
-        /*
-         * Creiamo una NUOVA terapia.
-         *
-         * Non riutilizziamo lo stesso oggetto,
-         * perché la terapia originale appartiene
-         * a un altro paziente.
-         */
-        Terapia nuovaTerapia =
-                new Terapia(
-                        terapiaEsistente.getFarmaco(),
-                        terapiaEsistente.getDose(),
-                        terapiaEsistente
-                                .getNumeroAssunzioniGiornaliere(),
-                        medico,
-                        new ArrayList<>(),
-                        terapiaEsistente.getIndicazioni()
-                );
+        if (!terapiaEsistente
+                .getPazienti()
+                .contains(paziente)) {
 
+            terapiaEsistente
+                    .getPazienti()
+                    .add(paziente);
 
-        paziente.aggiungiTerapia(
-                nuovaTerapia
-        );
-
-
-        if (aggiornamento != null) {
-
-            aggiornamento.run();
+            Database.getInstance().save();
         }
 
+        if (aggiornamento != null) {
+            aggiornamento.run();
+        }
 
         chiudiFinestra();
     }
 
+    private void rimuoviTerapia(Terapia terapia) {
+
+        Database.getInstance().removeTerapia(terapia);
+
+        aggiornaLista();
+    }
 
     private void chiudiFinestra() {
 

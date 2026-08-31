@@ -269,6 +269,46 @@ public class Database {
 
         return false;
     }
+    public void assegnaTerapia(
+            Terapia terapia,
+            Paziente paziente) {
+
+        int indice =
+                terapie.indexOf(terapia);
+
+        if (indice != -1) {
+
+            Terapia terapiaEsistente =
+                    terapie.get(indice);
+
+            if (!terapiaEsistente
+                    .getPazienti()
+                    .contains(paziente)) {
+
+                terapiaEsistente
+                        .getPazienti()
+                        .add(paziente);
+
+                save();
+            }
+
+        } else {
+
+            terapia.getPazienti()
+                    .add(paziente);
+
+            terapie.add(terapia);
+
+            save();
+        }
+    }
+
+    public void removeTerapia(Terapia t) {
+        if (terapie.remove(t)) {
+            save();
+        }
+    }
+
 
 	public void deleteDiabetologo(Diabetologo diabetologoDeleted) {
 		for(Diabetologo d: diabetologi) {

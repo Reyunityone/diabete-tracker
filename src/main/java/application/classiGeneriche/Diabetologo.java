@@ -1,9 +1,5 @@
 package application.classiGeneriche;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 public final class Diabetologo extends User {
 
     public Diabetologo(String username, String password,String codiceFiscale, String nome, String cognome, String email){
@@ -25,4 +21,5 @@ public final class Diabetologo extends User {
     public int hashCode(){
         return getCodiceFiscale().hashCode();
     }
+
 }

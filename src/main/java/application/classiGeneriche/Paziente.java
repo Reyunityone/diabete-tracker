@@ -1,15 +1,11 @@
 package application.classiGeneriche;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public final class Paziente extends User{
     private RiskFactor[] fattoriDiRischio;
     private Diabetologo medicoDiRiferimento;
     private String patologiePregresse;
     private String comorbidita;
     private String dettagli;
-    private final List<Terapia> terapie = new ArrayList<>();
 
     public Paziente(String username,String password,String codiceFiscale, String nome, String cognome, String email, RiskFactor[] fattoriDiRischio, Diabetologo medicoDiRiferimento, String patologiePregresse, String comorbidita, String dettagli){
         super(username, password,codiceFiscale, nome, cognome, email);
@@ -67,20 +63,6 @@ public final class Paziente extends User{
 
     public void setDettagli(String dettagli) {
         this.dettagli = dettagli;
-    }
-
-    public List<Terapia> getTerapie() {
-        return terapie;
-    }
-
-    public void aggiungiTerapia(Terapia terapia) {
-        terapie.add(terapia);
-    }
-
-    public void rimuoviTerapia(
-            Terapia terapia) {
-
-        terapie.remove(terapia);
     }
 
     @Override

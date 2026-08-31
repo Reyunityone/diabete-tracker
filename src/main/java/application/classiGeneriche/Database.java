@@ -33,7 +33,7 @@ public class Database {
 
     @SuppressWarnings("unchecked")
     public void load(){
-        try (FileInputStream file = new FileInputStream(fileName); ObjectInputStream ois = new ObjectInputStream(file);){
+        try (FileInputStream file = new FileInputStream(fileName); ObjectInputStream ois = new ObjectInputStream(file)){
             this.diabetologi = (ArrayList<Diabetologo>) ois.readObject();
             this.pazienti = (ArrayList<Paziente>) ois.readObject();
             this.terapie = (ArrayList<Terapia>) ois.readObject();
@@ -101,7 +101,7 @@ public class Database {
     public ArrayList<Responsabile> getResponsabili(){ return new ArrayList<>(responsabili);}
 
     public ArrayList<Messaggio> getAllMessaggi(){
-        return new ArrayList<Messaggio>(messaggi);
+        return new ArrayList<>(messaggi);
     }
 
     public void addDiabetologo(Diabetologo d){
@@ -180,18 +180,6 @@ public class Database {
         for (Segnalazione s : segnalazioni) {
             if (s.getPaziente().equals(p)) result.add(s);
         }
-        return result;
-    }
-    
-    public ArrayList<Paziente> getPazientiByDiabetologo(Diabetologo diabetologo) {
-        ArrayList<Paziente> result = new ArrayList<>();
-
-        for (Paziente p : pazienti) {
-            if (p.getMedicoDiRiferimento() != null &&p.getMedicoDiRiferimento().equals(diabetologo)) {
-                result.add(p);
-            }
-        }
-
         return result;
     }
 

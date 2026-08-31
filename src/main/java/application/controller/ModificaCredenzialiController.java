@@ -117,6 +117,7 @@ public class ModificaCredenzialiController {
 
 
             // PRESELEZIONE MEDICO ATTUALE
+            assert persona instanceof Paziente;
             Paziente paziente =(Paziente) persona;
 
             Diabetologo medicoAttuale =paziente.getMedicoDiRiferimento();
@@ -142,9 +143,7 @@ public class ModificaCredenzialiController {
         
         Diabetologo diabetologo =(Diabetologo) persona;
 
-        for (User userPaziente :responsabileController.getPazienti()) {
-            
-        	Paziente paziente =(Paziente) userPaziente;
+        for (Paziente paziente :responsabileController.getPazienti()) {
 
             CheckBox checkBox =new CheckBox(paziente.getNome()+ " " + paziente.getCognome());
             checkBox.setUserData(paziente);
@@ -249,8 +248,7 @@ public class ModificaCredenzialiController {
             User medicoSelezionato) {
 
         // MODIFICA DIABETOLOGO
-        if (persona instanceof Diabetologo) {
-            Diabetologo vecchio =(Diabetologo) persona;
+        if (persona instanceof Diabetologo vecchio) {
 
             Diabetologo nuovo =new Diabetologo(username,password,codiceFiscale,nome,cognome,email);
 
@@ -262,8 +260,7 @@ public class ModificaCredenzialiController {
         }
 
         // MODIFICA PAZIENTE
-        else if (persona instanceof Paziente) {
-            Paziente vecchio =(Paziente) persona;
+        else if (persona instanceof Paziente vecchio) {
 
             Paziente nuovo =new Paziente(username,password,codiceFiscale,nome,cognome,email,vecchio.getFattoriDiRischio(),(Diabetologo)medicoSelezionato,
                             vecchio.getPatologiePregresse(),

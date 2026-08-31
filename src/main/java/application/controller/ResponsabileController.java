@@ -209,7 +209,7 @@ public class ResponsabileController {
     	//CONTROLLO SE É POSSIBILE ELIMINARE UN DIABETOLOGO
     	if (medico) {
     	    Diabetologo diabetologo =(Diabetologo) persona;
-    	    List<Paziente> pazientiSeguiti =Database.getInstance().getPazientiByDiabetologo(diabetologo);
+    	    List<Paziente> pazientiSeguiti =Database.getInstance().getPazientiByMedico(diabetologo);
 
     	    if (!pazientiSeguiti.isEmpty()) {
     	    	System.out.println("Impossibile eliminare un diabetologo che segue dei pazienti");
@@ -218,6 +218,22 @@ public class ResponsabileController {
     	}
     	
     	//CREAZIONE ALR+ERT PER ELIMINAZIONE
+        Optional<ButtonType> risultato = getRisultato(persona);
+
+        //CHIAMO IL DB PER AGGIORNAMENTO LISTE
+        if (risultato.isPresent()&& risultato.get() == ButtonType.OK) {
+            if (medico) {
+                Database.getInstance().deleteDiabetologo((Diabetologo) persona);
+
+            } else {
+                Database.getInstance().deletePaziente((Paziente) persona);
+            }
+
+            aggiornaListe();
+        }
+    }
+
+    private static Optional<ButtonType> getRisultato(User persona) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
         alert.setTitle("Eliminazione account");
@@ -232,19 +248,7 @@ public class ResponsabileController {
         );
 
 
-        Optional<ButtonType> risultato =alert.showAndWait();
-
-        //CHIAMO IL DB PER AGGIORNAMENTO LISTE
-        if (risultato.isPresent()&& risultato.get() == ButtonType.OK) {
-            if (medico) {
-                Database.getInstance().deleteDiabetologo((Diabetologo) persona);
-
-            } else {
-                Database.getInstance().deletePaziente((Paziente) persona);
-            }
-
-            aggiornaListe();
-        }
+        return alert.showAndWait();
     }
 
 

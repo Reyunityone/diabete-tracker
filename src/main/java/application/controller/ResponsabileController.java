@@ -21,6 +21,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -30,6 +31,7 @@ import application.classiGeneriche.Diabetologo;
 import application.classiGeneriche.Paziente;
 import application.classiGeneriche.Responsabile;
 import application.classiGeneriche.User;
+import javafx.stage.Window;
 
 public class ResponsabileController {
 
@@ -273,6 +275,10 @@ public class ResponsabileController {
     // =========================================================
     @FXML
     private void handleLogout() {
+        List<Window> windows = new ArrayList<>(Window.getWindows());
+        for(Window w : windows){
+            w.hide();
+        }
         try {
             FXMLLoader loader =new FXMLLoader(getClass().getResource("/application/view/Login.fxml"));
 

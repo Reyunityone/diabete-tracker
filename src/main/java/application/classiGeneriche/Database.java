@@ -2,6 +2,7 @@ package application.classiGeneriche;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Database {
     private static Database database;
@@ -170,6 +171,18 @@ public class Database {
         }
         return result;
     }
+    
+    public ArrayList<Paziente> getPazientiByDiabetologo(Diabetologo diabetologo) {
+        ArrayList<Paziente> result = new ArrayList<>();
+
+        for (Paziente p : pazienti) {
+            if (p.getMedicoDiRiferimento() != null &&p.getMedicoDiRiferimento().equals(diabetologo)) {
+                result.add(p);
+            }
+        }
+
+        return result;
+    }
 
     public User login(String username, String password){
         for(Diabetologo d : diabetologi){
@@ -207,6 +220,76 @@ public class Database {
             save();
         }
     }
+    
+    public void updateDiabetologo(Diabetologo vecchio, Diabetologo nuovo) {
+        int i = diabetologi.indexOf(vecchio);
 
+        if (i != -1) {
+            diabetologi.set(i, nuovo);
+            save();
+        }
+    }
+    
+    public void updatePaziente(Paziente vecchio, Paziente nuovo) {
+        int i = pazienti.indexOf(vecchio);
 
+        if (i != -1) {
+            pazienti.set(i, nuovo);
+            save();
+        }
+    }
+    
+    public void updateDiabetologoPazienti(Diabetologo nuovoDiabetologo,  ArrayList<Paziente> pazientiSelezionati) {
+    	for(Paziente p: pazientiSelezionati) {
+    		if(pazienti.contains(p)) {
+    			p.setMedicoDiRiferimento(nuovoDiabetologo);
+    		}
+    	}
+    	
+    	save();
+    }
+    
+    public void updatePazienteDiabetologo(Paziente p, Diabetologo d) {
+    	if(pazienti.contains(p) && diabetologi.contains(d)) p.setMedicoDiRiferimento(d);
+    	save();
+    }
+    
+    public boolean usernameEsistente(String username) {
+        for (Paziente p : pazienti) {
+            if (Objects.equals(p.getUsername(), username)) {
+                return true;
+            }
+        }
+
+        for (Diabetologo d : diabetologi) {
+            if (Objects.equals(d.getUsername(), username)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+	public void deleteDiabetologo(Diabetologo diabetologoDeleted) {
+		for(Diabetologo d: diabetologi) {
+			if(d.equals(diabetologoDeleted)) {
+				diabetologi.remove(d);
+				break;
+			}
+		}
+		
+		save();
+	}
+
+	public void deletePaziente(Paziente pazienteDeleted) {
+		
+		for(Paziente p:pazienti) {
+			if(p.equals(pazienteDeleted)) {
+				pazienti.remove(p);
+				break;
+			}
+		}
+		
+		save();
+	}
 }

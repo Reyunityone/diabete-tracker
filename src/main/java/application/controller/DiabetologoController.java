@@ -244,6 +244,7 @@ public class DiabetologoController {
     // LOGOUT
     @FXML
     private void handleLogout() {
+        Session.getInstance().logout();
         List<Window> windows = new ArrayList<>(Window.getWindows());
         for(Window w: windows){
             w.hide();

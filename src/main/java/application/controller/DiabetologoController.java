@@ -2,7 +2,6 @@ package application.controller;
 
 import application.classiGeneriche.*;
 import javafx.animation.PauseTransition;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -49,8 +48,8 @@ public class DiabetologoController {
 
     // DATI
     private final List<Paziente> pazienti = new ArrayList<>();
-    private Diabetologo medico;
-    private final List<Messaggio> messaggi = new ArrayList<>();
+    private final Diabetologo medico = (Diabetologo) Session.getInstance().getCurrentUser();
+    private List<Messaggio> messaggi = new ArrayList<>();
     private final List<Chiamata> chiamate = new ArrayList<>();
     @FXML private ImageView mailNotification;
 
@@ -69,27 +68,6 @@ public class DiabetologoController {
         this.messaggi = Database.getInstance().getMessaggiFromMedico(medico);
         aggiornaPallinoNotifiche();
     }
-    
-    private void inizializzaChiamate() {
-
-        chiamate.add(
-                new Chiamata(
-                        "Giulia",
-                        "Romano",
-                        "Richiesta di chiarimento sulla terapia.",
-                        false
-                )
-        );
-
-        chiamate.add(
-                new Chiamata(
-                        "Marco",
-                        "Ferrari",
-                        "Problema con il monitoraggio glicemico.",
-                        true
-                )
-        );
-    }
 
     private void inizializzaChiamate() {
         chiamate.add(new Chiamata("Giulia", "Romano", "Richiesta di chiarimento sulla terapia.", false));
@@ -106,13 +84,12 @@ public class DiabetologoController {
     }
 
     // PROFILO
-    public void inizializzaProfilo(Diabetologo medico) {
-        this.medico = medico;
+    public void inizializzaProfilo() {
         Database db = Database.getInstance();
         nomeCognomeLabel.setText(medico.getNome() + " " + medico.getCognome());
         ruoloLabel.setText("Medico");
         pazienti.clear();
-        pazienti.addAll(db.getPazientiFromMedico(medico));
+        pazienti.addAll(db.getPazientiByMedico(medico));
         aggiornaListaPazienti();
     }
 
@@ -133,8 +110,7 @@ public class DiabetologoController {
         ArrayList<Paziente> filteredPazienti = pazienti.stream().filter(p -> {
             String nomeCognome = p.getNome() + " " + p.getCognome();
             if(nomeCognome.toLowerCase().contains(ricerca.toLowerCase().trim())) return true;
-            if(p.getCodiceFiscale().toLowerCase().contains(ricerca.toLowerCase().trim())) return true;
-            return false;
+            return p.getCodiceFiscale().toLowerCase().contains(ricerca.toLowerCase().trim());
         }).collect(Collectors.toCollection(ArrayList::new));
 
         for(Paziente p : filteredPazienti){

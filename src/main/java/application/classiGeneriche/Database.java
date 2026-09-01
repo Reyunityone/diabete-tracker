@@ -71,6 +71,7 @@ public class Database {
             System.out.println("SCRITTURA COMPLETATA");
         } catch(IOException e){
             System.err.println("ERRORE NELLA SCRITTURA DEL DATABASE");
+            e.printStackTrace();
         }
     }
 
@@ -147,8 +148,6 @@ public class Database {
         save();
     }
 
-    public ArrayList<Paziente> getPazientiFromMedico(Diabetologo medico){
-        return pazienti.stream().filter(p -> p.getMedicoDiRiferimento().equals(medico)).collect(Collectors.toCollection(ArrayList::new));
     public void addMessaggio(Messaggio m){
         this.messaggi.add(m);
         save();

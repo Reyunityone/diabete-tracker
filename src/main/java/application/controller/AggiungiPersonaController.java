@@ -3,6 +3,9 @@ package application.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import application.classiGeneriche.Database;
+import application.classiGeneriche.Diabetologo;
+import application.classiGeneriche.Paziente;
 import application.classiGeneriche.User;
 
 import javafx.fxml.FXML;
@@ -138,14 +141,17 @@ public class AggiungiPersonaController {
         String email =emailField.getText().trim();
         String username =usernameField.getText().trim();
         String password =passwordField.getText();
-
-
-        // --------------------------------------------------------
-        // CONTROLLO DEI CAMPI
-        // --------------------------------------------------------
-
+        
+        //CONTROLLO COMPLETEZZA CAMPI INSERITI
         if (nome.isEmpty()|| cognome.isEmpty()|| codiceFiscale.isEmpty()|| email.isEmpty()|| username.isEmpty()|| password.isEmpty()) {
+        	System.out.println("Completa tutti i campi");
             return;
+        }
+        
+        //CONTROLLO USERNAME GIÁ ESISTENTE
+        if(Database.getInstance().usernameEsistente(username)){
+        	System.out.println("Username giá esistente");
+        	return;
         }
 
 
@@ -154,7 +160,7 @@ public class AggiungiPersonaController {
         // --------------------------------------------------------
 
         if (medico) {
-            List<User> pazientiSelezionati =new ArrayList<>();
+            ArrayList<Paziente> pazientiSelezionati =new ArrayList<>();
 
             for (MenuItem menuItem :pazientiMenuButton.getItems()) {
 
@@ -162,13 +168,20 @@ public class AggiungiPersonaController {
 
             	if (checkBox.isSelected()) {
 
-            		User paziente =(User) checkBox.getUserData();
+            		Paziente paziente = (Paziente) checkBox.getUserData();
 
             		pazientiSelezionati.add(paziente);
             	}
             }
-
-            responsabileController.aggiungiMedico(nome,cognome,codiceFiscale,email,username,password,pazientiSelezionati);
+            
+            //CREO IL DIABETOLOGO
+            Diabetologo diabetologo=new Diabetologo(username, password, codiceFiscale, nome, cognome, email);
+            
+            //AGGIORNO IL DB CON IL MEDICO NUOVO
+            Database.getInstance().addDiabetologo(diabetologo);
+            
+            //AGGIORNO IL MEDICO DI RIFERIMENTO DEI PAZIENTI SELEZIONATI PASSANDO DAL DB
+            Database.getInstance().updateDiabetologoPazienti(diabetologo, pazientiSelezionati);
         }
 
 
@@ -177,12 +190,26 @@ public class AggiungiPersonaController {
         // --------------------------------------------------------
 
         else {
-            User medicoSelezionato =medicoComboBox.getValue();
+            User medicoSelezionato = medicoComboBox.getValue();
 
-            if (medicoSelezionato == null) return;
-
-            responsabileController.aggiungiPaziente(nome,cognome,codiceFiscale,email,username,password,medicoSelezionato);
+            //CONTROLLO COMPLETEZZA DATI INSERITI
+            if (medicoSelezionato == null) {
+            	System.out.println("Completa tutti i campi");
+            	return;
+            }
+            
+            //CREO IL PAZIENTE
+            Paziente paziente=new Paziente(username, password, codiceFiscale, nome, cognome, email, null, (Diabetologo)medicoSelezionato, null, null, null);
+            
+            //AGGIORNO IL DB CON IL PAZIENTE NUOVO
+            Database.getInstance().addPaziente(paziente);
+            
+            //AGGIORNO IL MEDICO DI RIFERIMENTO DEL PAZIENTE SELEZIONATO PASSANDO DAL DB
+            Database.getInstance().updatePazienteDiabetologo(paziente, (Diabetologo) medicoSelezionato);
+          	
         }
+        
+        responsabileController.aggiornaListe();
 
         chiudiFinestra();
     }

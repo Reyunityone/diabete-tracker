@@ -2,6 +2,7 @@ package application.controller;
 
 import application.classiGeneriche.*;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,8 +17,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.Duration;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,15 +64,31 @@ public class DiabetologoController {
         aggiornaListaPazienti();
         configuraRicerca();
         configuraMenuMail();
-        inizializzaMessaggi();
         inizializzaChiamate();
+        GestoreAlert.verificaTuttiIPazienti(medico);
+        this.messaggi = Database.getInstance().getMessaggiFromMedico(medico);
         aggiornaPallinoNotifiche();
     }
+    
+    private void inizializzaChiamate() {
 
-    private void inizializzaMessaggi() {
-        messaggi.add(new Messaggio("Mario", "Rossi", "Buongiorno dottore, volevo chiederle informazioni sulla terapia.", false));
-        messaggi.add(new Messaggio("Luca", "Bianchi", "Ho effettuato gli esami richiesti.", true));
-        messaggi.add(new Messaggio("Anna", "Verdi", "Quando posso fissare il prossimo controllo?", false));
+        chiamate.add(
+                new Chiamata(
+                        "Giulia",
+                        "Romano",
+                        "Richiesta di chiarimento sulla terapia.",
+                        false
+                )
+        );
+
+        chiamate.add(
+                new Chiamata(
+                        "Marco",
+                        "Ferrari",
+                        "Problema con il monitoraggio glicemico.",
+                        true
+                )
+        );
     }
 
     private void inizializzaChiamate() {
@@ -251,11 +268,37 @@ public class DiabetologoController {
     // LOGOUT
     @FXML
     private void handleLogout() {
+        List<Window> windows = new ArrayList<>(Window.getWindows());
+        for(Window w: windows){
+            w.hide();
+        }
+
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/Login.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) logoutButton.getScene().getWindow();
-            stage.setScene(new Scene(root, 1200, 750));
+            FXMLLoader loader =
+                    new FXMLLoader(
+                            getClass().getResource(
+                                    "/application/view/Login.fxml"
+                            )
+                    );
+
+            Parent root =
+                    loader.load();
+
+
+            Stage stage =
+                    (Stage) logoutButton
+                            .getScene()
+                            .getWindow();
+
+
+            stage.setScene(
+                    new Scene(
+                            root,
+                            1200,
+                            750
+                    )
+            );
+
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -300,17 +343,4 @@ public class DiabetologoController {
         apriFinestra("InfoPaziente.fxml", "Informazioni paziente", paziente);
     }
 
-    // CLASSE PERSONA
-    public static class Persona {
-        private final String nome;
-        private final String cognome;
-
-        public Persona(String nome, String cognome) {
-            this.nome = nome;
-            this.cognome = cognome;
-        }
-
-        public String getNome() { return nome; }
-        public String getCognome() { return cognome; }
-    }
 }

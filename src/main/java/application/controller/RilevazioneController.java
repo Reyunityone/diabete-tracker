@@ -1,11 +1,7 @@
 package application.controller;
 
-import application.classiGeneriche.MomentoRilevazione;
-import application.classiGeneriche.Database;
-import application.classiGeneriche.Paziente;
-import application.classiGeneriche.Rilevazione;
+import application.classiGeneriche.*;
 
-import application.classiGeneriche.Session;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -179,6 +175,7 @@ public class RilevazioneController {
                 );
 
 
+        GestoreAlert.verificaGlicemia(rilevazione);
 
         salvataggio.accept(
                 rilevazione

@@ -3,6 +3,7 @@ package application.classiGeneriche;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+import java.util.Objects;
 
 public class Database {
     private static Database database;
@@ -15,6 +16,7 @@ public class Database {
     private ArrayList<Rilevazione> rilevazioni;
     private ArrayList<Segnalazione> segnalazioni;
     private ArrayList<Responsabile> responsabili;
+    private ArrayList<Messaggio> messaggi;
 
     Database(String fileName){
         this.fileName = fileName;
@@ -32,7 +34,7 @@ public class Database {
 
     @SuppressWarnings("unchecked")
     public void load(){
-        try (FileInputStream file = new FileInputStream(fileName); ObjectInputStream ois = new ObjectInputStream(file);){
+        try (FileInputStream file = new FileInputStream(fileName); ObjectInputStream ois = new ObjectInputStream(file)){
             this.diabetologi = (ArrayList<Diabetologo>) ois.readObject();
             this.pazienti = (ArrayList<Paziente>) ois.readObject();
             this.terapie = (ArrayList<Terapia>) ois.readObject();
@@ -40,6 +42,7 @@ public class Database {
             this.rilevazioni = (ArrayList<Rilevazione>) ois.readObject();
             this.segnalazioni = (ArrayList<Segnalazione>) ois.readObject();
             this.responsabili = (ArrayList<Responsabile>) ois.readObject();
+            this.messaggi = (ArrayList<Messaggio>) ois.readObject();
             System.out.println("LETTURA COMPLETATA");
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("ERRORE NELLA LETTURA DB");
@@ -50,6 +53,7 @@ public class Database {
             this.rilevazioni = new ArrayList<>();
             this.segnalazioni = new ArrayList<>();
             this.responsabili = new ArrayList<>();
+            this.messaggi = new ArrayList<>();
         }
 
     }
@@ -63,6 +67,7 @@ public class Database {
             oos.writeObject(this.rilevazioni);
             oos.writeObject(this.segnalazioni);
             oos.writeObject(this.responsabili);
+            oos.writeObject(this.messaggi);
             System.out.println("SCRITTURA COMPLETATA");
         } catch(IOException e){
             System.err.println("ERRORE NELLA SCRITTURA DEL DATABASE");
@@ -95,6 +100,10 @@ public class Database {
     }
 
     public ArrayList<Responsabile> getResponsabili(){ return new ArrayList<>(responsabili);}
+
+    public ArrayList<Messaggio> getAllMessaggi(){
+        return new ArrayList<>(messaggi);
+    }
 
     public void addDiabetologo(Diabetologo d){
         if (!diabetologi.contains(d)) {
@@ -140,6 +149,9 @@ public class Database {
 
     public ArrayList<Paziente> getPazientiFromMedico(Diabetologo medico){
         return pazienti.stream().filter(p -> p.getMedicoDiRiferimento().equals(medico)).collect(Collectors.toCollection(ArrayList::new));
+    public void addMessaggio(Messaggio m){
+        this.messaggi.add(m);
+        save();
     }
 
     public ArrayList<Terapia> getTerapieByPaziente(Paziente p){
@@ -172,6 +184,43 @@ public class Database {
             if (s.getPaziente().equals(p)) result.add(s);
         }
         return result;
+    }
+
+    public ArrayList<Paziente> getPazientiByMedico(Diabetologo d){
+        ArrayList<Paziente> result = new ArrayList<>();
+        for(Paziente p : pazienti){
+            if(p.getMedicoDiRiferimento().equals(d)) result.add(p);
+        }
+        return result;
+    }
+
+    public ArrayList<Messaggio> getMessaggiFromMedico(Diabetologo d){
+        ArrayList<Messaggio> result = new ArrayList<>();
+        for(Messaggio m: messaggi){
+            if(m.getDiabetologo() != null){
+                if(m.getDiabetologo().equals(d) && (m.getTipo() == TipoAlert.PAZIENTE_MEDICO || m.getTipo() == TipoAlert.SISTEMA_MEDICO)) result.add(m);
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<Messaggio> getMessaggiFromPaziente(Paziente p){
+        ArrayList<Messaggio> result = new ArrayList<>();
+        for(Messaggio m: messaggi){
+            if(m.getPaziente() != null){
+                if(m.getPaziente().equals(p) && (m.getTipo() == TipoAlert.MEDICO_PAZIENTE || m.getTipo() == TipoAlert.SISTEMA_PAZIENTE)) result.add(m);
+            }
+
+        }
+        return result;
+    }
+
+    public void setMessaggioLetto(Messaggio m){
+        if(!this.messaggi.contains(m)) return;
+        int i = this.messaggi.indexOf(m);
+        m.setLetto(true);
+        this.messaggi.set(i, m);
+        save();
     }
 
     public User login(String username, String password){
@@ -210,7 +259,55 @@ public class Database {
             save();
         }
     }
+    
+    public void updateDiabetologo(Diabetologo vecchio, Diabetologo nuovo) {
+        int i = diabetologi.indexOf(vecchio);
 
+        if (i != -1) {
+            diabetologi.set(i, nuovo);
+            save();
+        }
+    }
+    
+    public void updatePaziente(Paziente vecchio, Paziente nuovo) {
+        int i = pazienti.indexOf(vecchio);
+
+        if (i != -1) {
+            pazienti.set(i, nuovo);
+            save();
+        }
+    }
+    
+    public void updateDiabetologoPazienti(Diabetologo nuovoDiabetologo,  ArrayList<Paziente> pazientiSelezionati) {
+    	for(Paziente p: pazientiSelezionati) {
+    		if(pazienti.contains(p)) {
+    			p.setMedicoDiRiferimento(nuovoDiabetologo);
+    		}
+    	}
+    	
+    	save();
+    }
+    
+    public void updatePazienteDiabetologo(Paziente p, Diabetologo d) {
+    	if(pazienti.contains(p) && diabetologi.contains(d)) p.setMedicoDiRiferimento(d);
+    	save();
+    }
+    
+    public boolean usernameEsistente(String username) {
+        for (Paziente p : pazienti) {
+            if (Objects.equals(p.getUsername(), username)) {
+                return true;
+            }
+        }
+
+        for (Diabetologo d : diabetologi) {
+            if (Objects.equals(d.getUsername(), username)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
     public void assegnaTerapia(
             Terapia terapia,
             Paziente paziente) {
@@ -252,4 +349,26 @@ public class Database {
     }
 
 
+	public void deleteDiabetologo(Diabetologo diabetologoDeleted) {
+		for(Diabetologo d: diabetologi) {
+			if(d.equals(diabetologoDeleted)) {
+				diabetologi.remove(d);
+				break;
+			}
+		}
+		
+		save();
+	}
+
+	public void deletePaziente(Paziente pazienteDeleted) {
+		
+		for(Paziente p:pazienti) {
+			if(p.equals(pazienteDeleted)) {
+				pazienti.remove(p);
+				break;
+			}
+		}
+		
+		save();
+	}
 }

@@ -1,5 +1,6 @@
 package application.controller;
 
+import application.classiGeneriche.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,8 +18,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import application.classiGeneriche.Messaggio;
+import java.util.Objects;
 
 public class MessaggiController {
 
@@ -103,14 +103,8 @@ public class MessaggiController {
 
         for (Messaggio messaggio : messaggi) {
 
-            String nomeCompleto =
-                    messaggio.getNome()
-                            + " "
-                            + messaggio.getCognome();
-
-
             if (!testo.isEmpty()
-                    && !nomeCompleto
+                    && !messaggio.getMittenteString()
                             .toLowerCase()
                             .contains(testo)) {
 
@@ -164,10 +158,10 @@ public class MessaggiController {
         ImageView avatar =
                 new ImageView(
                         new Image(
-                                getClass()
+                                Objects.requireNonNull(getClass()
                                         .getResourceAsStream(
                                                 "/application/images/avatar.png"
-                                        )
+                                        ))
                         )
                 );
 
@@ -181,12 +175,9 @@ public class MessaggiController {
         // =====================================================
         // NOME
         // =====================================================
-
         Label nome =
                 new Label(
-                        messaggio.getNome()
-                                + " "
-                                + messaggio.getCognome()
+                        messaggio.getMittenteString()
                 );
 
         nome.getStyleClass().add(

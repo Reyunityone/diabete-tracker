@@ -62,5 +62,8 @@ public abstract sealed class User implements Serializable permits Paziente, Diab
         this.username = username;
     }
 
-
+    @Override
+    public String toString() {
+        return getNome() + " " + getCognome();
+    }
 }

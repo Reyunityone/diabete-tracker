@@ -5,7 +5,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 
@@ -67,9 +66,10 @@
                promptText="Username"
                prefHeight="40"/>
 
-    <PasswordField fx:id="passwordField"
-                   promptText="Nuova password"
-                   prefHeight="40"/>
+    <!-- PASSWORD VISIBILE -->
+    <TextField fx:id="passwordField"
+               promptText="Password"
+               prefHeight="40"/>
 
 
     <!-- ===================================================== -->
@@ -81,11 +81,9 @@
            style="-fx-font-weight: bold;"/>
 
 
-    <!--
-        Utilizzato quando si modifica un PAZIENTE.
-
-        È possibile selezionare un solo medico.
-    -->
+    <!-- ===================================================== -->
+    <!-- MEDICO REFERENTE DEL PAZIENTE -->
+    <!-- ===================================================== -->
 
     <ComboBox fx:id="medicoComboBox"
               promptText="Seleziona medico"
@@ -93,11 +91,9 @@
               prefHeight="40"/>
 
 
-    <!--
-        Utilizzato quando si modifica un MEDICO.
-
-        È possibile selezionare più pazienti.
-    -->
+    <!-- ===================================================== -->
+    <!-- PAZIENTI DEL MEDICO -->
+    <!-- ===================================================== -->
 
     <MenuButton fx:id="pazientiMenuButton"
                 text="Seleziona pazienti"

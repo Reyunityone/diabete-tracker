@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class LoginController {
 
@@ -22,9 +23,17 @@ public class LoginController {
 
     @FXML
     public void initialize() {
-        Database.getInstance().addDiabetologo(new Diabetologo());
-        Database.getInstance().addPaziente(new Paziente());
+        Paziente luca = new Paziente();
+        Diabetologo mario = new Diabetologo();
+        Database.getInstance().addDiabetologo(mario);
+        Database.getInstance().addPaziente(luca);
         Database.getInstance().addResponsabile(new Responsabile());
+        ArrayList<Paziente> pazientiTerapia = new ArrayList<>();
+        pazientiTerapia.add(luca);
+        Terapia t1 = new Terapia("dolipran", 12, 3, mario, pazientiTerapia, "prima dei pasti");
+        Terapia t2 = new Terapia("tachi", 10, 2, mario, pazientiTerapia, "dopo i pasti");
+        Database.getInstance().addTerapia(t1);
+        Database.getInstance().addTerapia(t2);
     }
 
 
@@ -38,8 +47,8 @@ public class LoginController {
         if(loggedUser != null){
             Session.getInstance().setCurrentUser(loggedUser);
             switch(loggedUser){
-                case Paziente p -> cambiaSchermataPaziente(p);
-                case Diabetologo d -> cambiaSchermataDiabetologo(d);
+                case Paziente p -> cambiaSchermataPaziente();
+                case Diabetologo d -> cambiaSchermataDiabetologo();
                 case Responsabile r -> cambiaSchermataResponsabile(r);
             }
         }
@@ -82,7 +91,7 @@ public class LoginController {
      * Apre la schermata del Diabetologo
      * passando nome e cognome inseriti nel Login.
      */
-    private void cambiaSchermataDiabetologo(Diabetologo medico) {
+    private void cambiaSchermataDiabetologo() {
     	try {
     	FXMLLoader loader =
                 new FXMLLoader(
@@ -99,9 +108,7 @@ public class LoginController {
                 loader.getController();
 
 
-        controller.inizializzaProfilo(
-                medico
-        );
+        controller.inizializzaProfilo();
 
 
         Stage stage =
@@ -128,7 +135,7 @@ public class LoginController {
      * Apre la schermata del Paziente
      * passando nome e cognome inseriti nel Login.
      */
-    private void cambiaSchermataPaziente(Paziente loggedUser) {
+    private void cambiaSchermataPaziente() {
 
         try {
 

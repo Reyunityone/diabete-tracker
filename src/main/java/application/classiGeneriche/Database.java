@@ -2,6 +2,7 @@ package application.classiGeneriche;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 import java.util.Objects;
 
 public class Database {
@@ -146,6 +147,8 @@ public class Database {
         save();
     }
 
+    public ArrayList<Paziente> getPazientiFromMedico(Diabetologo medico){
+        return pazienti.stream().filter(p -> p.getMedicoDiRiferimento().equals(medico)).collect(Collectors.toCollection(ArrayList::new));
     public void addMessaggio(Messaggio m){
         this.messaggi.add(m);
         save();

@@ -1,5 +1,6 @@
 package application.controller;
 
+import application.classiGeneriche.Database;
 import application.classiGeneriche.MomentoRilevazione;
 import application.classiGeneriche.Paziente;
 import application.classiGeneriche.Rilevazione;
@@ -76,6 +77,8 @@ public class AndamentoController {
 
     private Paziente paziente;
 
+    private ArrayList<Rilevazione> rilevazionePaziente = new ArrayList<>();
+
     private LocalDate dataSelezionata = LocalDate.now();
     
     private final DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -148,6 +151,10 @@ public class AndamentoController {
 
     public void inizializzaPaziente(Paziente paziente) {
         this.paziente = paziente;
+
+        Database db = Database.getInstance();
+
+        rilevazionePaziente= db.getRilevazioniByPaziente(paziente);
 
         titoloLabel.setText("Andamento glicemico - "+ paziente.getNome()+ " "+ paziente.getCognome());
 
@@ -406,7 +413,7 @@ public class AndamentoController {
     // ============================================================
 
     private List<Rilevazione> rilevazioniDelGiorno(LocalDate giorno) {
-        List<Rilevazione> rilevazioni =new ArrayList<>();
+        /*List<Rilevazione> rilevazioni =new ArrayList<>();
 
         rilevazioni.add(new Rilevazione(giorno,90,LocalTime.of(7, 0),LocalTime.of(7, 30),MomentoRilevazione.PRIMA_COLAZIONE,paziente));
         rilevazioni.add(new Rilevazione(giorno,125,LocalTime.of(9, 30),LocalTime.of(9, 30),MomentoRilevazione.DOPO_COLAZIONE,paziente));
@@ -418,8 +425,8 @@ public class AndamentoController {
         rilevazioni.add(new Rilevazione(giorno,135,LocalTime.of(21, 30),LocalTime.of(21, 30),MomentoRilevazione.DOPO_CENA,paziente));
 
         rilevazioni.sort((r1, r2) ->r1.getOrarioRilevazione().compareTo(r2.getOrarioRilevazione()));
-        
-        return rilevazioni;
+        */
+        return rilevazionePaziente.stream().filter(r -> r.getData().equals(giorno)).toList();
     }
 
     

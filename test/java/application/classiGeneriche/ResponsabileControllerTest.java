@@ -5,321 +5,385 @@ import application.classiGeneriche.Diabetologo;
 import application.classiGeneriche.Paziente;
 import application.classiGeneriche.Responsabile;
 
+import javafx.application.Platform;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.nio.file.Path;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 class ResponsabileControllerTest {
 
+    @TempDir
+    Path tempDir;
+
+    private Database db;
     private ResponsabileController controller;
 
+    private ImageView profileImage;
+    private Label nomeCognomeLabel;
+    private Label ruoloLabel;
+    private Button logoutButton;
+
+    private TextField searchField;
+    private ScrollPane mediciScrollPane;
+    private ScrollPane pazientiScrollPane;
+    private VBox mediciContainer;
+    private VBox pazientiContainer;
+
+
+    // =========================================================
+    // INIZIALIZZAZIONE JAVAFX
+    // =========================================================
+
+    @BeforeAll
+    static void inizializzaJavaFX()throws InterruptedException {
+        CountDownLatch latch =new CountDownLatch(1);
+        try {
+            Platform.startup(latch::countDown);
+            latch.await();
+        } catch (IllegalStateException e) {
+            // JavaFX già inizializzato
+        }
+    }
+
+
+    // =========================================================
+    // SETUP E TEARDOWN
+    // =========================================================
+
     @BeforeEach
-    void setUp() {
-        controller = new ResponsabileController();
+    void setUp() throws Exception {
+    	db = new Database(tempDir.resolve("test-database.data").toString());
+        sostituisciDatabaseSingleton(db);
+
+        controller =new ResponsabileController();
+
+        creaComponentiJavaFX();
+
+        collegaComponentiAlController();
     }
 
+
+    @AfterEach
+    void tearDown() throws Exception {
+        sostituisciDatabaseSingleton(null);
+    }
+
+
     // =========================================================
-    // GET MEDICI
+    // DATABASE DI TEST
+    // =========================================================
+
+
+    private void sostituisciDatabaseSingleton(Database nuovoDatabase) throws Exception {
+        Field field =Database.class.getDeclaredField("database");
+
+        field.setAccessible(true);
+
+        field.set(null, nuovoDatabase);
+    }
+
+
+    // =========================================================
+    // CREA E COLLEGA COMPONENTI JAVAFX
+    // =========================================================
+
+    private void creaComponentiJavaFX() {
+        runAndWait(() -> {
+            profileImage =new ImageView();
+            nomeCognomeLabel =new Label();
+            ruoloLabel =new Label();
+            logoutButton =new Button();
+            searchField =new TextField();
+            mediciScrollPane =new ScrollPane();
+            pazientiScrollPane =new ScrollPane();
+            mediciContainer =new VBox();
+            pazientiContainer =new VBox();
+        });
+    }
+
+
+    private void collegaComponentiAlController()throws Exception {
+        setField("profileImage",profileImage);
+        setField("nomeCognomeLabel",nomeCognomeLabel);
+        setField("ruoloLabel",ruoloLabel);
+        setField("logoutButton",logoutButton);
+        setField("searchField",searchField);
+        setField("mediciScrollPane",mediciScrollPane);
+        setField("pazientiScrollPane",pazientiScrollPane);
+        setField("mediciContainer",mediciContainer);
+        setField("pazientiContainer",pazientiContainer);
+    }
+
+
+    private void setField(String nome,Object valore) throws Exception {
+        Field field =ResponsabileController.class.getDeclaredField(nome);
+        field.setAccessible(true);
+        field.set(controller,valore);
+    }
+
+
+    // =========================================================
+    // INITIALIZE
     // =========================================================
 
     @Test
-    void getMediciRestituisceListaMedici() {
-
-        Diabetologo medico = new Diabetologo(
-                "medicoTest",
-                "password",
-                "CFMEDICO",
-                "Mario",
-                "Rossi",
-                "mario@test.it"
-        );
-
-        Database.getInstance().addDiabetologo(medico);
-
-        assertTrue(controller.getMedici().contains(medico));
+    void initializeImpostaIlRuoloResponsabile() {
+        runAndWait(() -> {
+            controller.initialize();
+            assertEquals("Responsabile",ruoloLabel.getText());
+        });
     }
 
+
     // =========================================================
-    // GET PAZIENTI
+    // PROFILO
     // =========================================================
 
     @Test
-    void getPazientiRestituisceListaPazienti() {
-
-        Paziente paziente = new Paziente(
-                "pazienteTest",
-                "password",
-                "CFPAZIENTE",
-                "Luca",
-                "Bianchi",
-                "luca@test.it",
-                null,
-                new Diabetologo(),
-                null,
-                null,
-                null
-        );
-
-        Database.getInstance().addPaziente(paziente);
-
-        assertTrue(controller.getPazienti().contains(paziente));
+    void inizializzaProfiloVisualizzaNomeECognome() {
+        Responsabile responsabile =new Responsabile("responsabile","password","CFRESP","Mario","Rossi","mario@test.it");
+        
+        runAndWait(() -> {
+            controller.inizializzaProfilo(responsabile);
+            assertEquals("Mario Rossi",nomeCognomeLabel.getText());
+            assertEquals("Responsabile",ruoloLabel.getText());
+        });
     }
 
 
     // =========================================================
-    // AGGIUNTA MEDICO
+    // LISTE SENZA RICERCA
+    // =========================================================
+    @Test
+    void aggiornaListeVisualizzaTuttiGliUtentiQuandoLaRicercaEVuota() {
+        aggiungiMedico("medico1","Mario","Rossi");
+        aggiungiMedico("medico2","Luca","Bianchi");
+        aggiungiPaziente("paziente1","Anna","Verdi");
+
+        runAndWait(() -> {
+            searchField.setText("");
+            controller.initialize();
+            assertEquals(2,mediciContainer.getChildren().size());
+            assertEquals(1,pazientiContainer.getChildren().size());
+        });
+    }
+
+
+    // =========================================================
+    // RICERCA PER NOME
     // =========================================================
 
     @Test
-    void aggiuntaMedicoRendeIlMedicoDisponibileNelController() {
+    void ricercaPerNomeMostraSoloLaPersonaCorrispondente() {
+        aggiungiMedico("medico1","Mario","Rossi");
+        aggiungiMedico("medico2","Luca","Bianchi");
 
-        Diabetologo medico = new Diabetologo(
-                "medicoNuovo",
-                "password",
-                "CFNUOVOMED",
-                "Anna",
-                "Neri",
-                "anna@test.it"
-        );
-
-        Database.getInstance().addDiabetologo(medico);
-
-        assertTrue(
-                controller.getMedici().stream()
-                        .anyMatch(d -> d.getUsername().equals("medicoNuovo"))
-        );
+        runAndWait(() -> {
+            searchField.setText("Mario");
+            controller.initialize();
+            assertEquals(1,mediciContainer.getChildren().size());
+            assertEquals("Mario Rossi",nomeDelBox(mediciContainer.getChildren().getFirst()));
+        });
     }
 
+
     // =========================================================
-    // AGGIUNTA PAZIENTE
+    // RICERCA PER COGNOME
     // =========================================================
 
     @Test
-    void aggiuntaPazienteRendeIlPazienteDisponibileNelController() {
+    void ricercaPerCognomeMostraLaPersonaCorrispondente() {
+        aggiungiMedico("medico1","Mario","Rossi");
+        aggiungiMedico("medico2","Luca","Bianchi");
 
-        Paziente paziente = new Paziente(
-                "pazienteNuovo",
-                "password",
-                "CFNUOVOPAZ",
-                "Paolo",
-                "Neri",
-                "paolo@test.it",
-                null,
-                new Diabetologo(),
-                null,
-                null,
-                null
-        );
-
-        Database.getInstance().addPaziente(paziente);
-
-        assertTrue(
-                controller.getPazienti().stream()
-                        .anyMatch(p -> p.getUsername().equals("pazienteNuovo"))
-        );
+        runAndWait(() -> {
+            searchField.setText("Bianchi");
+            controller.initialize();
+            assertEquals(1,mediciContainer.getChildren().size());
+            assertEquals("Luca Bianchi",nomeDelBox(mediciContainer.getChildren().getFirst()));
+        });
     }
 
+
     // =========================================================
-    // ASSOCIAZIONE PAZIENTE - DIABETOLOGO
+    // RICERCA CASE INSENSITIVE
     // =========================================================
 
     @Test
-    void pazienteVieneAssociatoAlDiabetologo() {
+    void ricercaNonFaDifferenzaTraMaiuscoleEMinuscole() {
+        aggiungiMedico("medico1","Mario","Rossi");
 
-        Diabetologo medico = new Diabetologo(
-                "medicoAssociazione",
-                "password",
-                "CFMEDASS",
-                "Mario",
-                "Rossi",
-                "medico@test.it"
-        );
-
-        Paziente paziente = new Paziente(
-                "pazienteAssociazione",
-                "password",
-                "CFPAZASS",
-                "Luca",
-                "Bianchi",
-                "paziente@test.it",
-                null,
-                new Diabetologo(),
-                null,
-                null,
-                null
-        );
-
-        Database.getInstance().addDiabetologo(medico);
-        Database.getInstance().addPaziente(paziente);
-
-        Database.getInstance()
-                .updatePazienteDiabetologo(paziente, medico);
-
-        Paziente risultato = Database.getInstance()
-                .getPazienti()
-                .stream()
-                .filter(p -> p.getUsername().equals("pazienteAssociazione"))
-                .findFirst()
-                .orElseThrow();
-
-        assertNotNull(risultato.getMedicoDiRiferimento());
-
-        assertEquals(
-                medico.getUsername(),
-                risultato.getMedicoDiRiferimento().getUsername()
-        );
+        runAndWait(() -> {
+            searchField.setText("mArIo");
+            controller.initialize();
+            assertEquals(1,mediciContainer.getChildren().size());
+        });
     }
 
+
     // =========================================================
-    // PAZIENTI SEGUITI DA UN MEDICO
+    // RICERCA NOME + COGNOME
     // =========================================================
 
     @Test
-    void getPazientiByDiabetologoRestituiscePazientiCorretti() {
+    void ricercaPerNomeECognomeFunziona() {
+        aggiungiPaziente("paziente","Anna","Verdi");
 
-        Diabetologo medico = new Diabetologo(
-                "medicoSeguiti",
-                "password",
-                "CFMEDSEG",
-                "Mario",
-                "Rossi",
-                "medico@test.it"
-        );
-
-        Paziente paziente = new Paziente(
-                "pazienteSeguito",
-                "password",
-                "CFPAZSEG",
-                "Luca",
-                "Bianchi",
-                "paziente@test.it",
-                null,
-                medico,
-                null,
-                null,
-                null
-        );
-
-        Database.getInstance().addDiabetologo(medico);
-        Database.getInstance().addPaziente(paziente);
-
-        var pazientiSeguiti =
-                Database.getInstance().getPazientiByDiabetologo(medico);
-
-        assertEquals(1, pazientiSeguiti.size());
-        assertTrue(pazientiSeguiti.contains(paziente));
+        runAndWait(() -> {
+            searchField.setText("Anna Verdi");
+            controller.initialize();
+            assertEquals(1,pazientiContainer.getChildren().size());
+        });
     }
 
+
     // =========================================================
-    // ELIMINAZIONE PAZIENTE
+    // RICERCA SENZA RISULTATI
     // =========================================================
 
     @Test
-    void eliminazionePazienteRimuoveIlPazienteDalDatabase() {
-
-        Paziente paziente = new Paziente(
-                "pazienteDelete",
-                "password",
-                "CFDELETE",
-                "Paolo",
-                "Verdi",
-                "paolo@test.it",
-                null,
-                new Diabetologo(),
-                null,
-                null,
-                null
-        );
-
-        Database.getInstance().addPaziente(paziente);
-
-        assertTrue(
-                Database.getInstance()
-                        .getPazienti()
-                        .contains(paziente)
-        );
-
-        Database.getInstance().deletePaziente(paziente);
-
-        assertFalse(
-                Database.getInstance()
-                        .getPazienti()
-                        .contains(paziente)
-        );
+    void ricercaSenzaRisultatiLasciaVuotiIContainer() {
+        aggiungiMedico("medico","Mario","Rossi");
+        aggiungiPaziente("paziente","Anna","Verdi");
+        
+        runAndWait(() -> {
+            searchField.setText("PersonaInesistente");
+            controller.initialize();
+            assertTrue(mediciContainer.getChildren().isEmpty());
+            assertTrue(pazientiContainer.getChildren().isEmpty());
+        });
     }
 
+
     // =========================================================
-    // ELIMINAZIONE DIABETOLOGO
+    // LISTENER DELLA RICERCA
     // =========================================================
 
     @Test
-    void eliminazioneDiabetologoRimuoveIlMedicoDalDatabase() {
+    void modificaDelTestoDiRicercaAggiornaAutomaticamenteLeListe() {
+        aggiungiMedico("medico","Mario","Rossi");
 
-        Diabetologo medico = new Diabetologo(
-                "medicoDelete",
-                "password",
-                "CFMEDDELETE",
-                "Anna",
-                "Neri",
-                "anna@test.it"
-        );
-
-        Database.getInstance().addDiabetologo(medico);
-
-        assertTrue(
-                Database.getInstance()
-                        .getDiabetologi()
-                        .contains(medico)
-        );
-
-        Database.getInstance().deleteDiabetologo(medico);
-
-        assertFalse(
-                Database.getInstance()
-                        .getDiabetologi()
-                        .contains(medico)
-        );
+        runAndWait(() -> {
+            searchField.setText("");
+            controller.initialize();
+            assertEquals(1,mediciContainer.getChildren().size());
+            
+            searchField.setText("inesistente");
+            assertTrue(mediciContainer.getChildren().isEmpty());
+            
+            searchField.setText("Mario");
+            assertEquals(1,mediciContainer.getChildren().size());
+        });
     }
 
+
     // =========================================================
-    // CONTROLLO ELIMINAZIONE MEDICO CON PAZIENTI
+    // STRUTTURA BOX PERSONA
     // =========================================================
 
     @Test
-    void diabetologoConPazientiNonDovrebbeEssereEliminabile() {
+    void boxPersonaContieneAvatarNomeEModificaElimina() {
+        aggiungiMedico("medico","Mario","Rossi");
 
-        Diabetologo medico = new Diabetologo(
-                "medicoConPaziente",
-                "password",
-                "CFMEDPAZ",
-                "Mario",
-                "Rossi",
-                "medico@test.it"
-        );
+        runAndWait(() -> {
+            controller.initialize();
+            assertEquals(1,mediciContainer.getChildren().size());
 
-        Paziente paziente = new Paziente(
-                "pazienteMedico",
-                "password",
-                "CFPAZMED",
-                "Luca",
-                "Bianchi",
-                "paziente@test.it",
-                null,
-                medico,
-                null,
-                null,
-                null
-        );
-
-        Database.getInstance().addDiabetologo(medico);
-        Database.getInstance().addPaziente(paziente);
-
-        assertFalse(
-                Database.getInstance()
-                        .getPazientiByDiabetologo(medico)
-                        .isEmpty()
-        );
+            HBox box =(HBox)mediciContainer.getChildren().getFirst();
+            assertTrue(box.getChildren().stream().anyMatch(node ->node instanceof ImageView));
+            assertTrue(box.getChildren().stream().anyMatch(node ->node instanceof Label));
+            assertTrue(box.getChildren().stream().anyMatch(node ->node instanceof Button&& ((Button) node).getText().equals("Cambia credenziali")));
+            assertTrue(box.getChildren().stream().anyMatch(node ->node instanceof Button&& ((Button) node).getText().equals("Elimina account")));
+        });
     }
 
+
+    // =========================================================
+    // SUPPORTO
+    // =========================================================
+
+    private void aggiungiMedico(String username,String nome,String cognome) {
+        db.addDiabetologo(new Diabetologo(username,"password","CF" + username,nome,cognome,username + "@test.it"));
+    }
+
+
+    private void aggiungiPaziente(String username,String nome,String cognome) {
+        db.addPaziente(new Paziente(username,"password","CF" + username,nome,cognome,username + "@test.it",null,new Diabetologo(),null,null,null));
+    }
+
+
+    private String nomeDelBox(Node node) {
+        HBox box = (HBox) node;
+        return box.getChildren().stream().filter(elemento ->elemento instanceof Label).map(elemento ->((Label) elemento).getText()).findFirst().orElse(null);
+    }
+
+    /*
+     * Esegue il codice sul JavaFX Application Thread e attende che venga completato.
+     *
+     * È necessario perché i componenti grafici JavaFX (TextField, ListView,
+     * ComboBox, ecc.) possono essere letti o modificati in sicurezza solo
+     * dal thread principale di JavaFX.
+     *
+     * Nei test, invece, il codice può essere eseguito da un thread diverso
+     * dal JavaFX Application Thread. Per questo motivo utilizziamo
+     * Platform.runLater() per spostare l'esecuzione sul thread corretto
+     * e CountDownLatch per attendere che l'operazione sia terminata prima
+     * di proseguire.
+     *
+     * In questo modo il metodo chiamante non continua l'esecuzione mentre
+     * la GUI sta ancora aggiornando i suoi componenti.
+     */
+    private void runAndWait(Runnable runnable) {
+        if (Platform.isFxApplicationThread()) {
+            runnable.run();
+            return;
+        }
+
+        CountDownLatch latch =new CountDownLatch(1);
+
+        AtomicReference<Throwable> errore =new AtomicReference<>();
+
+        Platform.runLater(() -> {
+            try {
+                runnable.run();
+            } catch (Throwable e) {
+                errore.set(e);
+            } finally {
+                latch.countDown();
+            }
+        });
+
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException(e);
+        }
+
+        if (errore.get() != null) {
+            throw new RuntimeException(
+                    errore.get()
+            );
+        }
+    }
 }

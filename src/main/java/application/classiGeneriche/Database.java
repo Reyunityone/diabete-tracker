@@ -18,7 +18,7 @@ public class Database {
     private ArrayList<Responsabile> responsabili;
     private ArrayList<Messaggio> messaggi;
 
-    Database(String fileName){
+    public Database(String fileName){
         this.fileName = fileName;
         load();
     }
@@ -348,26 +348,15 @@ public class Database {
     }
 
 
-	public void deleteDiabetologo(Diabetologo diabetologoDeleted) {
-		for(Diabetologo d: diabetologi) {
-			if(d.equals(diabetologoDeleted)) {
-				diabetologi.remove(d);
-				break;
-			}
-		}
-		
-		save();
-	}
+    public void deleteDiabetologo(Diabetologo diabetologoDeleted) {
+        if (diabetologi.remove(diabetologoDeleted)) {
+            save();
+        }
+    }
 
-	public void deletePaziente(Paziente pazienteDeleted) {
-		
-		for(Paziente p:pazienti) {
-			if(p.equals(pazienteDeleted)) {
-				pazienti.remove(p);
-				break;
-			}
-		}
-		
-		save();
-	}
+    public void deletePaziente(Paziente pazienteDeleted) {
+        if (pazienti.remove(pazienteDeleted)) {
+            save();
+        }
+    }
 }

@@ -216,7 +216,9 @@ public class ModificaCredenzialiController {
 
             modificaCredenziali(persona,username,password,codiceFiscale,nome,cognome,email,null,medicoSelezionato);
         }
-
+        
+        responsabileController.aggiornaListe();
+        
         chiudiFinestra();
     }
 
@@ -274,7 +276,5 @@ public class ModificaCredenzialiController {
             // AGGIORNO IL MEDICO REFERENTE
             Database.getInstance().updatePazienteDiabetologo(nuovo,(Diabetologo)medicoSelezionato);
         }
-
-        responsabileController.aggiornaListe();
     }
 }

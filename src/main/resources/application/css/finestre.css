@@ -81,3 +81,10 @@
 
     -fx-padding: 12px;
 }
+
+.dropdown-button {
+    -fx-padding: 0;
+    -fx-font-size: 12px;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}

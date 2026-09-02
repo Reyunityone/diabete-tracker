@@ -277,5 +277,148 @@ class DatabaseTest {
         db.addMessaggio(m3);
         assertEquals(1, db.getMessaggiFromPaziente(p2).size());
         assertTrue(db.getMessaggiFromPaziente(p2).contains(m2));
+    
+    
+    
+    
+    // =========================================================
+    
+    // TESTING DEI METODI CHE UTILIZZA IL RESPONSABILE
+    
+    // =========================================================
+    
+    
+    
+    // =========================================================
+    // ASSOCIAZIONE PAZIENTE - DIABETOLOGO PER IL SINGOLO PAZIENTE (updatePazienteDiabetologo)
+    // =========================================================
+
+    @Test
+    void pazienteVieneAssociatoAlDiabetologo() {
+        Diabetologo medico = new Diabetologo("medicoAssociazione","password","CFMEDASS","Mario","Rossi","medico@test.it");
+        Paziente paziente = new Paziente("pazienteAssociazione","password","CFPAZASS","Luca","Bianchi","paziente@test.it",null,new Diabetologo(),null,null,null);
+
+        db.addDiabetologo(medico);
+        db.addPaziente(paziente);
+
+        db.updatePazienteDiabetologo(paziente, medico);
+
+        Paziente risultato = db.getPazienti().stream().filter(p -> p.getUsername().equals("pazienteAssociazione")).findFirst().orElseThrow();
+        assertNotNull(risultato.getMedicoDiRiferimento());
+        assertEquals(medico.getUsername(),risultato.getMedicoDiRiferimento().getUsername());
+    }
+    
+    // =========================================================
+    // ASSOCIAZIONE PAZIENTE - DIABETOLOGO PER PIÚ PAZIENTI (updateDiabetologoPazienti)
+    // =========================================================
+
+    @Test
+    void pazientiVengonoAssociatiAlloStessoDiabetologo() {
+        Diabetologo medico = new Diabetologo("medicoAssociazione","password","CFMEDASS","Mario","Rossi","medico@test.it");
+        Paziente paziente1 = new Paziente("paziente1","password","PPPPPPPP","Luca","Bianchi","paziente@test.it",null,new Diabetologo(),null,null,null);
+        Paziente paziente2 = new Paziente("paziente2","password","AAAAAAAA","Luca","Bianchi","paziente@test.it",null,new Diabetologo(),null,null,null);
+        Paziente paziente3 = new Paziente("paziente3","password","ZZZZZZZZ","Luca","Bianchi","paziente@test.it",null,new Diabetologo(),null,null,null);
+
+        db.addDiabetologo(medico);
+        db.addPaziente(paziente1);
+        db.addPaziente(paziente2);
+        db.addPaziente(paziente3);
+
+        ArrayList<Paziente> selezionati=new ArrayList<>();
+        selezionati.add(paziente1);
+        selezionati.add(paziente2);
+        selezionati.add(paziente3);
+        
+        db.updateDiabetologoPazienti(medico, selezionati);
+
+        Paziente risultato1 = db.getPazienti().stream().filter(p -> p.getUsername().equals("paziente1")).findFirst().orElseThrow();
+        Paziente risultato2 = db.getPazienti().stream().filter(p -> p.getUsername().equals("paziente2")).findFirst().orElseThrow();
+        Paziente risultato3 = db.getPazienti().stream().filter(p -> p.getUsername().equals("paziente3")).findFirst().orElseThrow();
+        
+        assertNotNull(risultato1.getMedicoDiRiferimento());
+        assertNotNull(risultato2.getMedicoDiRiferimento());
+        assertNotNull(risultato3.getMedicoDiRiferimento());
+        
+        assertEquals(medico.getUsername(),risultato1.getMedicoDiRiferimento().getUsername());
+        assertEquals(medico.getUsername(),risultato2.getMedicoDiRiferimento().getUsername());
+        assertEquals(medico.getUsername(),risultato3.getMedicoDiRiferimento().getUsername());
+    }
+
+    // =========================================================
+    // PAZIENTI SEGUITI DA UN MEDICO
+    // =========================================================
+
+    @Test
+    void getPazientiByDiabetologoRestituiscePazientiCorretti() {
+        Diabetologo medico = new Diabetologo("medicoSeguiti","password","CFMEDSEG","Mario","Rossi","medico@test.it");
+        Paziente paziente = new Paziente("pazienteSeguito","password","CFPAZSEG","Luca","Bianchi","paziente@test.it",null,medico,null,null,null);
+
+        db.addDiabetologo(medico);
+        db.addPaziente(paziente);
+
+        var pazientiSeguiti =db.getPazientiByDiabetologo(medico);
+
+        assertEquals(1, pazientiSeguiti.size());
+        assertTrue(pazientiSeguiti.contains(paziente));
+    }
+
+    // =========================================================
+    // ELIMINAZIONE PAZIENTE
+    // =========================================================
+
+    @Test
+    void eliminazionePazienteRimuoveIlPazienteDalDatabase() {
+        Paziente paziente = new Paziente("pazienteDelete","password","CFDELETE","Paolo","Verdi","paolo@test.it",null,new Diabetologo(),null,null,null);
+
+        db.addPaziente(paziente);
+        assertTrue(db.getPazienti().contains(paziente));
+
+        db.deletePaziente(paziente);
+        assertFalse(db.getPazienti().contains(paziente));
+    }
+
+    // =========================================================
+    // ELIMINAZIONE DIABETOLOGO
+    // =========================================================
+
+    @Test
+    void eliminazioneDiabetologoRimuoveIlMedicoDalDatabase() {
+        Diabetologo medico = new Diabetologo("medicoDelete","password","CFMEDDELETE","Anna","Neri","anna@test.it");
+        
+        db.addDiabetologo(medico);
+        assertTrue(db.getDiabetologi().contains(medico));
+
+        db.deleteDiabetologo(medico);
+        assertFalse(db.getDiabetologi().contains(medico));
+    }
+
+    // =========================================================
+    // CONTROLLO ELIMINAZIONE MEDICO CON PAZIENTI
+    // =========================================================
+
+    @Test
+    void diabetologoConPazientiNonDovrebbeEssereEliminabile() {
+        Diabetologo medico = new Diabetologo("medicoConPaziente","password","CFMEDPAZ","Mario","Rossi","medico@test.it");
+        Paziente paziente = new Paziente("pazienteMedico","password","CFPAZMED","Luca","Bianchi","paziente@test.it",null,medico,null,null,null);
+        db.addDiabetologo(medico);
+        db.addPaziente(paziente);
+
+        assertFalse(db.getPazientiByDiabetologo(medico).isEmpty());
+    }
+    
+    // =========================================================
+    // USERNAME GIÁ PRESENTE
+    // =========================================================
+
+    @Test
+    void usernameEsistenteRiconosceUnUsernameGiaPresente() {
+        Diabetologo medico = new Diabetologo("usernameEsistente","password","CFMED07","Mario","Rossi","mario@test.it");
+        db.addDiabetologo(medico);
+        assertTrue(db.usernameEsistente("usernameEsistente"));
+    }
+
+    @Test
+    void usernameNonEsistenteRestituisceFalse() {
+        assertFalse(db.usernameEsistente("usernameCheNonEsiste"));
     }
 }

@@ -222,6 +222,34 @@ public class Database {
         save();
     }
 
+    public RiskFactor[] getFattoriDiRischioByPaziente(Paziente p) {
+        if (pazienti.contains(p)) {
+            return p.getFattoriDiRischio();
+        }
+        return null;
+    }
+
+    public String getPatologiePregresseByPaziente(Paziente p) {
+        if (pazienti.contains(p)) {
+            return p.getPatologiePregresse();
+        }
+        return null;
+    }
+
+    public String getComorbiditaByPaziente(Paziente p) {
+        if (pazienti.contains(p)) {
+            return p.getComorbidita();
+        }
+        return null;
+    }
+
+    public String getDettagliByPaziente(Paziente p) {
+        if (pazienti.contains(p)) {
+            return p.getDettagli();
+        }
+        return null;
+    }
+
     public User login(String username, String password){
         for(Diabetologo d : diabetologi){
             if(d.getUsername().equals(username) && d.getPassword().equals(password)) return d;

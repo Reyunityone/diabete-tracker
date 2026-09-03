@@ -130,11 +130,11 @@ public class AggiungiPersonaController {
 
 
     // ============================================================
-    // CONFERMA INSERIMENTO
+    // CONFERMA INSERIMENTO (protected per testing)
     // ============================================================
 
     @FXML
-    private void handleConferma() {
+    protected void handleConferma() {
         String nome =nomeField.getText().trim();
         String cognome =cognomeField.getText().trim();
         String codiceFiscale =codiceFiscaleField.getText().trim();
@@ -231,7 +231,6 @@ public class AggiungiPersonaController {
 
     private void chiudiFinestra() {
         Stage stage =(Stage) nomeField.getScene().getWindow();
-
         stage.close();
     }
 }

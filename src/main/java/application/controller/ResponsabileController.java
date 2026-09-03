@@ -112,6 +112,8 @@ public class ResponsabileController {
     // =========================================================
 
     public void aggiornaListe() {
+    	//CONTROLLI PER IL TESTING
+    	if (searchField == null || mediciContainer == null || pazientiContainer == null) return;
 
         String ricerca = searchField.getText();
 

@@ -277,7 +277,7 @@ class DatabaseTest {
         db.addMessaggio(m3);
         assertEquals(1, db.getMessaggiFromPaziente(p2).size());
         assertTrue(db.getMessaggiFromPaziente(p2).contains(m2));
-    
+    }
     
     
     
@@ -356,7 +356,7 @@ class DatabaseTest {
         db.addDiabetologo(medico);
         db.addPaziente(paziente);
 
-        var pazientiSeguiti =db.getPazientiByDiabetologo(medico);
+        var pazientiSeguiti =db.getPazientiByMedico(medico);
 
         assertEquals(1, pazientiSeguiti.size());
         assertTrue(pazientiSeguiti.contains(paziente));
@@ -403,7 +403,7 @@ class DatabaseTest {
         db.addDiabetologo(medico);
         db.addPaziente(paziente);
 
-        assertFalse(db.getPazientiByDiabetologo(medico).isEmpty());
+        assertFalse(db.getPazientiByMedico(medico).isEmpty());
     }
     
     // =========================================================

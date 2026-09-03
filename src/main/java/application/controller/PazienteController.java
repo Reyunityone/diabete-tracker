@@ -848,6 +848,7 @@ public class PazienteController {
 
     @FXML
     private void handleLogout() {
+        Session.getInstance().logout();
         List<Window> windows = new ArrayList<>(Window.getWindows());
         for(Window w : windows){
             w.hide();
@@ -950,7 +951,7 @@ public class PazienteController {
     private void apriStoricoRilevazioni() {
 
         apriStorico(
-                Database.getInstance().getRilevazioni(),
+                Database.getInstance().getRilevazioniByPaziente((Paziente) Session.getInstance().getCurrentUser()),
                 "rilevazioni",
                 "Rilevazioni precedenti"
         );
@@ -961,7 +962,7 @@ public class PazienteController {
     private void apriStoricoSintomi() {
 
         apriStorico(
-                Database.getInstance().getAssunzioni(),
+                Database.getInstance().getAssunzioniByPaziente((Paziente) Session.getInstance().getCurrentUser()),
                 "sintomi",
                 "Sintomi / Farmaci precedenti"
         );
@@ -972,7 +973,7 @@ public class PazienteController {
     private void apriStoricoSegnalazioni() {
 
         apriStorico(
-                Database.getInstance().getSegnalazioni(),
+                Database.getInstance().getSegnalazioniByPaziente( (Paziente) Session.getInstance().getCurrentUser()),
                 "segnalazioni",
                 "Segnalazioni precedenti"
         );

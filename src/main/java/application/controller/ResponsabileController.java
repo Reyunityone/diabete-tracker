@@ -1,5 +1,6 @@
 package application.controller;
 
+import application.classiGeneriche.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -26,11 +27,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import application.classiGeneriche.Database;
-import application.classiGeneriche.Diabetologo;
-import application.classiGeneriche.Paziente;
-import application.classiGeneriche.Responsabile;
-import application.classiGeneriche.User;
 import javafx.stage.Window;
 
 public class ResponsabileController {
@@ -275,6 +271,7 @@ public class ResponsabileController {
     // =========================================================
     @FXML
     private void handleLogout() {
+        Session.getInstance().logout();
         List<Window> windows = new ArrayList<>(Window.getWindows());
         for(Window w : windows){
             w.hide();

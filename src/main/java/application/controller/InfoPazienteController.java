@@ -4,10 +4,12 @@ import application.classiGeneriche.Database;
 import application.classiGeneriche.Paziente;
 import application.classiGeneriche.RiskFactor;
 import javafx.fxml.FXML;
+import javafx.geometry.Side;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
@@ -26,11 +28,13 @@ public class InfoPazienteController {
     @FXML private Button salvaButton;
 
     private Paziente paziente;
+    private final Database db = Database.getInstance();
     private final ContextMenu menuFattoriRischio = new ContextMenu();
 
     @FXML
     public void initialize() {
         inizializzaMenuFattoriRischio();
+        fattoriRischioButton.setOnAction(event -> apriMenuFattoriRischio());
         salvaButton.setOnAction(event -> salvaInformazioni());
     }
 
@@ -39,21 +43,24 @@ public class InfoPazienteController {
 
         titoloLabel.setText("Info paziente - " + paziente.getNome() + " " + paziente.getCognome());
 
+        RiskFactor[] fattoriRischio = db.getFattoriDiRischioByPaziente(paziente);
+
         for (var item : menuFattoriRischio.getItems()) {
             if (item instanceof CustomMenuItem customItem && customItem.getContent() instanceof CheckBox checkBox) {
                 RiskFactor fattore = (RiskFactor) checkBox.getUserData();
-                checkBox.setSelected(
-                        paziente.getFattoriDiRischio() != null &&
-                                Arrays.asList(paziente.getFattoriDiRischio()).contains(fattore)
-                );
+                checkBox.setSelected(fattoriRischio != null && Arrays.asList(fattoriRischio).contains(fattore));
             }
         }
 
         aggiornaTestoFattoriRischio();
 
-        patologieArea.setText(paziente.getPatologiePregresse() != null ? paziente.getPatologiePregresse() : "");
-        comorbiditaArea.setText(paziente.getComorbidita() != null ? paziente.getComorbidita() : "");
-        dettagliArea.setText(paziente.getDettagli() != null ? paziente.getDettagli() : "");
+        String patologie = db.getPatologiePregresseByPaziente(paziente);
+        String comorbidita = db.getComorbiditaByPaziente(paziente);
+        String dettagli = db.getDettagliByPaziente(paziente);
+
+        patologieArea.setText(patologie != null ? patologie : "");
+        comorbiditaArea.setText(comorbidita != null ? comorbidita : "");
+        dettagliArea.setText(dettagli != null ? dettagli : "");
     }
 
     private void inizializzaMenuFattoriRischio() {
@@ -70,7 +77,7 @@ public class InfoPazienteController {
 
     @FXML
     private void apriMenuFattoriRischio() {
-        menuFattoriRischio.show(fattoriRischioButton, javafx.geometry.Side.BOTTOM, 0, 0);
+        menuFattoriRischio.show(fattoriRischioButton, Side.BOTTOM, 0, 0);
     }
 
     private void aggiornaTestoFattoriRischio() {
@@ -119,7 +126,7 @@ public class InfoPazienteController {
         paziente.setComorbidita(comorbiditaArea.getText().trim());
         paziente.setDettagli(dettagliArea.getText().trim());
 
-        Database.getInstance().updatePaziente(paziente, paziente);
+        db.updatePaziente(paziente, paziente);
 
         Stage stage = (Stage) salvaButton.getScene().getWindow();
         stage.close();

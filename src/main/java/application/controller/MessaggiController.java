@@ -3,6 +3,7 @@ package application.controller;
 import application.classiGeneriche.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -11,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -22,20 +24,13 @@ import java.util.Objects;
 
 public class MessaggiController {
 
-    @FXML
-    private Label titoloLabel;
+	//OGGETTI FXML
+    @FXML private Label titoloLabel;
+    @FXML private TextField searchField;
+    @FXML private VBox messaggiContainer;
 
-    @FXML
-    private TextField searchField;
-
-    @FXML
-    private VBox messaggiContainer;
-
-
-    private List<Messaggio> messaggi =
-            new ArrayList<>();
-
-
+    //DATI
+    private List<Messaggio> messaggi =new ArrayList<>();
     private Runnable aggiornamentoNotifiche;
 
 
@@ -43,82 +38,40 @@ public class MessaggiController {
     // INIZIALIZZAZIONE
     // =========================================================
 
-    public void inizializza(
-            List<Messaggio> messaggi,
-            Runnable aggiornamentoNotifiche) {
-
+    public void inizializza(List<Messaggio> messaggi,Runnable aggiornamentoNotifiche) {
         this.messaggi = messaggi;
-
-        this.aggiornamentoNotifiche =
-                aggiornamentoNotifiche;
-
+        this.aggiornamentoNotifiche =aggiornamentoNotifiche;
         configuraRicerca();
-
         aggiornaLista();
     }
-
 
     // =========================================================
     // RICERCA
     // =========================================================
 
     private void configuraRicerca() {
-
-        searchField.textProperty()
-                .addListener(
-                        (observable,
-                         oldValue,
-                         newValue) -> {
-
-                            aggiornaLista(newValue);
-
-                        }
-                );
+        searchField.textProperty().addListener((observable,oldValue,newValue) -> {aggiornaLista(newValue);});
     }
-
 
     // =========================================================
     // LISTA
     // =========================================================
 
     private void aggiornaLista() {
-
         aggiornaLista("");
     }
 
+    private void aggiornaLista(String ricerca) {
+        messaggiContainer.getChildren().clear();
 
-    private void aggiornaLista(
-            String ricerca) {
-
-        messaggiContainer
-                .getChildren()
-                .clear();
-
-
-        String testo =
-                ricerca
-                        .toLowerCase()
-                        .trim();
-
+        String testo = ricerca.toLowerCase().trim();
 
         for (Messaggio messaggio : messaggi) {
-
-            if (!testo.isEmpty()
-                    && !messaggio.getMittenteString()
-                            .toLowerCase()
-                            .contains(testo)) {
-
+            if (!testo.isEmpty()&& !messaggio.getMittenteString().toLowerCase().contains(testo)) {
                 continue;
             }
 
-
-            messaggiContainer
-                    .getChildren()
-                    .add(
-                            creaBoxMessaggio(
-                                    messaggio
-                            )
-                    );
+            messaggiContainer.getChildren().add(creaBoxMessaggio(messaggio));
         }
     }
 
@@ -127,153 +80,51 @@ public class MessaggiController {
     // BOX MESSAGGIO
     // =========================================================
 
-    private HBox creaBoxMessaggio(
-            Messaggio messaggio) {
-
-        HBox box =
-                new HBox();
-
+    private HBox creaBoxMessaggio(Messaggio messaggio) {
+        HBox box =new HBox();
         box.setSpacing(15);
-
-        box.setAlignment(
-                javafx.geometry.Pos.CENTER_LEFT
-        );
-
+        box.setAlignment(Pos.CENTER_LEFT);
         box.setPrefHeight(70);
+        box.setMaxWidth(Double.MAX_VALUE);
+        box.getStyleClass().add("message-box");
 
-        box.setMaxWidth(
-                Double.MAX_VALUE
-        );
-
-
-        box.getStyleClass().add(
-                "message-box"
-        );
-
-
-        // =====================================================
         // AVATAR
-        // =====================================================
-
-        ImageView avatar =
-                new ImageView(
-                        new Image(
-                                Objects.requireNonNull(getClass()
-                                        .getResourceAsStream(
-                                                "/application/images/avatar.png"
-                                        ))
-                        )
-                );
-
+        ImageView avatar =new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/application/images/avatar.png"))));
         avatar.setFitWidth(50);
-
         avatar.setFitHeight(50);
-
         avatar.setPreserveRatio(true);
 
-
-        // =====================================================
         // NOME
-        // =====================================================
-        Label nome =
-                new Label(
-                        messaggio.getMittenteString()
-                );
+        Label nome =new Label(messaggio.getMittenteString());
+        nome.getStyleClass().add("message-name");
 
-        nome.getStyleClass().add(
-                "message-name"
-        );
-
-
-        // =====================================================
         // ANTEPRIMA
-        // =====================================================
-
-        String anteprima =
-                messaggio.getTesto();
-
-
+        String anteprima =messaggio.getTesto();
         if (anteprima.length() > 45) {
-
-            anteprima =
-                    anteprima.substring(
-                            0,
-                            45
-                    )
-                    + "...";
+            anteprima =anteprima.substring(0,45)+ "...";
         }
 
-
-        Label testo =
-                new Label(
-                        anteprima
-                );
-
+        //TESTO
+        Label testo =new Label(anteprima);
         testo.setWrapText(true);
+        testo.getStyleClass().add("message-preview");
 
-        testo.getStyleClass().add(
-                "message-preview"
-        );
+        //INFORMAZIONI
+        VBox informazioni =new VBox(3,nome,testo);
 
-
-        VBox informazioni =
-                new VBox(
-                        3,
-                        nome,
-                        testo
-                );
-
-
-        // =====================================================
         // SPAZIO
-        // =====================================================
-
-        Region spazio =
-                new Region();
-
-        HBox.setHgrow(
-                spazio,
-                javafx.scene.layout.Priority.ALWAYS
-        );
-
-
-        // =====================================================
+        Region spazio =new Region();
+        HBox.setHgrow(spazio,Priority.ALWAYS);
+        
         // APRI
-        // =====================================================
+        Button apri =new Button("Apri");
+        apri.getStyleClass().add("open-button");
+        apri.setOnAction(event ->apriMessaggio(messaggio));
+        
+        box.getChildren().addAll(avatar,informazioni,spazio,apri);
 
-        Button apri =
-                new Button("Apri");
-
-        apri.getStyleClass().add(
-                "open-button"
-        );
-
-
-        apri.setOnAction(
-                event ->
-                        apriMessaggio(
-                                messaggio
-                        )
-        );
-
-
-        box.getChildren().addAll(
-                avatar,
-                informazioni,
-                spazio,
-                apri
-        );
-
-
-        // =====================================================
         // LETTO / NON LETTO
-        // =====================================================
-
-        aggiornaAspettoLetto(
-                box,
-                messaggio
-        );
-
+        aggiornaAspettoLetto(box,messaggio);
 
         return box;
     }
@@ -283,16 +134,11 @@ public class MessaggiController {
     // ASPETTO LETTO
     // =========================================================
 
-    private void aggiornaAspettoLetto(
-            HBox box,
-            Messaggio messaggio) {
-
+    private void aggiornaAspettoLetto(HBox box,Messaggio messaggio) {
         if (messaggio.isLetto()) {
-
             box.setOpacity(0.55);
 
         } else {
-
             box.setOpacity(1.0);
         }
     }
@@ -302,61 +148,20 @@ public class MessaggiController {
     // APRI MESSAGGIO
     // =========================================================
 
-    private void apriMessaggio(
-            Messaggio messaggio) {
-
+    private void apriMessaggio(Messaggio messaggio) {
         try {
-
-            FXMLLoader loader =
-                    new FXMLLoader(
-                            getClass().getResource(
-                                    "/application/view/Messaggio.fxml"
-                            )
-                    );
-
-
-            Parent root =
-                    loader.load();
-
-
-            MessaggioController controller =
-                    loader.getController();
-
-
-            controller.inizializza(
-                    messaggio,
-                    () -> {
-
-                        aggiornaLista();
-
-                        aggiornamentoNotifiche.run();
-
-                    }
-            );
-
-
-            Stage stage =
-                    new Stage();
-
-
-            stage.setTitle(
-                    "Messaggio"
-            );
-
-
-            stage.setScene(
-                    new Scene(root)
-            );
-
-
+            FXMLLoader loader =new FXMLLoader(getClass().getResource("/application/view/Messaggio.fxml"));
+            Parent root =loader.load();
+            MessaggioController controller =loader.getController();
+            controller.inizializza(messaggio,() -> {aggiornaLista();aggiornamentoNotifiche.run();});
+            
+            Stage stage =new Stage();
+            stage.setTitle("Messaggio");
+            stage.setScene(new Scene(root));
             stage.setResizable(false);
-
-
             stage.show();
 
-
         } catch (IOException e) {
-
             e.printStackTrace();
         }
     }

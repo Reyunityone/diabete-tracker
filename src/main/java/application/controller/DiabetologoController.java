@@ -1,5 +1,6 @@
 package application.controller;
 
+import application.classiGeneriche.*;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,737 +16,241 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.Duration;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import application.classiGeneriche.Chiamata;
-import application.classiGeneriche.Messaggio;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class DiabetologoController {
 
-    // =========================================================
     // PROFILO
-    // =========================================================
+    @FXML private ImageView profileImage;
+    @FXML private Label nomeCognomeLabel;
+    @FXML private Label ruoloLabel;
+    @FXML private Button logoutButton;
 
-    @FXML
-    private ImageView profileImage;
-
-    @FXML
-    private Label nomeCognomeLabel;
-
-    @FXML
-    private Label ruoloLabel;
-
-    @FXML
-    private Button logoutButton;
-
-
-    // =========================================================
     // MAIL
-    // =========================================================
+    @FXML private AnchorPane mailContainer;
+    @FXML private Button mailButton;
+    @FXML private HBox mailMenu;
+    @FXML private Button telefonoButton;
+    @FXML private Button messaggioButton;
+    @FXML private ImageView messaggioNotification;
+    @FXML private ImageView telefonoNotification;
 
-    @FXML
-    private AnchorPane mailContainer;
-
-    @FXML
-    private Button mailButton;
-
-    @FXML
-    private HBox mailMenu;
-
-    @FXML
-    private Button telefonoButton;
-
-    @FXML
-    private Button messaggioButton;
-    
-    @FXML
-    private ImageView messaggioNotification;
-
-    @FXML
-    private ImageView telefonoNotification;
-
-
-    // =========================================================
     // PAZIENTI
-    // =========================================================
+    @FXML private TextField searchField;
+    @FXML private ScrollPane pazientiScrollPane;
+    @FXML private VBox pazientiContainer;
 
-    @FXML
-    private TextField searchField;
-
-    @FXML
-    private ScrollPane pazientiScrollPane;
-
-    @FXML
-    private VBox pazientiContainer;
-
-
-    // =========================================================
     // DATI
-    // =========================================================
+    private final List<Paziente> pazienti = new ArrayList<>();
+    private final Diabetologo medico = (Diabetologo) Session.getInstance().getCurrentUser();
+    private List<Messaggio> messaggi = new ArrayList<>();
+    private final List<Chiamata> chiamate = new ArrayList<>();
+    @FXML private ImageView mailNotification;
 
-    private final List<Persona> pazienti =
-            new ArrayList<>();
-
-    private String nomeMedico;
-    private String cognomeMedico;
-    
-    private final List<Messaggio> messaggi =
-            new ArrayList<>();
-
-    private final List<Chiamata> chiamate =
-            new ArrayList<>();
-    
-    @FXML
-    private ImageView mailNotification;
-
-
-    // =========================================================
     // TIMER CHIUSURA MENU
-    // =========================================================
-
     private PauseTransition chiusuraMenu;
 
-
-    // =========================================================
     // INITIALIZE
-    // =========================================================
-
     @FXML
     public void initialize() {
-
         ruoloLabel.setText("Medico");
-
-        inizializzaPazienti();
-
         aggiornaListaPazienti();
-
         configuraRicerca();
-
         configuraMenuMail();
-        
-        inizializzaMessaggi();
-
         inizializzaChiamate();
-
+        GestoreAlert.verificaTuttiIPazienti(medico);
+        this.messaggi = Database.getInstance().getMessaggiFromMedico(medico);
         aggiornaPallinoNotifiche();
     }
-    
-    private void inizializzaMessaggi() {
 
-        messaggi.add(
-                new Messaggio(
-                        "Mario",
-                        "Rossi",
-                        "Buongiorno dottore, volevo chiederle informazioni sulla terapia.",
-                        false
-                )
-        );
-
-        messaggi.add(
-                new Messaggio(
-                        "Luca",
-                        "Bianchi",
-                        "Ho effettuato gli esami richiesti.",
-                        true
-                )
-        );
-
-        messaggi.add(
-                new Messaggio(
-                        "Anna",
-                        "Verdi",
-                        "Quando posso fissare il prossimo controllo?",
-                        false
-                )
-        );
-    }
-    
     private void inizializzaChiamate() {
-
-        chiamate.add(
-                new Chiamata(
-                        "Giulia",
-                        "Romano",
-                        "Richiesta di chiarimento sulla terapia.",
-                        false
-                )
-        );
-
-        chiamate.add(
-                new Chiamata(
-                        "Marco",
-                        "Ferrari",
-                        "Problema con il monitoraggio glicemico.",
-                        true
-                )
-        );
+        chiamate.add(new Chiamata("Giulia", "Romano", "Richiesta di chiarimento sulla terapia.", false));
+        chiamate.add(new Chiamata("Marco", "Ferrari", "Problema con il monitoraggio glicemico.", true));
     }
-    
+
     private void aggiornaPallinoNotifiche() {
+        boolean messaggiNonLetti = messaggi.stream().anyMatch(messaggio -> !messaggio.isLetto());
+        boolean chiamateNonLette = chiamate.stream().anyMatch(chiamata -> !chiamata.isLetta());
 
-        boolean messaggiNonLetti =
-                messaggi.stream()
-                        .anyMatch(
-                                messaggio ->
-                                        !messaggio.isLetto()
-                        );
-
-
-        boolean chiamateNonLette =
-                chiamate.stream()
-                        .anyMatch(
-                                chiamata ->
-                                        !chiamata.isLetta()
-                        );
-
-
-        mailNotification.setVisible(
-                messaggiNonLetti
-                        || chiamateNonLette
-        );
-
-
-        messaggioNotification.setVisible(
-                messaggiNonLetti
-        );
-
-
-        telefonoNotification.setVisible(
-                chiamateNonLette
-        );
+        mailNotification.setVisible(messaggiNonLetti || chiamateNonLette);
+        messaggioNotification.setVisible(messaggiNonLetti);
+        telefonoNotification.setVisible(chiamateNonLette);
     }
 
-    // =========================================================
-    // DATI DI PROVA
-    // =========================================================
-
-    private void inizializzaPazienti() {
-
-        pazienti.add(
-                new Persona(
-                        "Mario",
-                        "Rossi"
-                )
-        );
-
-        pazienti.add(
-                new Persona(
-                        "Luca",
-                        "Bianchi"
-                )
-        );
-
-        pazienti.add(
-                new Persona(
-                        "Anna",
-                        "Verdi"
-                )
-        );
-
-        pazienti.add(
-                new Persona(
-                        "Giulia",
-                        "Romano"
-                )
-        );
-
-        pazienti.add(
-                new Persona(
-                        "Marco",
-                        "Ferrari"
-                )
-        );
-        
-        pazienti.add(
-                new Persona(
-                        "Giovanni",
-                        "Ferro"
-                )
-        );
-        
-        pazienti.add(
-                new Persona(
-                        "Giuliano",
-                        "Marchiorre"
-                )
-        );
-    }
-
-
-    // =========================================================
     // PROFILO
-    // =========================================================
-
-    public void inizializzaProfilo(
-            String nome,
-            String cognome) {
-
-        this.nomeMedico = nome;
-        this.cognomeMedico = cognome;
-
-        nomeCognomeLabel.setText(
-                nome + " " + cognome
-        );
-
+    public void inizializzaProfilo() {
+        Database db = Database.getInstance();
+        nomeCognomeLabel.setText(medico.getNome() + " " + medico.getCognome());
         ruoloLabel.setText("Medico");
+        pazienti.clear();
+        pazienti.addAll(db.getPazientiByMedico(medico));
+        aggiornaListaPazienti();
     }
 
-
-    // =========================================================
     // RICERCA
-    // =========================================================
-
     private void configuraRicerca() {
-
-        searchField.textProperty()
-                .addListener(
-                        (observable,
-                         oldValue,
-                         newValue) -> {
-
-                            aggiornaListaPazienti(
-                                    newValue
-                            );
-                        }
-                );
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            aggiornaListaPazienti(newValue);
+        });
     }
 
-
-    // =========================================================
     // LISTA PAZIENTI
-    // =========================================================
-
     private void aggiornaListaPazienti() {
-
         aggiornaListaPazienti("");
     }
 
+    private void aggiornaListaPazienti(String ricerca) {
+        pazientiContainer.getChildren().clear();
+        ArrayList<Paziente> filteredPazienti = pazienti.stream().filter(p -> {
+            String nomeCognome = p.getNome() + " " + p.getCognome();
+            if(nomeCognome.toLowerCase().contains(ricerca.toLowerCase().trim())) return true;
+            return p.getCodiceFiscale().toLowerCase().contains(ricerca.toLowerCase().trim());
+        }).collect(Collectors.toCollection(ArrayList::new));
 
-    private void aggiornaListaPazienti(
-            String ricerca) {
-
-        pazientiContainer
-                .getChildren()
-                .clear();
-
-        String testo =
-                ricerca
-                        .toLowerCase()
-                        .trim();
-
-        for (Persona paziente : pazienti) {
-
-            String nomeCompleto =
-                    (
-                            paziente.getNome()
-                                    + " "
-                                    + paziente.getCognome()
-                    )
-                            .toLowerCase();
-
-            if (!testo.isEmpty()
-                    && !nomeCompleto.contains(testo)) {
-
-                continue;
-            }
-
-            pazientiContainer
-                    .getChildren()
-                    .add(
-                            creaBoxPaziente(
-                                    paziente
-                            )
-                    );
+        for(Paziente p : filteredPazienti){
+            pazientiContainer.getChildren().add(creaBoxPaziente(p));
         }
     }
 
-
-    // =========================================================
     // BOX PAZIENTE
-    // =========================================================
-
-    private HBox creaBoxPaziente(
-            Persona paziente) {
-
-        HBox box =
-                new HBox();
-
+    private HBox creaBoxPaziente(Paziente paziente) {
+        HBox box = new HBox();
         box.setSpacing(15);
+        box.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        box.getStyleClass().add("patient-box");
 
-        box.setAlignment(
-                javafx.geometry.Pos.CENTER_LEFT
-        );
-
-        box.getStyleClass().add(
-                "patient-box"
-        );
-
-
-        // =====================================================
         // AVATAR
-        // =====================================================
-
-        ImageView avatar =
-                new ImageView(
-                        new Image(
-                                getClass()
-                                        .getResourceAsStream(
-                                                "/application/images/avatar.png"
-                                        )
-                        )
-                );
-
+        ImageView avatar = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/application/images/avatar.png"))));
         avatar.setFitWidth(50);
-
         avatar.setFitHeight(50);
-
         avatar.setPreserveRatio(true);
 
-
-        // =====================================================
         // NOME
-        // =====================================================
+        Label nome = new Label(paziente.getNome() + " " + paziente.getCognome());
+        nome.getStyleClass().add("patient-name");
 
-        Label nome =
-                new Label(
-                        paziente.getNome()
-                                + " "
-                                + paziente.getCognome()
-                );
-
-        nome.getStyleClass().add(
-                "patient-name"
-        );
-
-
-        // =====================================================
         // SPAZIO
-        // =====================================================
+        javafx.scene.layout.Region spazio = new javafx.scene.layout.Region();
+        HBox.setHgrow(spazio, javafx.scene.layout.Priority.ALWAYS);
 
-        javafx.scene.layout.Region spazio =
-                new javafx.scene.layout.Region();
-
-        HBox.setHgrow(
-                spazio,
-                javafx.scene.layout.Priority.ALWAYS
-        );
-
-
-        // =====================================================
         // BOTTONI
-        // =====================================================
+        Button andamento = creaBottone("andamento.png", "Andamento");
+        Button terapia = creaBottone("terapia.png", "Terapia");
+        Button info = creaBottone("infoPaziente.png", "Info Paziente");
 
-        Button andamento =
-                creaBottone(
-                        "andamento.png",
-                        "Andamento"
-                );
+        andamento.setOnAction(event -> apriAndamento(paziente));
+        terapia.setOnAction(event -> apriTerapia(paziente));
+        info.setOnAction(event -> apriInfoPaziente(paziente));
 
-        Button terapia =
-                creaBottone(
-                        "terapia.png",
-                        "Terapia"
-                );
-
-        Button info =
-                creaBottone(
-                        "infoPaziente.png",
-                        "Info Paziente"
-                );
-        
-
-        andamento.setOnAction(event ->
-        	apriAndamento(paziente)
-        		);
-
-        terapia.setOnAction(event ->
-        	apriTerapia(paziente)
-        		);
-
-        info.setOnAction(event ->
-        	apriInfoPaziente(paziente)
-        );
-
-
-        box.getChildren().addAll(
-                avatar,
-                nome,
-                spazio,
-                andamento,
-                terapia,
-                info
-        );
-
+        box.getChildren().addAll(avatar, nome, spazio, andamento, terapia, info);
         return box;
     }
 
-
-    // =========================================================
     // CREAZIONE BOTTONE
-    // =========================================================
+    private Button creaBottone(String immagine, String testo) {
+        Button button = new Button(testo);
+        button.getStyleClass().add("patient-action-button");
 
-    private Button creaBottone(
-            String immagine,
-            String testo) {
-
-        Button button =
-                new Button(testo);
-
-        button.getStyleClass().add(
-                "patient-action-button"
-        );
-
-
-        ImageView image =
-                new ImageView(
-                        new Image(
-                                getClass()
-                                        .getResourceAsStream(
-                                                "/application/images/"
-                                                        + immagine
-                                        )
-                        )
-                );
-
+        ImageView image = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/application/images/" + immagine))));
         image.setFitWidth(25);
-
         image.setFitHeight(25);
-
         image.setPreserveRatio(true);
 
         button.setGraphic(image);
-
         return button;
     }
 
-
-    // =========================================================
     // MENU MAIL
-    // =========================================================
-
     private void configuraMenuMail() {
+        mailContainer.setOnMouseEntered(event -> mostraMenuMail());
+        mailContainer.setOnMouseExited(event -> avviaChiusuraMenu());
+        mailMenu.setOnMouseEntered(event -> annullaChiusuraMenu());
+        mailMenu.setOnMouseExited(event -> avviaChiusuraMenu());
 
-        /*
-         * Quando entro nella zona della mail:
-         * apro il menu.
-         */
-
-        mailContainer.setOnMouseEntered(event -> {
-
-            mostraMenuMail();
-
-        });
-
-
-        /*
-         * Quando esco dalla zona della mail:
-         * NON chiudo immediatamente il menu.
-         *
-         * Aspetto 500 ms per permettere al mouse
-         * di raggiungere Telefono o Messaggio.
-         */
-
-        mailContainer.setOnMouseExited(event -> {
-
-            avviaChiusuraMenu();
-
-        });
-
-
-        /*
-         * Quando entro nel menu:
-         * annullo l'eventuale chiusura.
-         */
-
-        mailMenu.setOnMouseEntered(event -> {
-
-            annullaChiusuraMenu();
-
-        });
-
-
-        /*
-         * Quando esco dal menu:
-         * avvio nuovamente il timer.
-         */
-
-        mailMenu.setOnMouseExited(event -> {
-
-            avviaChiusuraMenu();
-
-        });
-        
-        messaggioButton.setOnAction(
-                event -> apriMessaggi()
-        );
-
-        telefonoButton.setOnAction(
-                event -> apriChiamate()
-        );
+        messaggioButton.setOnAction(event -> apriMessaggi());
+        telefonoButton.setOnAction(event -> apriChiamate());
     }
-    
+
     private void apriMessaggi() {
-
         try {
-
-            FXMLLoader loader =
-                    new FXMLLoader(
-                            getClass().getResource(
-                                    "/application/view/Messaggi.fxml"
-                            )
-                    );
-
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/Messaggi.fxml"));
             Parent root = loader.load();
-
-            MessaggiController controller =
-                    loader.getController();
-
-            controller.inizializza(
-                    messaggi,
-                    this::aggiornaPallinoNotifiche
-            );
+            MessaggiController controller = loader.getController();
+            controller.inizializza(messaggi, this::aggiornaPallinoNotifiche);
 
             Stage stage = new Stage();
-
             stage.setTitle("Messaggi");
-
-            stage.setScene(
-                    new Scene(
-                            root
-                    )
-            );
-
+            stage.setScene(new Scene(root));
             stage.setResizable(false);
-
             stage.show();
-
         } catch (IOException e) {
-
             e.printStackTrace();
         }
     }
-    
+
     private void apriChiamate() {
-
         try {
-
-            FXMLLoader loader =
-                    new FXMLLoader(
-                            getClass().getResource(
-                                    "/application/view/Chiamate.fxml"
-                            )
-                    );
-
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/Chiamate.fxml"));
             Parent root = loader.load();
-
-            ChiamateController controller =
-                    loader.getController();
-
-            controller.inizializza(
-                    chiamate,
-                    this::aggiornaPallinoNotifiche
-            );
+            ChiamateController controller = loader.getController();
+            controller.inizializza(chiamate, this::aggiornaPallinoNotifiche);
 
             Stage stage = new Stage();
-
             stage.setTitle("Chiamate");
-
-            stage.setScene(
-                    new Scene(
-                            root
-                    )
-            );
-
+            stage.setScene(new Scene(root));
             stage.setResizable(false);
-
             stage.show();
-
         } catch (IOException e) {
-
             e.printStackTrace();
         }
     }
 
-
-    // =========================================================
     // MOSTRA MENU
-    // =========================================================
-
     private void mostraMenuMail() {
-
         annullaChiusuraMenu();
-
         mailMenu.setManaged(true);
-
         mailMenu.setVisible(true);
-
         mailMenu.setOpacity(1);
     }
 
-
-    // =========================================================
     // NASCONDI MENU
-    // =========================================================
-
     private void nascondiMenuMail() {
-
         mailMenu.setVisible(false);
-
         mailMenu.setManaged(false);
     }
 
-
-    // =========================================================
     // AVVIA CHIUSURA
-    // =========================================================
-
     private void avviaChiusuraMenu() {
-
         annullaChiusuraMenu();
-
-        chiusuraMenu =
-                new PauseTransition(
-                        Duration.millis(500)
-                );
-
-        chiusuraMenu.setOnFinished(event -> {
-
-            nascondiMenuMail();
-
-        });
-
+        chiusuraMenu = new PauseTransition(Duration.millis(500));
+        chiusuraMenu.setOnFinished(event -> nascondiMenuMail());
         chiusuraMenu.play();
     }
 
-
-    // =========================================================
     // ANNULLA CHIUSURA
-    // =========================================================
-
     private void annullaChiusuraMenu() {
-
         if (chiusuraMenu != null) {
-
             chiusuraMenu.stop();
-
             chiusuraMenu = null;
         }
     }
 
-
-    // =========================================================
     // LOGOUT
-    // =========================================================
-
     @FXML
     private void handleLogout() {
+        Session.getInstance().logout();
+        List<Window> windows = new ArrayList<>(Window.getWindows());
+        for(Window w: windows){
+            w.hide();
+        }
 
         try {
-
             FXMLLoader loader =
                     new FXMLLoader(
                             getClass().getResource(
@@ -772,126 +277,47 @@ public class DiabetologoController {
             );
 
             stage.show();
-
-
         } catch (IOException e) {
-
             e.printStackTrace();
         }
     }
-    
-    private void apriFinestra(
-            String fxml,
-            String titolo,
-            Persona paziente) {
 
+    private void apriFinestra(String fxml, String titolo, Paziente paziente) {
         try {
-
-            FXMLLoader loader =
-                    new FXMLLoader(
-                            getClass().getResource(
-                                    "/application/view/" + fxml
-                            )
-                    );
-
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/" + fxml));
             Parent root = loader.load();
-
-            Object controller =
-                    loader.getController();
+            Object controller = loader.getController();
 
             if (controller instanceof AndamentoController) {
-
-                ((AndamentoController) controller)
-                        .inizializzaPaziente(paziente);
+                ((AndamentoController) controller).inizializzaPaziente(paziente);
             }
-
-            if (controller instanceof TerapiaController) {
-
-                ((TerapiaController) controller)
-                        .inizializzaPaziente(paziente);
+            if (controller instanceof StoricoTerapieController) {
+                ((StoricoTerapieController) controller).inizializza(paziente, medico);
             }
-
             if (controller instanceof InfoPazienteController) {
-
-                ((InfoPazienteController) controller)
-                        .inizializzaPaziente(paziente);
+                ((InfoPazienteController) controller).inizializzaPaziente(paziente);
             }
 
             Stage stage = new Stage();
-
             stage.setTitle(titolo);
-
-            stage.setScene(
-                    new Scene(root)
-            );
-
+            stage.setScene(new Scene(root));
             stage.setResizable(false);
-
             stage.show();
-
         } catch (IOException e) {
-
             e.printStackTrace();
         }
     }
-    
-    private void apriAndamento(Persona paziente) {
 
-        apriFinestra(
-                "Andamento.fxml",
-                "Andamento glicemico",
-                paziente
-        );
+    private void apriAndamento(Paziente paziente) {
+        apriFinestra("Andamento.fxml", "Andamento glicemico", paziente);
     }
-    
-    private void apriTerapia(Persona paziente) {
 
-        apriFinestra(
-                "Terapia.fxml",
-                "Terapia",
-                paziente
-        );
+    private void apriTerapia(Paziente paziente) {
+        apriFinestra("StoricoTerapie.fxml", "Terapia", paziente);
     }
-    
-    private void apriInfoPaziente(Persona paziente) {
 
-        apriFinestra(
-                "InfoPaziente.fxml",
-                "Informazioni paziente",
-                paziente
-        );
+    private void apriInfoPaziente(Paziente paziente) {
+        apriFinestra("InfoPaziente.fxml", "Informazioni paziente", paziente);
     }
-    
-    // =========================================================
-    // CLASSE PERSONA
-    // =========================================================
 
-    public static class Persona {
-
-        private final String nome;
-
-        private final String cognome;
-
-
-        public Persona(
-                String nome,
-                String cognome) {
-
-            this.nome = nome;
-
-            this.cognome = cognome;
-        }
-
-
-        public String getNome() {
-
-            return nome;
-        }
-
-
-        public String getCognome() {
-
-            return cognome;
-        }
-    }
 }

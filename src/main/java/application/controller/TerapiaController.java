@@ -1,11 +1,19 @@
 package application.controller;
 
+import application.classiGeneriche.Diabetologo;
+import application.classiGeneriche.Paziente;
+import application.classiGeneriche.Terapia;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
+import javafx.util.converter.IntegerStringConverter;
+
+import java.util.ArrayList;
+import java.util.function.Consumer;
 
 public class TerapiaController {
 
@@ -27,87 +35,140 @@ public class TerapiaController {
     @FXML
     private Button salvaButton;
 
+    private ArrayList<Paziente> pazienti;
+    private Diabetologo medico;
+    private Terapia terapiaDaModificare;
+
+    private Consumer<Terapia> salvataggio;
+    private Runnable aggiornamento;
+    private boolean modalitaModifica = false;
 
     @FXML
     public void initialize() {
+        TextFormatter<Integer> interoFormatter =
+                new TextFormatter<>(new IntegerStringConverter(), 0, change -> {
+                    if (change.getControlNewText().matches("\\d*")) {
+                        return change;
+                    }
+                    return null;
+                });
 
-        salvaButton.setOnAction(
-                event -> salvaTerapia()
-        );
+        assunzioniField.setTextFormatter(interoFormatter);
+
+        TextFormatter<Integer> doseFormatter =
+                new TextFormatter<>(new IntegerStringConverter(), 0, change -> {
+                    if (change.getControlNewText().matches("\\d*")) {
+                        return change;
+                    }
+                    return null;
+                });
+
+        quantitaField.setTextFormatter(doseFormatter);
+        salvaButton.setOnAction(event -> salvaTerapia());
     }
 
+    public void inizializzaNuova(
+            Diabetologo medico,
+            Consumer<Terapia> salvataggio) {
 
-    public void inizializzaPaziente(
-            DiabetologoController.Persona paziente) {
+        this.medico = medico;
+        this.salvataggio = salvataggio;
+        this.aggiornamento = null;
+        this.terapiaDaModificare = null;
+        this.modalitaModifica = false;
 
         titoloLabel.setText(
-                "Terapia - "
-                        + paziente.getNome()
-                        + " "
-                        + paziente.getCognome()
+                "Nuova terapia"
         );
 
-
-        // DATI DI PROVA
-
-        farmacoField.setText(
-                "Metformina"
-        );
-
-        assunzioniField.setText(
-                "2"
-        );
-
-        quantitaField.setText(
-                "500 mg"
-        );
-
-        indicazioniArea.setText(
-                "Assumere dopo i pasti."
-        );
+        farmacoField.clear();
+        assunzioniField.clear();
+        quantitaField.clear();
+        indicazioniArea.clear();
     }
 
+    public void inizializzaModifica(
+            Terapia terapia,
+            Runnable aggiornamento) {
+
+        this.medico = terapia.getMedicoAssegnante();
+        this.terapiaDaModificare = terapia;
+        this.aggiornamento = aggiornamento;
+        this.salvataggio = null;
+        this.modalitaModifica = true;
+
+        titoloLabel.setText(
+                "Modifica terapia"
+        );
+
+        farmacoField.setText(terapia.getFarmaco());
+        assunzioniField.setText(
+                String.valueOf(terapia.getNumeroAssunzioniGiornaliere())
+        );
+        quantitaField.setText(
+                String.valueOf(terapia.getDose())
+        );
+        indicazioniArea.setText(terapia.getIndicazioni());
+    }
 
     private void salvaTerapia() {
 
-        String farmaco =
-                farmacoField.getText();
+        String farmaco = farmacoField.getText().trim();
+        String assunzioniTesto = assunzioniField.getText().trim();
+        String doseTesto = quantitaField.getText().trim();
+        String indicazioni = indicazioniArea.getText().trim();
 
-        String assunzioni =
-                assunzioniField.getText();
+        if (farmaco.isEmpty() || assunzioniTesto.isEmpty() || doseTesto.isEmpty()) {
+            return;
+        }
 
-        String quantita =
-                quantitaField.getText();
+        int assunzioni;
+        int dose;
 
-        String indicazioni =
-                indicazioniArea.getText();
+        try {
+            assunzioni = Integer.parseInt(assunzioniTesto);
+            dose = Integer.parseInt(doseTesto);
+        } catch (NumberFormatException e) {
+            return;
+        }
 
+        if (assunzioni <= 0 || dose <= 0) {
+            return;
+        }
 
-        System.out.println(
-                "TERAPIA SALVATA"
-        );
+        if (modalitaModifica) {
 
-        System.out.println(
-                "Farmaco: " + farmaco
-        );
+            terapiaDaModificare.setFarmaco(farmaco);
+            terapiaDaModificare.setNumeroAssunzioniGiornaliere(assunzioni);
+            terapiaDaModificare.setDose(dose);
+            terapiaDaModificare.setIndicazioni(indicazioni);
 
-        System.out.println(
-                "Assunzioni: " + assunzioni
-        );
+            if (aggiornamento != null) {
+                aggiornamento.run();
+            }
 
-        System.out.println(
-                "Quantità: " + quantita
-        );
+        } else {
 
-        System.out.println(
-                "Indicazioni: " + indicazioni
-        );
-        
+            Terapia nuovaTerapia = new Terapia(
+                    farmaco,
+                    dose,
+                    assunzioni,
+                    medico,
+                    new ArrayList<>(),
+                    indicazioni
+            );
+
+            if (salvataggio != null) {
+                salvataggio.accept(nuovaTerapia);
+            }
+        }
+
+        chiudiFinestra();
+    }
+
+    private void chiudiFinestra() {
         Stage stage =
-                (Stage) salvaButton
-                        .getScene()
-                        .getWindow();
-
+                (Stage) salvaButton.getScene().getWindow();
         stage.close();
     }
 }

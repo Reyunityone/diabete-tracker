@@ -2,17 +2,19 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx/26"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="application.controller.ModificaCredenzialiController"
       alignment="CENTER"
-      spacing="15"
-      prefWidth="400"
-      prefHeight="350">
+      spacing="12"
+      prefWidth="450"
+      prefHeight="650">
 
     <padding>
         <Insets top="30"
@@ -21,20 +23,89 @@
                 right="40"/>
     </padding>
 
-    <Label text="Modifica credenziali"
+
+    <!-- ===================================================== -->
+    <!-- TITOLO -->
+    <!-- ===================================================== -->
+
+    <Label fx:id="titoloLabel"
+           text="Modifica persona"
            style="-fx-font-size: 26px; -fx-font-weight: bold;"/>
 
     <Label fx:id="personaLabel"
            text="Nome Cognome"
            style="-fx-font-size: 16px;"/>
 
-    <PasswordField fx:id="vecchieCredenzialiField"
-                   promptText="Vecchie credenziali"
-                   prefHeight="40"/>
 
-    <PasswordField fx:id="nuoveCredenzialiField"
-                   promptText="Nuove credenziali"
-                   prefHeight="40"/>
+    <!-- ===================================================== -->
+    <!-- DATI PERSONALI -->
+    <!-- ===================================================== -->
+
+    <TextField fx:id="nomeField"
+               promptText="Nome"
+               prefHeight="40"/>
+
+    <TextField fx:id="cognomeField"
+               promptText="Cognome"
+               prefHeight="40"/>
+
+    <TextField fx:id="codiceFiscaleField"
+               promptText="Codice Fiscale"
+               prefHeight="40"/>
+
+
+    <!-- ===================================================== -->
+    <!-- DATI ACCOUNT -->
+    <!-- ===================================================== -->
+
+    <TextField fx:id="emailField"
+               promptText="Email"
+               prefHeight="40"/>
+
+    <TextField fx:id="usernameField"
+               promptText="Username"
+               prefHeight="40"/>
+
+    <!-- PASSWORD VISIBILE -->
+    <TextField fx:id="passwordField"
+               promptText="Password"
+               prefHeight="40"/>
+
+
+    <!-- ===================================================== -->
+    <!-- ASSEGNAZIONE -->
+    <!-- ===================================================== -->
+
+    <Label fx:id="assegnazioneLabel"
+           text="Assegna"
+           style="-fx-font-weight: bold;"/>
+
+
+    <!-- ===================================================== -->
+    <!-- MEDICO REFERENTE DEL PAZIENTE -->
+    <!-- ===================================================== -->
+
+    <ComboBox fx:id="medicoComboBox"
+              promptText="Seleziona medico"
+              prefWidth="350"
+              prefHeight="40"/>
+
+
+    <!-- ===================================================== -->
+    <!-- PAZIENTI DEL MEDICO -->
+    <!-- ===================================================== -->
+
+    <MenuButton fx:id="pazientiMenuButton"
+                text="Seleziona pazienti"
+                prefWidth="350"
+                prefHeight="40"
+                visible="false"
+                managed="false"/>
+
+
+    <!-- ===================================================== -->
+    <!-- PULSANTI -->
+    <!-- ===================================================== -->
 
     <VBox spacing="10"
           alignment="CENTER">

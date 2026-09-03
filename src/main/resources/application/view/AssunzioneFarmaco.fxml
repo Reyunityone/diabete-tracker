@@ -7,10 +7,12 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ComboBox?>
 <VBox
         xmlns="http://javafx.com/javafx/26"
         xmlns:fx="http://javafx.com/fxml/1"
-        fx:controller="application.controller.SintomoFarmacoController"
+        fx:controller="application.controller.FarmacoController"
 
         spacing="12"
 
@@ -31,7 +33,7 @@
 
 
     <Label
-            text="Sintomo / Farmaco"
+            text="Assunzione Farmaco"
             styleClass="window-title"/>
 
 
@@ -45,17 +47,33 @@
 
 
     <Label
-            text="Indicazione"
+            text="Orario (hh:mm)"
+            styleClass="field-label"
+        />
+
+    <TextField
+            fx:id="orarioField"
+            promptText="Inserisci l'orario di assunzione del farmaco"
+        />
+
+    <Label
+            text="Quantità (mg)"
             styleClass="field-label"/>
 
 
-    <TextArea
-            fx:id="indicazioneArea"
-            promptText="Descrivi liberamente il sintomo o il farmaco..."
-            wrapText="true"
-            VBox.vgrow="ALWAYS"/>
+    <TextField
+            fx:id="quantitaField"
+            promptText="Inserisci la quantità assunta.."
+            />
 
-
+    <Label
+            text="Terapia"
+            styleClass="field-label"
+        />
+    <ComboBox
+            fx:id="terapiaBox"
+            promptText="Inserisci la terapia di riferimento"
+        />
     <Button
             text="Salva"
             onAction="#salva"

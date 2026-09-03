@@ -38,13 +38,9 @@
             fitToWidth="true"
             VBox.vgrow="ALWAYS">
 
-        <content>
-
-            <VBox fx:id="chiamateContainer"
-                  spacing="10"
-                  fillWidth="true"/>
-
-        </content>
+        <VBox fx:id="chiamateContainer"
+              spacing="10"
+        />
 
     </ScrollPane>
 

@@ -4,11 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import application.classiGeneriche.Chiamata;
-import application.classiGeneriche.Messaggio;
-import application.classiGeneriche.Rilevazione;
-import application.classiGeneriche.Segnalazione;
-import application.classiGeneriche.SintomoFarmaco;
+import application.classiGeneriche.*;
 
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
@@ -22,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.Duration;
 
 
@@ -63,17 +60,6 @@ public class PazienteController {
 
     @FXML
     private Button messaggioButton;
-
-
-    // =========================================================
-    // DATI PROFILO
-    // =========================================================
-
-    private String nomePaziente;
-
-    private String cognomePaziente;
-
-
     // =========================================================
     // STORICO RILEVAZIONI
     // =========================================================
@@ -86,7 +72,7 @@ public class PazienteController {
     // STORICO SINTOMI / FARMACI
     // =========================================================
 
-    private final List<SintomoFarmaco> sintomiFarmaci =
+    private final List<AssunzioneFarmaco> assunzioniFarmaci =
             new ArrayList<>();
 
 
@@ -102,8 +88,7 @@ public class PazienteController {
     // MESSAGGI
     // =========================================================
 
-    private final List<Messaggio> messaggi =
-            new ArrayList<>();
+    private List<Messaggio> messaggi;
 
 
     // =========================================================
@@ -196,8 +181,6 @@ public class PazienteController {
         // DATI DI PROVA
         // -----------------------------------------------------
 
-        inizializzaMessaggi();
-
         inizializzaChiamate();
 
 
@@ -218,37 +201,10 @@ public class PazienteController {
         // -----------------------------------------------------
         // NOTIFICHE
         // -----------------------------------------------------
-
+        GestoreAlert.verificaAssunzioniGiornaliere((Paziente) Session.getInstance().getCurrentUser());
+        this.messaggi = Database.getInstance().getMessaggiFromPaziente((Paziente) Session.getInstance().getCurrentUser());
         aggiornaPallinoNotifiche();
     }
-
-
-    // =========================================================
-    // MESSAGGI DI PROVA
-    // =========================================================
-
-    private void inizializzaMessaggi() {
-
-        messaggi.add(
-                new Messaggio(
-                        "Diabetologo",
-                        "Rossi",
-                        "Buongiorno, come sta andando il monitoraggio della glicemia?",
-                        false
-                )
-        );
-
-
-        messaggi.add(
-                new Messaggio(
-                        "Diabetologo",
-                        "Rossi",
-                        "Ricordo di effettuare le rilevazioni giornaliere.",
-                        true
-                )
-        );
-    }
-
 
     // =========================================================
     // CHIAMATE DI PROVA
@@ -271,17 +227,10 @@ public class PazienteController {
     // PROFILO
     // =========================================================
 
-    public void inizializzaProfilo(
-            String nome,
-            String cognome) {
-
-        this.nomePaziente = nome;
-
-        this.cognomePaziente = cognome;
-
-
+    public void inizializzaProfilo() {
+        User user = Session.getInstance().getCurrentUser();
         nomeCognomeLabel.setText(
-                nome + " " + cognome
+                user.getNome() + " " + user.getCognome()
         );
 
 
@@ -745,10 +694,7 @@ public class PazienteController {
 
 
             controller.inizializza(
-                    rilevazione ->
-                            rilevazioni.add(
-                                    rilevazione
-                            )
+                    Database.getInstance()::addRilevazione
             );
 
 
@@ -792,7 +738,7 @@ public class PazienteController {
             FXMLLoader loader =
                     new FXMLLoader(
                             getClass().getResource(
-                                    "/application/view/SintomoFarmaco.fxml"
+                                    "/application/view/AssunzioneFarmaco.fxml"
                             )
                     );
 
@@ -801,15 +747,12 @@ public class PazienteController {
                     loader.load();
 
 
-            SintomoFarmacoController controller =
+            FarmacoController controller =
                     loader.getController();
 
 
             controller.inizializza(
-                    elemento ->
-                            sintomiFarmaci.add(
-                                    elemento
-                            )
+                    Database.getInstance()::addAssunzione
             );
 
 
@@ -868,10 +811,8 @@ public class PazienteController {
 
 
             controller.inizializza(
-                    segnalazione ->
-                            segnalazioni.add(
-                                    segnalazione
-                            )
+                    Database.getInstance()::addSegnalazione
+
             );
 
 
@@ -907,6 +848,11 @@ public class PazienteController {
 
     @FXML
     private void handleLogout() {
+        Session.getInstance().logout();
+        List<Window> windows = new ArrayList<>(Window.getWindows());
+        for(Window w : windows){
+            w.hide();
+        }
 
         try {
 
@@ -1005,7 +951,7 @@ public class PazienteController {
     private void apriStoricoRilevazioni() {
 
         apriStorico(
-                rilevazioni,
+                Database.getInstance().getRilevazioniByPaziente((Paziente) Session.getInstance().getCurrentUser()),
                 "rilevazioni",
                 "Rilevazioni precedenti"
         );
@@ -1016,7 +962,7 @@ public class PazienteController {
     private void apriStoricoSintomi() {
 
         apriStorico(
-                sintomiFarmaci,
+                Database.getInstance().getAssunzioniByPaziente((Paziente) Session.getInstance().getCurrentUser()),
                 "sintomi",
                 "Sintomi / Farmaci precedenti"
         );
@@ -1027,7 +973,7 @@ public class PazienteController {
     private void apriStoricoSegnalazioni() {
 
         apriStorico(
-                segnalazioni,
+                Database.getInstance().getSegnalazioniByPaziente( (Paziente) Session.getInstance().getCurrentUser()),
                 "segnalazioni",
                 "Segnalazioni precedenti"
         );

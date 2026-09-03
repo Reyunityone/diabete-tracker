@@ -3,9 +3,7 @@ package application.controller;
 import java.io.IOException;
 import java.util.List;
 
-import application.classiGeneriche.Rilevazione;
-import application.classiGeneriche.Segnalazione;
-import application.classiGeneriche.SintomoFarmaco;
+import application.classiGeneriche.*;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +19,7 @@ import javafx.stage.Stage;
 
 public class StoricoController {
 
+    private Paziente user;
     // =========================================================
     // FXML
     // =========================================================
@@ -53,7 +52,6 @@ public class StoricoController {
             String tipo) {
 
         this.elementi = elementi;
-
         this.tipo = tipo;
 
         impostaTitolo();
@@ -188,21 +186,21 @@ public class StoricoController {
         if (elemento instanceof Rilevazione) {
 
             return ((Rilevazione) elemento)
-                    .getData();
+                    .getData().toString();
         }
 
 
-        if (elemento instanceof SintomoFarmaco) {
+        if (elemento instanceof AssunzioneFarmaco) {
 
-            return ((SintomoFarmaco) elemento)
-                    .getData();
+            return ((AssunzioneFarmaco) elemento)
+                    .getData().toString();
         }
 
 
         if (elemento instanceof Segnalazione) {
 
             return ((Segnalazione) elemento)
-                    .getData();
+                    .getDataInizio().toString();
         }
 
 
@@ -240,10 +238,7 @@ public class StoricoController {
         // RILEVAZIONE
         // =====================================================
 
-        if (elemento instanceof Rilevazione) {
-
-            Rilevazione r =
-                    (Rilevazione) elemento;
+        if (elemento instanceof Rilevazione r) {
 
 
             Label data =
@@ -258,8 +253,8 @@ public class StoricoController {
                             "Glicemia: "
                                     + r.getLivelloGlicemia()
                                     + "    |    "
-                                    + "Momento: "
-                                    + r.getMomentoGiornata()
+                                    + "Orario rilevazione: "
+                                    + r.getOrarioRilevazione()
                     );
 
 
@@ -283,10 +278,7 @@ public class StoricoController {
         // SINTOMO / FARMACO
         // =====================================================
 
-        else if (elemento instanceof SintomoFarmaco) {
-
-            SintomoFarmaco s =
-                    (SintomoFarmaco) elemento;
+        else if (elemento instanceof AssunzioneFarmaco s) {
 
 
             Label data =
@@ -298,7 +290,7 @@ public class StoricoController {
 
             Label contenuto =
                     new Label(
-                            s.getIndicazione()
+                            ""+ s.getQuantita()
                     );
 
 
@@ -322,16 +314,13 @@ public class StoricoController {
         // SEGNALAZIONE
         // =====================================================
 
-        else if (elemento instanceof Segnalazione) {
-
-            Segnalazione s =
-                    (Segnalazione) elemento;
+        else if (elemento instanceof Segnalazione s) {
 
 
             Label data =
                     new Label(
                             "Data: "
-                                    + s.getData()
+                                    + s.getDataInizio()
                     );
 
 
@@ -421,10 +410,10 @@ public class StoricoController {
         }
 
 
-        if (elemento instanceof SintomoFarmaco) {
+        if (elemento instanceof AssunzioneFarmaco) {
 
             modificaSintomo(
-                    (SintomoFarmaco) elemento
+                    (AssunzioneFarmaco) elemento
             );
 
             return;
@@ -492,20 +481,20 @@ public class StoricoController {
     // =========================================================
 
     private void modificaSintomo(
-            SintomoFarmaco sintomo) {
+            AssunzioneFarmaco sintomo) {
 
         try {
 
             FXMLLoader loader =
                     new FXMLLoader(
                             getClass().getResource(
-                                    "/application/view/SintomoFarmaco.fxml"
+                                    "/application/view/AssunzioneFarmaco.fxml"
                             )
                     );
 
             Parent root = loader.load();
 
-            SintomoFarmacoController controller =
+            FarmacoController controller =
                     loader.getController();
 
             controller.inizializzaModifica(

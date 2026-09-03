@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -14,31 +15,50 @@
         xmlns="http://javafx.com/javafx/26"
         xmlns:fx="http://javafx.com/fxml/1"
         fx:controller="application.controller.AndamentoController"
-        prefWidth="900"
-        prefHeight="600"
+        prefWidth="1000"
+        prefHeight="650"
         stylesheets="@../css/andamento.css">
 
     <top>
 
-        <VBox spacing="10">
+        <VBox spacing="12">
 
             <padding>
-                <Insets top="20"
+                <Insets
+                        top="20"
                         right="20"
                         bottom="10"
                         left="20"/>
             </padding>
 
-            <Label fx:id="titoloLabel"
-                   text="Andamento glicemico"
-                   styleClass="title"/>
 
-            <HBox spacing="10">
+            <Label
+                    fx:id="titoloLabel"
+                    text="Andamento glicemico"
+                    styleClass="title"/>
 
-                <Button fx:id="settimanaButton"
+
+            <HBox
+                    spacing="10"
+                    alignment="CENTER_LEFT">
+
+                <DatePicker
+                        fx:id="dataPicker"
+                        prefWidth="160"/>
+
+
+                <Button
+                        fx:id="giornoButton"
+                        text="Giorno"/>
+
+
+                <Button
+                        fx:id="settimanaButton"
                         text="Settimana"/>
 
-                <Button fx:id="meseButton"
+
+                <Button
+                        fx:id="meseButton"
                         text="Mese"/>
 
             </HBox>
@@ -47,35 +67,45 @@
 
     </top>
 
+
     <center>
 
         <VBox spacing="10">
 
             <padding>
-                <Insets top="10"
+                <Insets
+                        top="10"
                         right="20"
                         bottom="10"
                         left="20"/>
             </padding>
 
-            <LineChart fx:id="grafico"
-                       VBox.vgrow="ALWAYS"
-                       animated="false"
-                       createSymbols="true">
+
+            <LineChart
+                    fx:id="grafico"
+                    VBox.vgrow="ALWAYS"
+                    animated="false"
+                    createSymbols="true"
+                    legendVisible="true">
 
                 <xAxis>
 
-                    <CategoryAxis fx:id="asseX"/>
+                    <CategoryAxis
+                            fx:id="asseX"
+                            side="BOTTOM"/>
 
                 </xAxis>
 
+
                 <yAxis>
 
-                    <NumberAxis fx:id="asseY"
-                                autoRanging="false"
-                                lowerBound="40"
-                                upperBound="250"
-                                tickUnit="20"/>
+                    <NumberAxis
+                            fx:id="asseY"
+                            autoRanging="false"
+                            lowerBound="40"
+                            upperBound="250"
+                            tickUnit="20"
+                            side="LEFT"/>
 
                 </yAxis>
 
@@ -85,24 +115,34 @@
 
     </center>
 
+
     <bottom>
 
-        <HBox alignment="CENTER"
-              spacing="30">
+        <HBox
+                alignment="CENTER"
+                spacing="30">
 
             <padding>
-                <Insets top="10"
+                <Insets
+                        top="10"
                         bottom="20"/>
             </padding>
 
-            <Button fx:id="indietroButton"
+
+            <Button
+                    fx:id="indietroButton"
                     text="◀"/>
 
-            <Label fx:id="periodoLabel"
-                   text="Settimana 1"/>
 
-            <Button fx:id="avantiButton"
+            <Label
+                    fx:id="periodoLabel"
+                    text="26 agosto 2026"/>
+
+
+            <Button
+                    fx:id="avantiButton"
                     text="▶"/>
+
 
         </HBox>
 

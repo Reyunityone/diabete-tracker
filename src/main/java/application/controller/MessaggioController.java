@@ -1,5 +1,6 @@
 package application.controller;
 
+import application.classiGeneriche.Database;
 import application.classiGeneriche.Messaggio;
 
 import javafx.fxml.FXML;
@@ -15,9 +16,6 @@ public class MessaggioController {
     private Label testoLabel;
 
 
-    private Runnable messaggioLetto;
-
-
     // =========================================================
     // INIZIALIZZAZIONE
     // =========================================================
@@ -26,14 +24,10 @@ public class MessaggioController {
             Messaggio messaggio,
             Runnable messaggioLetto) {
 
-        this.messaggioLetto =
-                messaggioLetto;
-
+        String nomeCompleto = messaggio.getMittente() != null ? messaggio.getMittente().getNome() + " " + messaggio.getMittente().getCognome() : "Sistema";
 
         nomeLabel.setText(
-                messaggio.getNome()
-                        + " "
-                        + messaggio.getCognome()
+                nomeCompleto
         );
 
 
@@ -47,9 +41,7 @@ public class MessaggioController {
         // =====================================================
 
         if (!messaggio.isLetto()) {
-
-            messaggio.setLetto(true);
-
+            Database.getInstance().setMessaggioLetto(messaggio);
             messaggioLetto.run();
         }
     }

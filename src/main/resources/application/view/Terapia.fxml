@@ -13,7 +13,7 @@
       spacing="12"
       prefWidth="500"
       prefHeight="500"
-      stylesheets="@../css/finestra.css">
+      stylesheets="@../css/finestre.css">
 
     <padding>
         <Insets top="25"

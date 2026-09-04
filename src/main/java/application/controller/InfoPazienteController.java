@@ -7,14 +7,13 @@ import javafx.fxml.FXML;
 import javafx.geometry.Side;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class InfoPazienteController {
@@ -43,12 +42,12 @@ public class InfoPazienteController {
 
         titoloLabel.setText("Info paziente - " + paziente.getNome() + " " + paziente.getCognome());
 
-        RiskFactor[] fattoriRischio = db.getFattoriDiRischioByPaziente(paziente);
+        List<RiskFactor> fattoriRischio = db.getFattoriDiRischioByPaziente(paziente);
 
         for (var item : menuFattoriRischio.getItems()) {
             if (item instanceof CustomMenuItem customItem && customItem.getContent() instanceof CheckBox checkBox) {
                 RiskFactor fattore = (RiskFactor) checkBox.getUserData();
-                checkBox.setSelected(fattoriRischio != null && Arrays.asList(fattoriRischio).contains(fattore));
+                checkBox.setSelected(fattoriRischio != null && fattoriRischio.contains(fattore));
             }
         }
 
@@ -110,7 +109,7 @@ public class InfoPazienteController {
     private void salvaInformazioni() {
         if (paziente == null) return;
 
-        RiskFactor[] fattoriSelezionati = menuFattoriRischio.getItems().stream()
+        List<RiskFactor> fattoriSelezionati = menuFattoriRischio.getItems().stream()
                 .filter(item -> item instanceof CustomMenuItem)
                 .map(item -> (CustomMenuItem) item)
                 .map(CustomMenuItem::getContent)
@@ -119,7 +118,7 @@ public class InfoPazienteController {
                 .filter(CheckBox::isSelected)
                 .map(CheckBox::getUserData)
                 .map(RiskFactor.class::cast)
-                .toArray(RiskFactor[]::new);
+                .collect(Collectors.toList());
 
         paziente.setFattoriDiRischio(fattoriSelezionati);
         paziente.setPatologiePregresse(patologieArea.getText().trim());

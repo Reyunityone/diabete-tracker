@@ -335,6 +335,19 @@ public class Database {
 
         return false;
     }
+
+    public void modificaTerapiaPaziente(Terapia vecchia, Paziente paziente, Terapia nuova) {
+        int indice = terapie.indexOf(vecchia);
+        if (indice != -1) {
+            Terapia terapiaEsistente = terapie.get(indice);
+            terapiaEsistente.getPazienti().remove(paziente);
+            if (terapiaEsistente.getPazienti().isEmpty()) {
+                terapie.remove(terapiaEsistente);
+            }
+        }
+        assegnaTerapia(nuova, paziente);
+    }
+
     public void assegnaTerapia(
             Terapia terapia,
             Paziente paziente) {

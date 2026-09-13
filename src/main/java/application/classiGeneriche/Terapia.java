@@ -73,12 +73,16 @@ public class Terapia implements Serializable {
     public boolean equals(Object obj) {
         if(this == obj) return true;
         if(!(obj instanceof Terapia t)) return false;
-        return this.getFarmaco().equals(t.getFarmaco()) && this.getDose() == t.getDose() && this.getNumeroAssunzioniGiornaliere() == t.getNumeroAssunzioniGiornaliere() && this.getIndicazioni().equals(t.getIndicazioni());
+        return this.getFarmaco().equals(t.getFarmaco())
+                && this.getDose() == t.getDose()
+                && this.getNumeroAssunzioniGiornaliere() == t.getNumeroAssunzioniGiornaliere()
+                && this.getIndicazioni().equals(t.getIndicazioni())
+                && this.getMedicoAssegnante().equals(t.getMedicoAssegnante());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getFarmaco(), getDose(), getNumeroAssunzioniGiornaliere(), getIndicazioni());
+        return Objects.hash(getFarmaco(), getDose(), getNumeroAssunzioniGiornaliere(), getIndicazioni(), getMedicoAssegnante());
     }
 
     @Override

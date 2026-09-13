@@ -2,7 +2,7 @@ package application.classiGeneriche;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.List;
 import java.util.Objects;
 
 public class Database {
@@ -222,7 +222,7 @@ public class Database {
         save();
     }
 
-    public RiskFactor[] getFattoriDiRischioByPaziente(Paziente p) {
+    public List<RiskFactor> getFattoriDiRischioByPaziente(Paziente p) {
         if (pazienti.contains(p)) {
             return p.getFattoriDiRischio();
         }

@@ -1,13 +1,17 @@
 package application.classiGeneriche;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public final class Paziente extends User{
-    private RiskFactor[] fattoriDiRischio;
+    private List<RiskFactor> fattoriDiRischio;
     private Diabetologo medicoDiRiferimento;
     private String patologiePregresse;
     private String comorbidita;
     private String dettagli;
 
-    public Paziente(String username,String password,String codiceFiscale, String nome, String cognome, String email, RiskFactor[] fattoriDiRischio, Diabetologo medicoDiRiferimento, String patologiePregresse, String comorbidita, String dettagli){
+    public Paziente(String username,String password,String codiceFiscale, String nome, String cognome, String email, List<RiskFactor> fattoriDiRischio, Diabetologo medicoDiRiferimento, String patologiePregresse, String comorbidita, String dettagli){
         super(username, password,codiceFiscale, nome, cognome, email);
         this.fattoriDiRischio = fattoriDiRischio;
         this.medicoDiRiferimento = medicoDiRiferimento;
@@ -18,18 +22,18 @@ public final class Paziente extends User{
 
     public Paziente(){
         super("luigiverdi1", "paziente","LLLLLL", "Luigi", "Verdi", "luigiverdi@libero.it");
-        this.fattoriDiRischio = new RiskFactor[]{RiskFactor.EX_DIPENDENZA_STUPEFACENTI, RiskFactor.FUMATORE};
+        this.fattoriDiRischio = new ArrayList<>(Arrays.asList(RiskFactor.EX_DIPENDENZA_STUPEFACENTI,RiskFactor.FUMATORE));
         this.medicoDiRiferimento = new Diabetologo();
         this.patologiePregresse = "Appendicite";
         this.comorbidita = "Nessuna";
         this.dettagli = "Asportata l'appendice a 15 anni";
     }
 
-    public RiskFactor[] getFattoriDiRischio() {
+    public List<RiskFactor> getFattoriDiRischio() {
         return fattoriDiRischio;
     }
 
-    public void setFattoriDiRischio(RiskFactor[] fattoriDiRischio) {
+    public void setFattoriDiRischio(List<RiskFactor> fattoriDiRischio) {
         this.fattoriDiRischio = fattoriDiRischio;
     }
 

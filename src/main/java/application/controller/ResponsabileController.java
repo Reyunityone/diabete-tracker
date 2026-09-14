@@ -230,21 +230,43 @@ public class ResponsabileController {
             aggiornaListe();
         }
     }
-
+    
     private static Optional<ButtonType> getRisultato(User persona) {
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
         alert.setTitle("Eliminazione account");
         alert.setHeaderText("Eliminare questo account?");
-        alert.setContentText(
-                "Stai per eliminare l'account di "
-                        + persona.getNome()
-                        + " "
-                        + persona.getCognome()
-                        + ".\n\n"
-                        + "Questa operazione non può essere annullata."
+
+        alert.getDialogPane().getStylesheets().add(
+                Objects.requireNonNull(
+                        ResponsabileController.class.getResource(
+                                "/application/css/responsabile.css"
+                        )
+                ).toExternalForm()
         );
 
+        Label descrizione = new Label(
+                "Stai per eliminare l'account di "
+                + persona.getNome()
+                + " "
+                + persona.getCognome()
+                + "."
+        );
+
+        descrizione.getStyleClass().add("delete-description");
+
+        Label avviso = new Label(
+                "Questa operazione non può essere annullata."
+        );
+
+        avviso.getStyleClass().add("delete-warning");
+
+        VBox contenuto = new VBox(8);
+
+        contenuto.getChildren().addAll(descrizione, avviso);
+
+        alert.getDialogPane().setContent(contenuto);
 
         return alert.showAndWait();
     }

@@ -14,7 +14,8 @@
       alignment="CENTER"
       spacing="12"
       prefWidth="450"
-      prefHeight="650">
+      prefHeight="650"
+      stylesheets="@../css/responsabile.css, @../css/graficaComune.css">
 
     <padding>
         <Insets top="30"
@@ -30,11 +31,11 @@
 
     <Label fx:id="titoloLabel"
            text="Modifica persona"
-           style="-fx-font-size: 26px; -fx-font-weight: bold;"/>
+           styleClass="window-title"/>
 
     <Label fx:id="personaLabel"
            text="Nome Cognome"
-           style="-fx-font-size: 16px;"/>
+           styleClass="person-label"/>
 
 
     <!-- ===================================================== -->
@@ -78,7 +79,7 @@
 
     <Label fx:id="assegnazioneLabel"
            text="Assegna"
-           style="-fx-font-weight: bold;"/>
+           styleClass="assignment-title"/>
 
 
     <!-- ===================================================== -->
@@ -99,6 +100,7 @@
                 text="Seleziona pazienti"
                 prefWidth="350"
                 prefHeight="40"
+                styleClass="dropdown-button"
                 visible="false"
                 managed="false"/>
 
@@ -113,12 +115,14 @@
         <Button text="Conferma"
                 onAction="#handleConferma"
                 prefWidth="150"
-                prefHeight="40"/>
+                prefHeight="40"
+                styleClass="standard-button"/>
 
         <Button text="Annulla"
                 onAction="#handleAnnulla"
                 prefWidth="150"
-                prefHeight="40"/>
+                prefHeight="40"
+                styleClass="secondary-button"/>
 
     </VBox>
 

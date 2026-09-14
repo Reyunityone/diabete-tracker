@@ -138,6 +138,10 @@ public class AndamentoController {
         
         avantiButton.setOnAction(event -> {cambiaPeriodo(1);});
 
+        giornoButton.getStyleClass().add("secondary-button");
+        settimanaButton.getStyleClass().add("secondary-button");
+        meseButton.getStyleClass().add("secondary-button");
+        
         aggiornaGrafico();
     }
     

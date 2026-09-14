@@ -81,9 +81,7 @@ public class TerapieEsistentiController {
                 Double.MAX_VALUE
         );
 
-        box.getStyleClass().add(
-                "history-item"
-        );
+        box.getStyleClass().add("therapy-box");
 
 
         VBox informazioni =
@@ -96,7 +94,7 @@ public class TerapieEsistentiController {
                 );
 
         farmaco.getStyleClass().add(
-                "history-date"
+        		"therapy-name"
         );
 
 
@@ -137,13 +135,13 @@ public class TerapieEsistentiController {
 
 
         Button assegnaButton = new Button("Assegna");
-        assegnaButton.getStyleClass().add("open-button");
+        assegnaButton.getStyleClass().add("secondary-button");
         assegnaButton.setOnAction(
                 event -> assegnaTerapia(terapia)
         );
 
         Button rimuoviButton = new Button("Rimuovi");
-        rimuoviButton.getStyleClass().add("open-button");
+        rimuoviButton.getStyleClass().add("delete-button");
         rimuoviButton.setOnAction(
                 event -> rimuoviTerapia(terapia)
         );

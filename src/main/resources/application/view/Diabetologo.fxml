@@ -18,7 +18,7 @@
             fx:controller="application.controller.DiabetologoController"
             prefWidth="1200.0"
             prefHeight="750.0"
-            stylesheets="@../css/diabetologo.css">
+            stylesheets="@../css/diabetologo.css, @../css/graficaComune.css">
 
     <BorderPane
             AnchorPane.topAnchor="0.0"
@@ -171,7 +171,7 @@
 
 <AnchorPane
         AnchorPane.topAnchor="10.0"
-        AnchorPane.rightAnchor="110.0">
+        AnchorPane.rightAnchor="40.0">
 
     <!-- PULSANTE MESSAGGI -->
 
@@ -206,7 +206,7 @@
             preserveRatio="true"
             visible="false"
             AnchorPane.topAnchor="-2"
-            AnchorPane.rightAnchor="-2">
+            AnchorPane.rightAnchor="40">
 
         <Image url="@../images/daLeggere.png"/>
 

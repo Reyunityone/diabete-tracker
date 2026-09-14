@@ -20,7 +20,7 @@
         prefWidth="1200.0"
         prefHeight="750.0"
 
-        stylesheets="@../css/paziente.css">
+        stylesheets="@../css/paziente.css, @../css/graficaComune.css">
 
 
     <BorderPane
@@ -186,18 +186,9 @@
                                 fx:id="aggiungiRilevazioneButton"
                                 text="Aggiungi"
                                 onAction="#apriAggiungiRilevazione"
-                                styleClass="patient-action-button">
+                                styleClass="standard-button">
 
                             <graphic>
-
-                                <ImageView
-                                        fitHeight="25.0"
-                                        fitWidth="25.0"
-                                        preserveRatio="true">
-
-                                    <Image
-                                            url="@../images/aggiungi.png"/>
-                                </ImageView>
 
                             </graphic>
 
@@ -210,7 +201,7 @@
                                 fx:id="precedentiRilevazioniButton"
                                 text="Vedi Precedenti"
                                 onAction="#apriStoricoRilevazioni"
-                                styleClass="patient-action-button">
+                                styleClass="secondary-button">
 
                             <graphic>
 
@@ -221,28 +212,6 @@
 
                                     <Image
                                             url="@../images/vediPrecedenti.png"/>
-                                </ImageView>
-
-                            </graphic>
-
-                        </Button>
-
-
-                        <!-- INFO -->
-
-                        <Button
-                                fx:id="infoRilevazioniButton"
-                                styleClass="patient-info-button">
-
-                            <graphic>
-
-                                <ImageView
-                                        fitHeight="25.0"
-                                        fitWidth="25.0"
-                                        preserveRatio="true">
-
-                                    <Image
-                                            url="@../images/info.png"/>
                                 </ImageView>
 
                             </graphic>
@@ -287,18 +256,9 @@
                                 fx:id="aggiungiSintomoButton"
                                 text="Aggiungi"
                                 onAction="#apriAggiungiSintomo"
-                                styleClass="patient-action-button">
+                                styleClass="standard-button">
 
                             <graphic>
-
-                                <ImageView
-                                        fitHeight="25.0"
-                                        fitWidth="25.0"
-                                        preserveRatio="true">
-
-                                    <Image
-                                            url="@../images/aggiungi.png"/>
-                                </ImageView>
 
                             </graphic>
 
@@ -311,7 +271,7 @@
                                 fx:id="precedentiSintomiButton"
                                 text="Vedi Precedenti"
                                 onAction="#apriStoricoSintomi"
-                                styleClass="patient-action-button">
+                                styleClass="secondary-button">
 
                             <graphic>
 
@@ -322,28 +282,6 @@
 
                                     <Image
                                             url="@../images/vediPrecedenti.png"/>
-                                </ImageView>
-
-                            </graphic>
-
-                        </Button>
-
-
-                        <!-- INFO -->
-
-                        <Button
-                                fx:id="infoSintomiButton"
-                                styleClass="patient-info-button">
-
-                            <graphic>
-
-                                <ImageView
-                                        fitHeight="25.0"
-                                        fitWidth="25.0"
-                                        preserveRatio="true">
-
-                                    <Image
-                                            url="@../images/info.png"/>
                                 </ImageView>
 
                             </graphic>
@@ -388,18 +326,9 @@
                                 fx:id="aggiungiSegnalazioneButton"
                                 text="Aggiungi"
                                 onAction="#apriAggiungiSegnalazione"
-                                styleClass="patient-action-button">
+                                styleClass="standard-button">
 
                             <graphic>
-
-                                <ImageView
-                                        fitHeight="25.0"
-                                        fitWidth="25.0"
-                                        preserveRatio="true">
-
-                                    <Image
-                                            url="@../images/aggiungi.png"/>
-                                </ImageView>
 
                             </graphic>
 
@@ -412,39 +341,17 @@
                                 fx:id="precedentiSegnalazioniButton"
                                 text="Vedi Precedenti"
                                 onAction="#apriStoricoSegnalazioni"
-                                styleClass="patient-action-button">
+                                styleClass="secondary-button">
 
                             <graphic>
 
                                 <ImageView
-                                        fitHeight="25.0"
-                                        fitWidth="25.0"
+                                        fitHeight="22.0"
+                                        fitWidth="22.0"
                                         preserveRatio="true">
 
                                     <Image
                                             url="@../images/vediPrecedenti.png"/>
-                                </ImageView>
-
-                            </graphic>
-
-                        </Button>
-
-
-                        <!-- INFO -->
-
-                        <Button
-                                fx:id="infoSegnalazioniButton"
-                                styleClass="patient-info-button">
-
-                            <graphic>
-
-                                <ImageView
-                                        fitHeight="25.0"
-                                        fitWidth="25.0"
-                                        preserveRatio="true">
-
-                                    <Image
-                                            url="@../images/info.png"/>
                                 </ImageView>
 
                             </graphic>
@@ -461,7 +368,7 @@
 
 <AnchorPane
         AnchorPane.topAnchor="10.0"
-        AnchorPane.rightAnchor="110.0">
+        AnchorPane.rightAnchor="40.0">
 
     <!-- PULSANTE MESSAGGI -->
 
@@ -497,7 +404,7 @@
             preserveRatio="true"
             visible="false"
             AnchorPane.topAnchor="-2.0"
-            AnchorPane.rightAnchor="-2.0">
+            AnchorPane.rightAnchor="40.0">
 
         <Image
                 url="@../images/daLeggere.png"/>

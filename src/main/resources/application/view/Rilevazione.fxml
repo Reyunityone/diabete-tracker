@@ -15,7 +15,8 @@
         spacing="12"
         prefWidth="450"
         prefHeight="470"
-        styleClass="window-background">
+        styleClass="window-background"
+        stylesheets="@../css/graficaComune.css">
 
     <padding>
         <Insets
@@ -37,7 +38,8 @@
 
     <DatePicker
             fx:id="dataPicker"
-            prefWidth="390"/>
+            prefWidth="390"
+            styleClass="modern-date-picker"/>
 
 
     <Label
@@ -80,7 +82,7 @@
     <Button
     		text="Salva"
     		onAction="#salva"
-    		styleClass="save-button">
+    		styleClass="standard-button">
     	<VBox.margin>
     	    <Insets top="20"/>
     	</VBox.margin>

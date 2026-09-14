@@ -100,8 +100,8 @@ public class MessaggiController {
 
         // ANTEPRIMA
         String anteprima =messaggio.getTesto();
-        if (anteprima.length() > 45) {
-            anteprima =anteprima.substring(0,45)+ "...";
+        if (anteprima.length() > 50) {
+            anteprima =anteprima.substring(0,50)+ "...";
         }
 
         //TESTO
@@ -118,7 +118,7 @@ public class MessaggiController {
         
         // APRI
         Button apri =new Button("Apri");
-        apri.getStyleClass().add("open-button");
+        apri.getStyleClass().add("standard-button");
         apri.setOnAction(event ->apriMessaggio(messaggio));
         
         box.getChildren().addAll(avatar,informazioni,spazio,apri);

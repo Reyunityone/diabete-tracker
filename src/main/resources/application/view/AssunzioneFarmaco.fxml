@@ -19,7 +19,8 @@
         prefWidth="500"
         prefHeight="420"
 
-        styleClass="window-background">
+        styleClass="window-background"
+        stylesheets="@../css/graficaComune.css">
 
     <padding>
 
@@ -43,7 +44,8 @@
 
 
     <DatePicker
-            fx:id="dataPicker"/>
+            fx:id="dataPicker"
+            styleClass="modern-date-picker"/>
 
 
     <Label
@@ -77,6 +79,6 @@
     <Button
             text="Salva"
             onAction="#salva"
-            styleClass="save-button"/>
+            styleClass="standard-button"/>
 
 </VBox>

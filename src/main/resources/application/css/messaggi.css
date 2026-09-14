@@ -1,0 +1,73 @@
+/* =========================================================
+   MESSAGGI
+   ========================================================= */
+
+.messages-title {
+
+    -fx-font-size: 26px;
+
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #222222;
+}
+
+
+/* =========================================================*/
+/*   BOX MESSAGGIO*/
+/*   ========================================================= */
+
+.message-box {
+
+    -fx-background-color: white;
+
+    -fx-background-radius: 8px;
+
+    -fx-border-color: #dddddd;
+
+    -fx-border-radius: 8px;
+
+    -fx-padding: 10px 15px;
+
+    -fx-min-height: 70px;
+
+    -fx-max-width: Infinity;
+}
+
+
+/* =========================================================
+   NOME MITTENTE
+   ========================================================= */
+
+.message-name {
+
+    -fx-font-size: 15px;
+
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #222222;
+}
+
+
+/* =========================================================
+   ANTEPRIMA
+   ========================================================= */
+
+.message-preview {
+
+    -fx-font-size: 13px;
+
+    -fx-text-fill: #777777;
+}
+
+/* =========================================================
+   TESTO MESSAGGIO
+   ========================================================= */
+
+.message-text {
+
+    -fx-font-size: 15px;
+
+    -fx-text-fill: #333333;
+
+    -fx-line-spacing: 2px;
+}

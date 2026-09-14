@@ -12,7 +12,7 @@
         spacing="20"
         prefWidth="550"
         prefHeight="400"
-        stylesheets="@../css/finestre.css">
+        stylesheets="@../css/messaggi.css, @../css/graficaComune.css">
 
     <padding>
 
@@ -30,11 +30,6 @@
 
 
     <Label
-            text="Messaggio:"
-            styleClass="message-label"/>
-
-
-    <Label
             fx:id="testoLabel"
             wrapText="true"
             maxWidth="490"
@@ -45,6 +40,6 @@
     <Button
             text="Chiudi"
             onAction="#chiudi"
-            styleClass="open-button"/>
+            styleClass="standard-button"/>
 
 </VBox>

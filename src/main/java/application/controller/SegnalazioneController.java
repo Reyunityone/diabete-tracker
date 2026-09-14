@@ -21,14 +21,9 @@ public class SegnalazioneController {
     // FXML
     // =========================================================
 
-    @FXML
-    private DatePicker dataInizioPicker;
-
-    @FXML
-    private DatePicker dataFinePicker;
-
-    @FXML
-    private TextArea testoArea;
+    @FXML private DatePicker dataInizioPicker;
+    @FXML private DatePicker dataFinePicker;
+    @FXML private TextArea testoArea;
 
 
     // =========================================================

@@ -9,37 +9,20 @@ import javafx.stage.Stage;
 
 public class MessaggioController {
 
-    @FXML
-    private Label nomeLabel;
-
-    @FXML
-    private Label testoLabel;
-
+	//OGGETTI FXML
+    @FXML private Label nomeLabel;
+    @FXML private Label testoLabel;
 
     // =========================================================
     // INIZIALIZZAZIONE
     // =========================================================
 
-    public void inizializza(
-            Messaggio messaggio,
-            Runnable messaggioLetto) {
-
+    public void inizializza(Messaggio messaggio,Runnable messaggioLetto) {
         String nomeCompleto = messaggio.getMittente() != null ? messaggio.getMittente().getNome() + " " + messaggio.getMittente().getCognome() : "Sistema";
+        nomeLabel.setText(nomeCompleto);
+        testoLabel.setText(messaggio.getTesto());
 
-        nomeLabel.setText(
-                nomeCompleto
-        );
-
-
-        testoLabel.setText(
-                messaggio.getTesto()
-        );
-
-
-        // =====================================================
         // IL MESSAGGIO VIENE CONSIDERATO LETTO
-        // =====================================================
-
         if (!messaggio.isLetto()) {
             Database.getInstance().setMessaggioLetto(messaggio);
             messaggioLetto.run();
@@ -53,12 +36,7 @@ public class MessaggioController {
 
     @FXML
     private void chiudi() {
-
-        Stage stage =
-                (Stage) nomeLabel
-                        .getScene()
-                        .getWindow();
-
+        Stage stage =(Stage) nomeLabel.getScene().getWindow();
         stage.close();
     }
 }

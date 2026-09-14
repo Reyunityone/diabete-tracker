@@ -1,7 +1,6 @@
 package application.controller;
 
 import application.classiGeneriche.*;
-import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,12 +11,12 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import javafx.util.Duration;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,14 +31,9 @@ public class DiabetologoController {
     @FXML private Label ruoloLabel;
     @FXML private Button logoutButton;
 
-    // MAIL
-    @FXML private AnchorPane mailContainer;
-    @FXML private Button mailButton;
-    @FXML private HBox mailMenu;
-    @FXML private Button telefonoButton;
-    @FXML private Button messaggioButton;
-    @FXML private ImageView messaggioNotification;
-    @FXML private ImageView telefonoNotification;
+    // MESSAGGI
+    @FXML private Button messaggiButton;
+    @FXML private ImageView messaggiNotification;
 
     // PAZIENTI
     @FXML private TextField searchField;
@@ -50,40 +44,34 @@ public class DiabetologoController {
     private final List<Paziente> pazienti = new ArrayList<>();
     private final Diabetologo medico = (Diabetologo) Session.getInstance().getCurrentUser();
     private List<Messaggio> messaggi = new ArrayList<>();
-    private final List<Chiamata> chiamate = new ArrayList<>();
-    @FXML private ImageView mailNotification;
 
-    // TIMER CHIUSURA MENU
-    private PauseTransition chiusuraMenu;
-
+    // =========================================================
     // INITIALIZE
+    // =========================================================
+    
     @FXML
     public void initialize() {
         ruoloLabel.setText("Medico");
         aggiornaListaPazienti();
         configuraRicerca();
-        configuraMenuMail();
-        inizializzaChiamate();
+        configuraMessaggi();
         GestoreAlert.verificaTuttiIPazienti(medico);
         this.messaggi = Database.getInstance().getMessaggiFromMedico(medico);
         aggiornaPallinoNotifiche();
     }
-
-    private void inizializzaChiamate() {
-        chiamate.add(new Chiamata("Giulia", "Romano", "Richiesta di chiarimento sulla terapia.", false));
-        chiamate.add(new Chiamata("Marco", "Ferrari", "Problema con il monitoraggio glicemico.", true));
-    }
-
+    
     private void aggiornaPallinoNotifiche() {
-        boolean messaggiNonLetti = messaggi.stream().anyMatch(messaggio -> !messaggio.isLetto());
-        boolean chiamateNonLette = chiamate.stream().anyMatch(chiamata -> !chiamata.isLetta());
+        boolean messaggiNonLetti =
+                messaggi.stream()
+                        .anyMatch(messaggio -> !messaggio.isLetto());
 
-        mailNotification.setVisible(messaggiNonLetti || chiamateNonLette);
-        messaggioNotification.setVisible(messaggiNonLetti);
-        telefonoNotification.setVisible(chiamateNonLette);
+        messaggiNotification.setVisible(messaggiNonLetti);
     }
 
+    // =========================================================
     // PROFILO
+    // =========================================================
+    
     public void inizializzaProfilo() {
         Database db = Database.getInstance();
         nomeCognomeLabel.setText(medico.getNome() + " " + medico.getCognome());
@@ -93,14 +81,20 @@ public class DiabetologoController {
         aggiornaListaPazienti();
     }
 
+    // =========================================================
     // RICERCA
+    // =========================================================
+    
     private void configuraRicerca() {
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             aggiornaListaPazienti(newValue);
         });
     }
 
+    // =========================================================
     // LISTA PAZIENTI
+    // =========================================================
+    
     private void aggiornaListaPazienti() {
         aggiornaListaPazienti("");
     }
@@ -118,7 +112,10 @@ public class DiabetologoController {
         }
     }
 
+    // =========================================================
     // BOX PAZIENTE
+    // =========================================================
+    
     private HBox creaBoxPaziente(Paziente paziente) {
         HBox box = new HBox();
         box.setSpacing(15);
@@ -136,8 +133,8 @@ public class DiabetologoController {
         nome.getStyleClass().add("patient-name");
 
         // SPAZIO
-        javafx.scene.layout.Region spazio = new javafx.scene.layout.Region();
-        HBox.setHgrow(spazio, javafx.scene.layout.Priority.ALWAYS);
+        Region spazio = new Region();
+        HBox.setHgrow(spazio, Priority.ALWAYS);
 
         // BOTTONI
         Button andamento = creaBottone("andamento.png", "Andamento");
@@ -152,7 +149,10 @@ public class DiabetologoController {
         return box;
     }
 
+    // =========================================================
     // CREAZIONE BOTTONE
+    // =========================================================
+    
     private Button creaBottone(String immagine, String testo) {
         Button button = new Button(testo);
         button.getStyleClass().add("patient-action-button");
@@ -165,147 +165,13 @@ public class DiabetologoController {
         button.setGraphic(image);
         return button;
     }
-
-    // MENU MAIL
-    private void configuraMenuMail() {
-        mailContainer.setOnMouseEntered(event -> mostraMenuMail());
-        mailContainer.setOnMouseExited(event -> avviaChiusuraMenu());
-        mailMenu.setOnMouseEntered(event -> annullaChiusuraMenu());
-        mailMenu.setOnMouseExited(event -> avviaChiusuraMenu());
-
-        messaggioButton.setOnAction(event -> apriMessaggi());
-        telefonoButton.setOnAction(event -> apriChiamate());
-    }
-
-    private void apriMessaggi() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/Messaggi.fxml"));
-            Parent root = loader.load();
-            MessaggiController controller = loader.getController();
-            controller.inizializza(messaggi, this::aggiornaPallinoNotifiche);
-
-            Stage stage = new Stage();
-            stage.setTitle("Messaggi");
-            stage.setScene(new Scene(root));
-            stage.setResizable(false);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void apriChiamate() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/Chiamate.fxml"));
-            Parent root = loader.load();
-            ChiamateController controller = loader.getController();
-            controller.inizializza(chiamate, this::aggiornaPallinoNotifiche);
-
-            Stage stage = new Stage();
-            stage.setTitle("Chiamate");
-            stage.setScene(new Scene(root));
-            stage.setResizable(false);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // MOSTRA MENU
-    private void mostraMenuMail() {
-        annullaChiusuraMenu();
-        mailMenu.setManaged(true);
-        mailMenu.setVisible(true);
-        mailMenu.setOpacity(1);
-    }
-
-    // NASCONDI MENU
-    private void nascondiMenuMail() {
-        mailMenu.setVisible(false);
-        mailMenu.setManaged(false);
-    }
-
-    // AVVIA CHIUSURA
-    private void avviaChiusuraMenu() {
-        annullaChiusuraMenu();
-        chiusuraMenu = new PauseTransition(Duration.millis(500));
-        chiusuraMenu.setOnFinished(event -> nascondiMenuMail());
-        chiusuraMenu.play();
-    }
-
-    // ANNULLA CHIUSURA
-    private void annullaChiusuraMenu() {
-        if (chiusuraMenu != null) {
-            chiusuraMenu.stop();
-            chiusuraMenu = null;
-        }
-    }
-
-    // LOGOUT
-    @FXML
-    private void handleLogout() {
-        Session.getInstance().logout();
-        List<Window> windows = new ArrayList<>(Window.getWindows());
-        for(Window w: windows){
-            w.hide();
-        }
-
-        try {
-            FXMLLoader loader =
-                    new FXMLLoader(
-                            getClass().getResource(
-                                    "/application/view/Login.fxml"
-                            )
-                    );
-
-            Parent root =
-                    loader.load();
-
-
-            Stage stage =
-                    (Stage) logoutButton
-                            .getScene()
-                            .getWindow();
-
-
-            stage.setScene(
-                    new Scene(
-                            root,
-                            1200,
-                            750
-                    )
-            );
-
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void apriFinestra(String fxml, String titolo, Paziente paziente) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/" + fxml));
-            Parent root = loader.load();
-            Object controller = loader.getController();
-
-            if (controller instanceof AndamentoController) {
-                ((AndamentoController) controller).inizializzaPaziente(paziente);
-            }
-            if (controller instanceof StoricoTerapieController) {
-                ((StoricoTerapieController) controller).inizializza(paziente, medico);
-            }
-            if (controller instanceof InfoPazienteController) {
-                ((InfoPazienteController) controller).inizializzaPaziente(paziente);
-            }
-
-            Stage stage = new Stage();
-            stage.setTitle(titolo);
-            stage.setScene(new Scene(root));
-            stage.setResizable(false);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    
+    // =========================================================
+    // APERTURA FINESTRE DI SERVIZIO
+    // =========================================================
+    
+    private void configuraMessaggi() {
+        messaggiButton.setOnAction(event -> apriFinestra("Messaggi.fxml", "Messaggi", null));
     }
 
     private void apriAndamento(Paziente paziente) {
@@ -318,6 +184,67 @@ public class DiabetologoController {
 
     private void apriInfoPaziente(Paziente paziente) {
         apriFinestra("InfoPaziente.fxml", "Informazioni paziente", paziente);
+    }
+    
+    private void apriFinestra(String fxml, String titolo, Paziente paziente) {
+        try {
+            FXMLLoader loader =new FXMLLoader(getClass().getResource("/application/view/" + fxml));
+            Parent root = loader.load();
+            Object controller = loader.getController();
+
+            // ANDAMENTO
+            if (controller instanceof AndamentoController) {
+                ((AndamentoController) controller).inizializzaPaziente(paziente);
+            }
+
+            // TERAPIA
+            if (controller instanceof StoricoTerapieController) {
+                ((StoricoTerapieController) controller).inizializza(paziente, medico);
+            }
+
+            // INFORMAZIONI PAZIENTE
+            if (controller instanceof InfoPazienteController) {
+                ((InfoPazienteController) controller).inizializzaPaziente(paziente);
+            }
+
+            // MESSAGGI
+            if (controller instanceof MessaggiController) {
+                ((MessaggiController) controller).inizializza(messaggi,this::aggiornaPallinoNotifiche);
+            }
+
+            Stage stage = new Stage();
+            stage.setTitle(titolo);
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    // =========================================================
+    // LOGOUT
+    // =========================================================
+    
+    @FXML
+    private void handleLogout() {
+        Session.getInstance().logout();
+        List<Window> windows = new ArrayList<>(Window.getWindows());
+        for(Window w: windows){
+            w.hide();
+        }
+
+        try {
+            FXMLLoader loader =new FXMLLoader(getClass().getResource("/application/view/Login.fxml"));
+            Parent root =loader.load();
+            Stage stage =(Stage) logoutButton.getScene().getWindow();
+            stage.setScene(new Scene(root,1200,750));
+            stage.show();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

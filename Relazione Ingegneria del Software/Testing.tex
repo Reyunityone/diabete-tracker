@@ -1,14 +1,11 @@
 \section{Testing}
 Il testing è stato realizzato sulla base dell'approccio White Box.
 \subsection{Unit Test}
-(Test sulle singole classi in isolamento)\\
-Probabili casi da verificare:\\
--Controllo login valido e non valido\\
--Controllo soglia glicemia vicino e lontano dai pasti\\
--Creazione degli alert per ricordare l'assunzione dei farmaci e in caso la terapia non sia effettivemente seguita per più di 3 giorni\\
--Verificare che il sistema riconosca che i farmaci sono o  non sono coerenti con la terapia assegnata
+Sono stati realizzati test unitari relativi alla gestione della sessione e alla persistenza dei dati. Per la classe Session è stato verificato che il metodo getInstance() restituisca sempre la stessa istanza e che l'utente corrente venga correttamente impostato e rimosso tramite setCurrentUser() e logout().\\
+Per la classe Database sono stati testati l'inserimento senza duplicati di pazienti, diabetologi e responsabili, il recupero delle terapie, assunzioni, rilevazioni e segnalazioni associate a uno specifico paziente, il funzionamento del login con credenziali corrette e scorrette e la sostituzione delle rilevazioni tramite i metodi di aggiornamento. Sono inoltre stati verificati i metodi di recupero dei messaggi destinati a un determinato medico o paziente.
 
 \subsection{System Test}
+ \textcolor{red}{TODO: Tutto}\\
 (Test sull'applicazione completa)\\
 Probabili casi da verificare:\\
 -Registrazione di una glicemia fuori soglia -$>$ alert $>$ nella dashboard del diabetologo di riferimento\\

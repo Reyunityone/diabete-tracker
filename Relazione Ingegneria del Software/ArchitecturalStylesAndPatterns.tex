@@ -1,20 +1,28 @@
 \section{Stili Architetturali e Pattern}
 
 \subsection{Stili Architetturali}
-- Architettura a Strati: \\
-Presentation layer -$>$ GUI; \\
-Business logic layer -$>$ Paziente, Diabetologo, Terapia, Alert, GestoreLog, ecc.;\\
-Data access layer -$>$ Per ottenere, salvare, modificare i dati nel database
+Il software segue principalmente un'architettura a strati, nella quale le responsabilità sono suddivise tra interfaccia grafica, logica applicativa e gestione della persistenza.\\
+Il Presentation Layer è costituito dalle viste JavaFX e dai relativi controller, che gestiscono l'interazione con l'utente e la visualizzazione dei dati.\\
+Il Business Logic Layer comprende le classi del dominio, tra cui Utente, Paziente, Diabetologo, Terapia, Rilevazione, AssunzioneFarmaco, Segnalazione e le classi responsabili della gestione degli alert e delle regole applicative.\\
+Il Data Access Layer è rappresentato dalla classe Database, che centralizza l'accesso ai dati persistenti. I controller e le altre classi che necessitano di recuperare o modificare informazioni persistenti utilizzano il Database come punto di accesso, evitando di gestire direttamente la scrittura sul file. La persistenza viene dunque realizzata tramite serializzazione Java degli oggetti all'interno del file database.data.\\
+
 
 \subsection{Design Pattern}
--Creazionali: \\
-creazione degli oggetti (in modo controllato)\\
-(Es. "Factory" per la creazione degli oggetti relativi alla GUI, per Amministratore.creaUtente() e per gli alert)\\
-Qui "Singleton" dato che esiste un'unica istanza del gestore dei log condivisa da tutto il sistema, dato che deve tracciare in modo centralizzato tutte le operazioni dei medici. \\\\
--Strutturali: \\
-composizione di classi ed oggetti (strutture tipiche)\\
-(Es. "Façade" per fornire un'unica interfaccia per un insieme di funzionalità divise tra più classi) \\\\
--Comportamentali: \\
-come classi (oggetti) interagiscono tra di loro e si distribuiscono le responsabilità\\
-(Es "Template" per implementare la parte invariante di un algoritmo una sola volta, e lasciare alle sottoclassi l’implementazione delle parti che possono variare, come per il login)\\
-Qui probabilmente "Observer": il diabetologo e il paziente sono notificati quando cambia lo stato, cioè il paziente dimentica un farmaco o non segue la terapia per più di 3 giorni
+Nel progetto è utilizzato il Design Pattern Singleton per la classe Database. Il sistema mantiene infatti una sola istanza condivisa del database, ottenuta tramite il metodo getInstance(). Questo permette di centralizzare l'accesso ai dati e di avere un unico punto di gestione della persistenza durante l'esecuzione dell'applicazione.\\
+Il Database espone inoltre metodi specifici per il recupero e la modifica dei dati, ad esempio per ottenere i pazienti associati a un determinato diabetologo, le rilevazioni di un paziente o i messaggi destinati a un medico o a un paziente.\\
+Per la gestione della GUI viene utilizzata la struttura controller-view di JavaFX, nella quale i controller gestiscono gli eventi e coordinano l'accesso ai dati necessari alle diverse schermate.
+ \textcolor{red}{TODO: Log?}\\
+
+ \textcolor{red}{TODO: Creazionali(Factory?)/Strutturali/Comportamentali}
+
+
+
+
+
+
+
+
+
+
+
+

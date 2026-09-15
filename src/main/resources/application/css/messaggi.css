@@ -33,6 +33,39 @@
     -fx-max-width: Infinity;
 }
 
+.message-box-high {
+    -fx-background-color: #fde8e8;
+}
+
+.message-box-medium {
+    -fx-background-color: #fff1dc;
+}
+
+.message-box-low {
+    -fx-background-color: #e8f6e8;
+}
+
+/* =========================================================
+   URGENZA DEL MESSAGGIO
+   ========================================================= */
+
+.message-urgency {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.message-urgency.urgency-high {
+    -fx-text-fill: #d32f2f;
+}
+
+.message-urgency.urgency-medium {
+    -fx-text-fill: #e67e00;
+}
+
+.message-urgency.urgency-low {
+    -fx-text-fill: #2e8b57;
+}
+
 
 /* =========================================================
    NOME MITTENTE

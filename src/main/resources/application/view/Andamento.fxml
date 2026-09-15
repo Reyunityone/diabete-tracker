@@ -17,7 +17,7 @@
         fx:controller="application.controller.AndamentoController"
         prefWidth="1000"
         prefHeight="650"
-        stylesheets="@../css/andamento.css">
+        stylesheets="@../css/andamento.css,@../css/graficaComune.css">
 
     <top>
 
@@ -44,7 +44,8 @@
 
                 <DatePicker
                         fx:id="dataPicker"
-                        prefWidth="160"/>
+                        prefWidth="160"
+                        styleClass="modern-date-picker"/>
 
 
                 <Button
@@ -131,6 +132,7 @@
 
             <Button
                     fx:id="indietroButton"
+                    styleClass="secondary-button"
                     text="◀"/>
 
 
@@ -141,6 +143,7 @@
 
             <Button
                     fx:id="avantiButton"
+                    styleClass="secondary-button"
                     text="▶"/>
 
 

@@ -13,7 +13,7 @@
       spacing="12"
       prefWidth="500"
       prefHeight="500"
-      stylesheets="@../css/finestre.css">
+      stylesheets="@../css/graficaComune.css">
 
     <padding>
         <Insets top="25"
@@ -24,7 +24,7 @@
 
     <Label fx:id="titoloLabel"
            text="Terapia"
-           styleClass="title"/>
+           styleClass="window-title"/>
 
     <Label text="Farmaco"/>
 
@@ -41,10 +41,12 @@
     <Label text="Indicazioni aggiuntive"/>
 
     <TextArea fx:id="indicazioniArea"
+    			styleClass="text-area"
               prefRowCount="4"
               wrapText="true"/>
 
     <Button fx:id="salvaButton"
+    		styleClass="secondary-button"
             text="Salva"/>
 
 </VBox>

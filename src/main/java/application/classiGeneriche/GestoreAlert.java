@@ -73,12 +73,13 @@ public final class GestoreAlert {
 
     public static void verificaAderenzaTerapia(Paziente paziente, Terapia terapia) {
         int giorniMancati = 0;
-        LocalDate giorno = LocalDate.now().minusDays(1);
         ArrayList<AssunzioneFarmaco> assunzioni = Database.getInstance().getAssunzioniByPaziente(paziente);
         for(int i = 0; i < GIORNI_CONSECUTIVI_ALERT_MEDICO; i++){
+        	
+        	LocalDate giorno = LocalDate.now().minusDays(i + 1);
+        	
             long assunzioniRelativeATerapia = assunzioni.stream().filter( assunzione ->  assunzione.getTerapia().equals(terapia) && assunzione.getData().isEqual(giorno)).count();
             if(assunzioniRelativeATerapia != terapia.getNumeroAssunzioniGiornaliere()) giorniMancati++;
-            giorno.minusDays(1);
         }
 
         if(giorniMancati >= GIORNI_CONSECUTIVI_ALERT_MEDICO){

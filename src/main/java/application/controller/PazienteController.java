@@ -31,6 +31,7 @@ public class PazienteController {
     @FXML private Button messaggiButton;
     @FXML private ImageView messaggiNotification;
     private List<Messaggio> messaggi;
+    @FXML private Button scriviEmailButton;
 
     // PULSANTI INFO
     @FXML private Button infoRilevazioniButton;
@@ -101,6 +102,7 @@ public class PazienteController {
 
     private void configuraMessaggi() {
         messaggiButton.setOnAction(event -> apriFinestra("Messaggi.fxml", "Messaggi"));
+        scriviEmailButton.setOnAction(event -> apriFinestra("ScriviEmail.fxml", "Scrivi una mail"));
     }
 
     // =========================================================
@@ -173,6 +175,14 @@ public class PazienteController {
                 ((SegnalazioneController) controller).inizializza(
                         Database.getInstance()::addSegnalazione
                 );
+            }
+            
+            // SCRIVI E-MAIL
+            if (controller instanceof ScriviEmailController) {
+                Paziente paziente =(Paziente) Session.getInstance().getCurrentUser();
+                Diabetologo medico =paziente.getMedicoDiRiferimento();
+                ((ScriviEmailController) controller).inizializza(paziente,medico);
+                titolo = "Scrivi una e-mail al tuo diabetologo";
             }
 
             Stage stage = new Stage();

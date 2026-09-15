@@ -87,6 +87,12 @@ public class MessaggiController {
         box.setPrefHeight(70);
         box.setMaxWidth(Double.MAX_VALUE);
         box.getStyleClass().add("message-box");
+        
+        if (messaggio.getUrgenza() != null) {
+            box.getStyleClass().add(
+                    "message-box-" + messaggio.getUrgenza().name().toLowerCase()
+            );
+        }
 
         // AVATAR
         ImageView avatar =new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/application/images/avatar.png"))));
@@ -94,9 +100,17 @@ public class MessaggiController {
         avatar.setFitHeight(50);
         avatar.setPreserveRatio(true);
 
-        // NOME
-        Label nome =new Label(messaggio.getMittenteString());
+        // NOME + URGENZA
+        Label nome = new Label(messaggio.getMittenteString());
         nome.getStyleClass().add("message-name");
+
+        Label urgenza = new Label();
+
+        if (messaggio.getUrgenza() != null) {
+            urgenza.setText("[Emergency Type: " + messaggio.getUrgenza().name() + "]");
+            urgenza.getStyleClass().add("message-urgency");
+            urgenza.getStyleClass().add("urgency-" + messaggio.getUrgenza().name().toLowerCase());
+        }
 
         // ANTEPRIMA
         String anteprima =messaggio.getTesto();
@@ -110,7 +124,16 @@ public class MessaggiController {
         testo.getStyleClass().add("message-preview");
 
         //INFORMAZIONI
-        VBox informazioni =new VBox(3,nome,testo);
+        HBox nomeEUrgenza = new HBox(6);
+        nomeEUrgenza.setAlignment(Pos.CENTER_LEFT);
+        nomeEUrgenza.getChildren().add(nome);
+
+        if (messaggio.getUrgenza() != null) {
+            nomeEUrgenza.getChildren().add(urgenza);
+        }
+        
+//        VBox informazioni =new VBox(3,nome,testo);
+        VBox informazioni = new VBox(3, nomeEUrgenza, testo);
 
         // SPAZIO
         Region spazio =new Region();

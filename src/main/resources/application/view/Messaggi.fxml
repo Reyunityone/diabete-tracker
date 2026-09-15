@@ -13,7 +13,7 @@
         spacing="15"
         prefWidth="650"
         prefHeight="600"
-        stylesheets="@../css/finestre.css">
+        stylesheets="@../css/messaggi.css, @../css/graficaComune.css">
 
     <padding>
 
@@ -27,24 +27,22 @@
 
     <Label fx:id="titoloLabel"
            text="Messaggi"
-           styleClass="window-title"/>
+           styleClass="messages-title"/>
 
 
-    <TextField fx:id="searchField"
-               promptText="Cerca messaggio..."/>
+   <TextField fx:id="searchField"
+            promptText="Cerca per nome o cognome..."
+            styleClass="search-field"/>
 
 
     <ScrollPane
             fitToWidth="true"
+            hbarPolicy="NEVER"
             VBox.vgrow="ALWAYS">
 
-        <content>
-
-            <VBox fx:id="messaggiContainer"
-                  spacing="10"
-                  fillWidth="true"/>
-
-        </content>
+        <VBox fx:id="messaggiContainer"
+              spacing="10"
+        />
 
     </ScrollPane>
 

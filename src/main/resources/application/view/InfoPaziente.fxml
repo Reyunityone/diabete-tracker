@@ -2,17 +2,23 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.CustomMenuItem?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 
 <VBox xmlns="http://javafx.com/javafx/26"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="application.controller.InfoPazienteController"
       spacing="12"
       prefWidth="550"
-      prefHeight="500"
-      stylesheets="@../css/finestra.css">
+      prefHeight="550"
+      stylesheets="@../css/graficaComune.css, @../css/diabetologo.css">
 
     <padding>
         <Insets top="25"
@@ -23,24 +29,63 @@
 
     <Label fx:id="titoloLabel"
            text="Informazioni paziente"
-           styleClass="title"/>
+           styleClass="window-title"/>
 
     <Label text="Fattori di rischio"/>
 
-    <TextArea fx:id="fattoriRischioArea"
-              wrapText="true"/>
+    <!-- CONTENITORE DELLA TEXTAREA E DEL PULSANTE -->
+    <AnchorPane>
+
+        <TextArea fx:id="fattoriRischioArea"
+                  editable="false"
+                  wrapText="true"
+                  styleClass="text-area"
+                  AnchorPane.topAnchor="0"
+                  AnchorPane.bottomAnchor="0"
+                  AnchorPane.leftAnchor="0"
+                  AnchorPane.rightAnchor="0"/>
+
+        <Button fx:id="fattoriRischioButton"
+        onAction="#apriMenuFattoriRischio"
+        AnchorPane.rightAnchor="5"
+        AnchorPane.bottomAnchor="5"
+        prefWidth="30"
+        prefHeight="30"
+        styleClass="dropdown-button">
+
+    <graphic>
+        <ImageView fitWidth="25"
+                   fitHeight="25"
+                   preserveRatio="true">
+            <image>
+                <Image url="@../images/aggiungi.png"/>
+            </image>
+        </ImageView>
+    </graphic>
+
+</Button>
+    </AnchorPane>
 
     <Label text="Pregresse patologie"/>
 
     <TextArea fx:id="patologieArea"
-              wrapText="true"/>
+              wrapText="true"
+              styleClass="text-area"/>
 
     <Label text="Comorbidità presenti"/>
 
     <TextArea fx:id="comorbiditaArea"
-              wrapText="true"/>
+              wrapText="true"
+              styleClass="text-area"/>
+
+    <Label text="Dettagli"/>
+
+    <TextArea fx:id="dettagliArea"
+              wrapText="true"
+              styleClass="text-area"/>
 
     <Button fx:id="salvaButton"
-            text="Salva"/>
+            text="Salva"
+            styleClass="standard-button"/>
 
 </VBox>

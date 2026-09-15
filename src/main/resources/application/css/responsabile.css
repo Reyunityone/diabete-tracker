@@ -97,39 +97,6 @@
     -fx-text-fill: #222222;
 }
 
-
-/* ========================================================= */
-/* CAMBIA CREDENZIALI */
-/* ========================================================= */
-
-.credentials-button {
-
-    -fx-background-color: white;
-
-    -fx-border-color: #bbbbbb;
-
-    -fx-border-width: 1px;
-
-    -fx-border-radius: 6px;
-
-    -fx-background-radius: 6px;
-
-    -fx-text-fill: #333333;
-
-    -fx-padding: 6px 10px;
-
-    -fx-font-size: 12px;
-
-    -fx-cursor: hand;
-}
-
-
-.credentials-button:hover {
-
-    -fx-background-color: #eeeeee;
-}
-
-
 /* ========================================================= */
 /* ELIMINAZIONE ACCOUNT
 /* ========================================================= */
@@ -213,37 +180,6 @@
     -fx-background-color: #444444;
 }
 
-/* ========================================================= */
-/* MENU DI SELEZIONE DEI PAZIENTI (LISTA CHECKBOOX)
-/* ========================================================= */
-
-.dropdown-button {
-
-    -fx-background-color: white;
-
-    -fx-text-fill: #333333;
-
-    -fx-border-color: #dddddd;
-
-    -fx-border-width: 1px;
-
-    -fx-border-radius: 10px;
-
-    -fx-background-radius: 10px;
-
-    -fx-padding: 8px 12px;
-
-    -fx-font-size: 14px;
-
-    -fx-cursor: hand;
-}
-
-
-.dropdown-button:hover {
-
-    -fx-background-color: #f7f7f7;
-}
-
 
 /* ========================================================= */
 /* ASSEGNAZIONE LABEL
@@ -257,35 +193,6 @@
 
     -fx-text-fill: #333333;
 }
-
-/* ========================================================= */
-/* COMBOBOX SELEZIONA MEDICO
-/* ========================================================= */
-
-.combo-box {
-
-    -fx-background-color: white;
-
-    -fx-border-color: #dddddd;
-
-    -fx-border-width: 1px;
-
-    -fx-border-radius: 10px;
-
-    -fx-background-radius: 10px;
-
-    -fx-font-size: 14px;
-
-    -fx-cursor: hand;
-}
-
-
-.combo-box:focused {
-
-    -fx-border-color: #555555;
-}
-
-
 
 
 /* ========================================================= */

@@ -31,6 +31,7 @@ public class PazienteController {
     @FXML private Button messaggiButton;
     @FXML private ImageView messaggiNotification;
     private List<Messaggio> messaggi;
+    @FXML private Button scriviEmailButton;
 
     // PULSANTI INFO
     @FXML private Button infoRilevazioniButton;
@@ -93,46 +94,6 @@ public class PazienteController {
         precedentiSintomiButton.setOnAction(event -> apriStoricoSintomi());
         aggiungiSegnalazioneButton.setOnAction(event -> apriAggiungiSegnalazione());
         precedentiSegnalazioniButton.setOnAction(event -> apriStoricoSegnalazioni());
-
-        //TOOLTIP
-        configuraTooltip(
-                infoRilevazioniButton,
-                "In questa sezione puoi registrare le tue " +
-                "rilevazioni giornaliere. Inserisci la data, " +
-                "il livello della glicemia e il momento della " +
-                "giornata. Con Vedi Precedenti puoi consultare " +
-                "tutto lo storico delle rilevazioni e modificare " +
-                "quelle già registrate."
-        );
-        configuraTooltip(
-                infoSintomiButton,
-                "In questa sezione puoi registrare sintomi " +
-                "avvertiti oppure informazioni relative ai " +
-                "farmaci. Puoi inserire la data e una descrizione " +
-                "libera. Vedi Precedenti permette di consultare " +
-                "e modificare lo storico."
-        );
-        configuraTooltip(
-                infoSegnalazioniButton,
-                "In questa sezione puoi segnalare al personale " +
-                "medico problemi, anomalie o situazioni che " +
-                "ritieni importanti. Inserisci la data e descrivi " +
-                "liberamente ciò che vuoi comunicare. Puoi anche " +
-                "consultare le segnalazioni precedenti."
-        );
-    }
-
-
-    // =========================================================
-    // TOOLTIP
-    // =========================================================
-    private void configuraTooltip(Button pulsante,String testo) {
-        Tooltip tooltip =new Tooltip(testo);
-        tooltip.setWrapText(true);
-        tooltip.setMaxWidth(350);
-        tooltip.setShowDelay(Duration.millis(100));
-        
-        Tooltip.install(pulsante,tooltip);
     }
   
     // =========================================================
@@ -141,6 +102,7 @@ public class PazienteController {
 
     private void configuraMessaggi() {
         messaggiButton.setOnAction(event -> apriFinestra("Messaggi.fxml", "Messaggi"));
+        scriviEmailButton.setOnAction(event -> apriFinestra("ScriviEmail.fxml", "Scrivi una mail"));
     }
 
     // =========================================================
@@ -213,6 +175,14 @@ public class PazienteController {
                 ((SegnalazioneController) controller).inizializza(
                         Database.getInstance()::addSegnalazione
                 );
+            }
+            
+            // SCRIVI E-MAIL
+            if (controller instanceof ScriviEmailController) {
+                Paziente paziente =(Paziente) Session.getInstance().getCurrentUser();
+                Diabetologo medico =paziente.getMedicoDiRiferimento();
+                ((ScriviEmailController) controller).inizializza(paziente,medico);
+                titolo = "Scrivi una e-mail al tuo diabetologo";
             }
 
             Stage stage = new Stage();

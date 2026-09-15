@@ -124,14 +124,14 @@ public class StoricoTerapieController {
         box.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
         box.setPrefHeight(80);
         box.setMaxWidth(Double.MAX_VALUE);
-        box.getStyleClass().add("history-item");
+        box.getStyleClass().add("therapy-box");
 
         VBox informazioni = new VBox(4);
 
         Label farmaco = new Label(
                 terapia.getFarmaco()
         );
-        farmaco.getStyleClass().add("history-date");
+        farmaco.getStyleClass().add("therapy-name");
 
         Label dettagli = new Label(
                 "Dose: " + terapia.getDose() + " mg"
@@ -159,13 +159,13 @@ public class StoricoTerapieController {
         );
 
         Button modificaButton = new Button("Modifica");
-        modificaButton.getStyleClass().add("open-button");
+        modificaButton.getStyleClass().add("secondary-button");
         modificaButton.setOnAction(
                 event -> apriModificaTerapia(terapia)
         );
 
         Button eliminaButton = new Button("Elimina");
-        eliminaButton.getStyleClass().add("open-button");
+        eliminaButton.getStyleClass().add("delete-button");
         eliminaButton.setOnAction(
                 event -> eliminaTerapia(terapia)
         );

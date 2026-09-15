@@ -17,7 +17,9 @@
         prefWidth="500"
         prefHeight="420"
 
-        styleClass="window-background">
+        styleClass="window-background"
+        
+        stylesheets="@../css/graficaComune.css">
 
     <padding>
 
@@ -41,14 +43,16 @@
 
 
     <DatePicker
-            fx:id="dataInizioPicker"/>
+            fx:id="dataInizioPicker"
+            styleClass="modern-date-picker"/>
 
 
     <Label
         text="Data fine(opz)"
         styleClass="field-label"/>
     <DatePicker
-        fx:id="dataFinePicker"/>
+        fx:id="dataFinePicker"
+        styleClass="modern-date-picker"/>
 
     <Label
             text="Segnalazione"
@@ -65,6 +69,6 @@
     <Button
             text="Salva"
             onAction="#salva"
-            styleClass="save-button"/>
+            styleClass="standard-button"/>
 
 </VBox>

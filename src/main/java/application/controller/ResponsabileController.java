@@ -184,7 +184,7 @@ public class ResponsabileController {
 
         // BOTTONE CAMBIA CREDENZIALI
         Button cambiaCredenziali =new Button("Cambia credenziali");
-        cambiaCredenziali.getStyleClass().add("credentials-button");
+        cambiaCredenziali.getStyleClass().add("secondary-button");
         cambiaCredenziali.setOnAction(event -> apriFinestra("modificaCredenziali",medico,persona,"/application/view/ModificaCredenziali.fxml"));
 
         // BOTTONE ELIMINA ACCOUNT

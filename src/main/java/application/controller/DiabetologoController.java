@@ -155,7 +155,7 @@ public class DiabetologoController {
     
     private Button creaBottone(String immagine, String testo) {
         Button button = new Button(testo);
-        button.getStyleClass().add("patient-action-button");
+        button.getStyleClass().add("secondary-button");
 
         ImageView image = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/application/images/" + immagine))));
         image.setFitWidth(25);

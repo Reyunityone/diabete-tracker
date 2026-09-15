@@ -371,7 +371,7 @@ public class StoricoController {
 
 
         modifica.getStyleClass()
-                .add("modify-button");
+                .add("standard-button");
 
 
         modifica.setOnAction(

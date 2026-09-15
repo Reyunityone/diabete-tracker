@@ -16,7 +16,7 @@
         fx:controller="application.controller.StoricoController"
         prefWidth="750.0"
         prefHeight="600.0"
-        stylesheets="@../css/storico.css">
+        stylesheets="@../css/storico.css, @../css/graficaComune.css">
 
     <!-- ================================================= -->
     <!-- TITOLO + RICERCA -->

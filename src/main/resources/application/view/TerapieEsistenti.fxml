@@ -11,7 +11,7 @@
             fx:controller="application.controller.TerapieEsistentiController"
             prefWidth="600"
             prefHeight="450"
-            stylesheets="@../css/finestre.css">
+            stylesheets="@../css/graficaComune.css, @../css/diabetologo.css">
 
     <VBox spacing="20"
           AnchorPane.topAnchor="25"
@@ -21,7 +21,7 @@
 
         <Label fx:id="titoloLabel"
                text="Terapie esistenti"
-               styleClass="title"/>
+               styleClass="window-title"/>
 
         <ScrollPane fx:id="terapieScrollPane"
                     fitToWidth="true"
@@ -29,7 +29,8 @@
 
             <content>
 
-                <VBox fx:id="terapieContainer">
+                <VBox fx:id="terapieContainer"
+                spacing="10">
 
                 </VBox>
 

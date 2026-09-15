@@ -107,7 +107,18 @@ public class MessaggiController {
         Label urgenza = new Label();
 
         if (messaggio.getUrgenza() != null) {
-            urgenza.setText("[Emergency Type: " + messaggio.getUrgenza().name() + "]");
+        	String testoUrgenza;
+        	
+        	if(messaggio.getUrgenza().equals(UrgenzaAlert.LOW)) {
+        		testoUrgenza="BASSA";
+        	}else if(messaggio.getUrgenza().equals(UrgenzaAlert.MEDIUM)) {
+        		testoUrgenza="MEDIA";
+        	}else {
+        		testoUrgenza="ALTA";
+        	}
+            urgenza.setText("[EMERGENZA "+testoUrgenza+"]");
+            
+            
             urgenza.getStyleClass().add("message-urgency");
             urgenza.getStyleClass().add("urgency-" + messaggio.getUrgenza().name().toLowerCase());
         }

@@ -1,9 +1,12 @@
-\documentclass[a4paper,12pt]{article}
+\documentclass[a4paper,12pt, openany]{article}
 \usepackage{graphicx} %Inserimento immagini
 \usepackage{biblatex}
 \usepackage{xcolor}
 \usepackage{float}
 \usepackage{pdflscape}
+\usepackage{rotating}
+\usepackage{rotating}
+\usepackage{placeins} 
 \newcommand\todo[1]{\textcolor{red}{\textbf{//TODO: \textit{#1}}}}
 
 
@@ -27,7 +30,6 @@
 	\tableofcontents
 	\newpage
 	\input{Introduzione}
-	\newpage
 	\input{ClassDiagram}
 	\newpage
 	\input{UseCaseDiagram}

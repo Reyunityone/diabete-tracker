@@ -33,13 +33,15 @@ public class StoricoController {
     @FXML private TextField ricercaDataField;
     @FXML private VBox contenitoreStorico;
 
-    // =========================================================
-    // DATI
-    // =========================================================
-
-    private List<?> elementi;
-    private String tipo;
-    private Database db;
+	 // =========================================================
+	 // DATI
+	 // =========================================================
+	
+	 private List<?> elementi;
+	 private String tipo;
+	 private Database db;
+	 private boolean modalitaTest = false;
+	 private Object ultimoControllerModifica;
 
     // =========================================================
     // INIZIALIZZAZIONE
@@ -92,7 +94,7 @@ public class StoricoController {
     // AGGIORNA LISTA
     // =========================================================
 
-    private void aggiornaLista() {
+    public void aggiornaLista() {
         if (user != null) {
             if (tipo.equals("rilevazioni")) {
                 elementi = db.getRilevazioniByPaziente(user);
@@ -225,33 +227,38 @@ public class StoricoController {
 
         return box;
     }
-
-    // =========================================================
-    // CONFERMA ELIMINAZIONE
-    // =========================================================
-
-    private void confermaEliminazione(Object elemento) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Eliminazione");
-        alert.setHeaderText("Eliminare questo elemento?");
-
-        Label descrizione = new Label("Stai per eliminare definitivamente " + descrizioneElemento(elemento) + ".");
-        descrizione.getStyleClass().add("delete-description");
-
-        Label avviso = new Label("Questa operazione non può essere annullata.");
-        avviso.getStyleClass().add("delete-warning");
-
-        VBox contenuto = new VBox(8);
-        contenuto.getChildren().addAll(descrizione, avviso);
-
-        alert.getDialogPane().setContent(contenuto);
-
-        Optional<ButtonType> risultato = alert.showAndWait();
-
-        if (risultato.isPresent() && risultato.get() == ButtonType.OK) {
-            eliminaElemento(elemento);
-        }
-    }
+    
+	 // =========================================================
+	 // CONFERMA ELIMINAZIONE
+	 // =========================================================
+	
+	 private void confermaEliminazione(Object elemento) {
+	     if (modalitaTest) {
+	         eliminaElemento(elemento);
+	         return;
+	     }
+	
+	     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+	     alert.setTitle("Eliminazione");
+	     alert.setHeaderText("Eliminare questo elemento?");
+	
+	     Label descrizione = new Label("Stai per eliminare definitivamente " + descrizioneElemento(elemento) + ".");
+	     descrizione.getStyleClass().add("delete-description");
+	
+	     Label avviso = new Label("Questa operazione non può essere annullata.");
+	     avviso.getStyleClass().add("delete-warning");
+	
+	     VBox contenuto = new VBox(8);
+	     contenuto.getChildren().addAll(descrizione, avviso);
+	
+	     alert.getDialogPane().setContent(contenuto);
+	
+	     Optional<ButtonType> risultato = alert.showAndWait();
+	
+	     if (risultato.isPresent() && risultato.get() == ButtonType.OK) {
+	         eliminaElemento(elemento);
+	     }
+	 }
 
     // =========================================================
     // DESCRIZIONE ELEMENTO
@@ -313,6 +320,35 @@ public class StoricoController {
     // APERTURA FINESTRA MODIFICA
     // =========================================================
 
+//    private void apriFinestraModifica(Object elemento, String percorsoFXML, String titolo) {
+//        try {
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource(percorsoFXML));
+//            Parent root = loader.load();
+//
+//            if (elemento instanceof Rilevazione) {
+//                RilevazioneController controller = loader.getController();
+//                controller.inizializzaModifica((Rilevazione) elemento, this::aggiornaLista);
+//
+//            } else if (elemento instanceof AssunzioneFarmaco) {
+//                FarmacoController controller = loader.getController();
+//                controller.inizializzaModifica((AssunzioneFarmaco) elemento, this::aggiornaLista);
+//
+//            } else if (elemento instanceof Segnalazione) {
+//                SegnalazioneController controller = loader.getController();
+//                controller.inizializzaModifica((Segnalazione) elemento, this::aggiornaLista);
+//            }
+//
+//            Stage stage = new Stage();
+//            stage.setTitle(titolo);
+//            stage.setScene(new Scene(root));
+//            stage.setResizable(false);
+//            stage.show();
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+    
     private void apriFinestraModifica(Object elemento, String percorsoFXML, String titolo) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(percorsoFXML));
@@ -321,24 +357,38 @@ public class StoricoController {
             if (elemento instanceof Rilevazione) {
                 RilevazioneController controller = loader.getController();
                 controller.inizializzaModifica((Rilevazione) elemento, this::aggiornaLista);
+                ultimoControllerModifica = controller;
 
             } else if (elemento instanceof AssunzioneFarmaco) {
                 FarmacoController controller = loader.getController();
                 controller.inizializzaModifica((AssunzioneFarmaco) elemento, this::aggiornaLista);
+                ultimoControllerModifica = controller;
 
             } else if (elemento instanceof Segnalazione) {
                 SegnalazioneController controller = loader.getController();
                 controller.inizializzaModifica((Segnalazione) elemento, this::aggiornaLista);
+                ultimoControllerModifica = controller;
             }
 
             Stage stage = new Stage();
             stage.setTitle(titolo);
             stage.setScene(new Scene(root));
             stage.setResizable(false);
-            stage.show();
+
+            if (!modalitaTest) {
+                stage.show();
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    public Object getUltimoControllerModifica() {
+        return ultimoControllerModifica;
+    }
+    
+    public void setModalitaTest(boolean modalitaTest) {
+        this.modalitaTest = modalitaTest;
     }
 }

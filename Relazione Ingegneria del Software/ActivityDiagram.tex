@@ -12,6 +12,12 @@
 	\label{fig:activity-diagram_1}
 \end{figure}
 
+Login: L'utente inserisce username e password. Il sistema verifica se sono valide: se lo sono avvia la sessione per l'utente corrispondente, in caso contrario mostra un messaggio di errore e permette di digitare nuovamente le credenziali.\\
+
+Rilevazione giornaliera: il paziente inserisce i dati della rilevazione, ovvero il livello di glicemia, la data e l'ora e il periodo relativo all'ultimo pasto consumato. Il sistema salva la rilevazione e controlla se il valore glicemico è fuori soglia: se lo è crea un alert per notificarlo e, se l'urgenza è elevata a causa di un alto scostamento dal normale livello, crea un altro alert destinato al medico di riferimento per segnalarlo.\\
+
+Registrazione di un'assunzione e verifica della coerenza: il paziente inserisce i dati relativi al farmaco assunto, la sua quantità e la data e l'ora. Il sistema salva i dati inseriti e verifica che siano coerenti con la terapia: se non lo sono, segnala l'anomalia all'utente.
+
 
 \begin{figure}[H]
 	\centering
@@ -26,3 +32,9 @@
 \end{figure}
 
  \textcolor{red}{TODO: Idem come il sequence}
+ 
+ Registrazione di una segnalazione: il paziente sceglie il tipo di segnalazione da effettuare, successivamente ne indica la descrizione, la data di inizio e quella di fine. Il sistema la salva e ne conferma la registrazione.\\
+ 
+ Prescrizione e modifica di una terapia: il medico seleziona il paziente a cui modificare la terapia, ne altera i dati e il processo viene salvato in un log.
+ 
+ Aggiornamento della cartella clinica di un paziente: il diabetologo seleziona un paziente, ne modifica i dati e viene creato un log.

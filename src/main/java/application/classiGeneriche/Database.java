@@ -76,6 +76,11 @@ public class Database {
     }
 
 
+    
+    //=========================================================
+  	// CREAZIONE LISTE
+  	//=========================================================
+    
     public ArrayList<Diabetologo> getDiabetologi() {
         return new ArrayList<>(diabetologi);
     }
@@ -106,6 +111,12 @@ public class Database {
         return new ArrayList<>(messaggi);
     }
 
+    
+    
+    //=========================================================
+  	// ADD
+  	//=========================================================
+    
     public void addDiabetologo(Diabetologo d){
         if (!diabetologi.contains(d)) {
             this.diabetologi.add(d);
@@ -153,6 +164,11 @@ public class Database {
         save();
     }
 
+    
+    //=========================================================
+  	//GETTERS DEI DATI SPECIFICI
+  	//=========================================================
+    
     public ArrayList<Terapia> getTerapieByPaziente(Paziente p){
         ArrayList<Terapia> result = new ArrayList<>();
         for(Terapia t: terapie){
@@ -249,6 +265,12 @@ public class Database {
         }
         return null;
     }
+    
+    
+    
+    //=========================================================
+  	//LOGIN
+  	//=========================================================
 
     public User login(String username, String password){
         for(Diabetologo d : diabetologi){
@@ -263,6 +285,12 @@ public class Database {
         return null;
     }
 
+    
+    
+    //=========================================================
+  	//UPDATE DEI DATI
+  	//=========================================================
+    
     public void updateAssunzione(AssunzioneFarmaco vecchio, AssunzioneFarmaco nuovo){
         int i = assunzioni.indexOf(vecchio);
         if(i != -1){
@@ -381,6 +409,12 @@ public class Database {
             save();
         }
     }
+    
+    
+    
+    //=========================================================
+  	//REMOVE DEI DATI
+  	//=========================================================
 
     public void removeTerapia(Terapia t) {
         if (terapie.remove(t)) {
@@ -400,4 +434,24 @@ public class Database {
             save();
         }
     }
+    
+    public void deleteAssunzione(AssunzioneFarmaco a) {
+    	if(assunzioni.remove(a)) {
+    		save();
+    	}
+    }
+    
+    public void deleteRilevazione(Rilevazione r) {
+    	if(rilevazioni.remove(r)) {
+    		save();
+    	}
+    }
+    
+    public void deleteSegnalazione(Segnalazione s) {
+    	if(segnalazioni.remove(s)) {
+    		save();
+    	}
+    }
+    
+    
 }

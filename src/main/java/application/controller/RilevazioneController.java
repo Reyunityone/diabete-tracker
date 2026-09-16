@@ -118,9 +118,44 @@ public class RilevazioneController {
     @FXML
     private void salva() {
 
+    	 // -----------------------------------------------------
+        // CONTROLLO DATA
+        // -----------------------------------------------------
+
         if (dataPicker.getValue() == null) {
             return;
         }
+
+        // -----------------------------------------------------
+        // CONTROLLO GLICEMIA
+        // -----------------------------------------------------
+
+        if (glicemiaField.getText() == null
+                || glicemiaField.getText().isBlank()) {
+            return;
+        }
+
+        // -----------------------------------------------------
+        // CONTROLLO ORARIO RILEVAZIONE
+        // -----------------------------------------------------
+
+        if (orarioField.getText() == null
+                || orarioField.getText().isBlank()) {
+            return;
+        }
+
+        // -----------------------------------------------------
+        // CONTROLLO ORARIO ULTIMO PASTO
+        // -----------------------------------------------------
+
+        if (pastoField.getText() == null
+                || pastoField.getText().isBlank()) {
+            return;
+        }
+
+        // -----------------------------------------------------
+        // CONTROLLO MOMENTO RILEVAZIONE
+        // -----------------------------------------------------
 
         if (momentoComboBox.getValue() == null) {
             return;

@@ -1,12 +1,13 @@
 package application.classiGeneriche;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
-public class LogOperazione {
+public class LogOperazione implements Serializable {
 
     private final LocalDateTime timestamp;
     private final User author;
@@ -15,6 +16,7 @@ public class LogOperazione {
     private final SnapshotPaziente beforeState;
     private final SnapshotPaziente afterState;
     private boolean ripristinato;
+    private boolean isUndoLog;
 
     public LogOperazione(User author, Paziente pazienteModificato, String descrizione, SnapshotPaziente beforeState, SnapshotPaziente afterState){
         this.timestamp = LocalDateTime.now();
@@ -23,6 +25,17 @@ public class LogOperazione {
         this.descrizione = descrizione;
         this.beforeState = beforeState;
         this.afterState = afterState;
+        this.isUndoLog=false;
+    }
+
+    public LogOperazione(User author, Paziente pazienteModificato, String descrizione, SnapshotPaziente beforeState, SnapshotPaziente afterState, boolean isUndoLog){
+        this.timestamp = LocalDateTime.now();
+        this.author = author;
+        this.pazienteModificato = pazienteModificato;
+        this.descrizione = descrizione;
+        this.beforeState = beforeState;
+        this.afterState = afterState;
+        this.isUndoLog = isUndoLog;
     }
 
     public LocalDateTime getTimestamp() {
@@ -53,6 +66,12 @@ public class LogOperazione {
         return !ripristinato && beforeState != null;
     }
 
+    public boolean isRipristinato() { return ripristinato; }
+
+    public boolean isUndoLog(){ return isUndoLog; }
+
+    public void setUndoLog(boolean isUndoLog) { this.isUndoLog = isUndoLog; }
+
     public void setRipristinato(boolean ripristinato) {
         this.ripristinato = ripristinato;
     }
@@ -62,7 +81,7 @@ public class LogOperazione {
     }
 
     public record SnapshotPaziente(List<RiskFactor> riskFactorList, String comorbidita, String dettagli,
-                                   String patologiePregresse) {
+                                   String patologiePregresse) implements Serializable{
             public SnapshotPaziente(List<RiskFactor> riskFactorList, String comorbidita, String dettagli, String patologiePregresse) {
                 this.riskFactorList = riskFactorList != null ? new ArrayList<>(riskFactorList) : new ArrayList<>();
                 this.comorbidita = comorbidita;

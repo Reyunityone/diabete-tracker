@@ -1,19 +1,24 @@
 package application.controller;
 
-import application.classiGeneriche.Database;
-import application.classiGeneriche.Paziente;
-import application.classiGeneriche.RiskFactor;
+import application.classiGeneriche.*;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.Side;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.CustomMenuItem;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class InfoPazienteController {
@@ -25,6 +30,8 @@ public class InfoPazienteController {
     @FXML private TextArea comorbiditaArea;
     @FXML private TextArea dettagliArea;
     @FXML private Button salvaButton;
+    @FXML private Button storicoButton;
+
 
     private Paziente paziente;
     private final Database db = Database.getInstance();
@@ -35,6 +42,7 @@ public class InfoPazienteController {
         inizializzaMenuFattoriRischio();
         fattoriRischioButton.setOnAction(event -> apriMenuFattoriRischio());
         salvaButton.setOnAction(event -> salvaInformazioni());
+        storicoButton.setOnAction(event -> apriStoricoModifiche());
     }
 
     public void inizializzaPaziente(Paziente paziente) {
@@ -119,15 +127,158 @@ public class InfoPazienteController {
                 .map(CheckBox::getUserData)
                 .map(RiskFactor.class::cast)
                 .collect(Collectors.toList());
-
+        LogOperazione.SnapshotPaziente beforeState = new LogOperazione.SnapshotPaziente(paziente.getFattoriDiRischio(), paziente.getComorbidita(), paziente.getDettagli(), paziente.getPatologiePregresse());
         paziente.setFattoriDiRischio(fattoriSelezionati);
         paziente.setPatologiePregresse(patologieArea.getText().trim());
         paziente.setComorbidita(comorbiditaArea.getText().trim());
         paziente.setDettagli(dettagliArea.getText().trim());
-
+        LogOperazione.SnapshotPaziente afterState = new LogOperazione.SnapshotPaziente(paziente.getFattoriDiRischio(), paziente.getComorbidita(), paziente.getDettagli(), paziente.getPatologiePregresse());
         db.updatePaziente(paziente, paziente);
-
+        GestoreLog.registraModificaPaziente(paziente, beforeState, afterState, false, false);
         Stage stage = (Stage) salvaButton.getScene().getWindow();
         stage.close();
+    }
+
+    private List<LogOperazione> logStoricoCorrente = new ArrayList<>();
+    private VBox contenitoreStorico;
+
+    private void apriStoricoModifiche() {
+        if (paziente == null) return;
+
+        // -----------------------------------------------------
+        // TITOLO
+        // -----------------------------------------------------
+        Label titolo = new Label("Storico modifiche - " + paziente.getNome() + " " + paziente.getCognome());
+        titolo.getStyleClass().add("history-title");
+
+        // -----------------------------------------------------
+        // RICERCA
+        // -----------------------------------------------------
+        TextField ricercaField = new TextField();
+        ricercaField.setPromptText("Cerca nello storico...");
+        ricercaField.getStyleClass().add("search-field");
+
+        // -----------------------------------------------------
+        // CONTENITORE VOCI DI STORICO
+        // -----------------------------------------------------
+        contenitoreStorico = new VBox(12);
+
+        ScrollPane scrollPane = new ScrollPane(contenitoreStorico);
+        scrollPane.setFitToWidth(true);
+        scrollPane.getStyleClass().addAll("history-scroll", "list-scroll");
+        VBox.setVgrow(scrollPane, Priority.ALWAYS);
+
+        ricercaField.textProperty().addListener(
+                (observable, oldValue, newValue) -> aggiornaListaStorico(newValue)
+        );
+
+        // -----------------------------------------------------
+        // ROOT
+        // -----------------------------------------------------
+        VBox root = new VBox(15, titolo, ricercaField, scrollPane);
+        root.setPadding(new Insets(25, 30, 25, 30));
+        root.setPrefSize(500, 550);
+
+        logStoricoCorrente = Database.getInstance().getLogsByAutore(Session.getInstance().getCurrentUser());
+        aggiornaListaStorico("");
+
+        Scene scene = new Scene(root);
+        scene.getStylesheets().addAll(
+                Objects.requireNonNull(getClass().getResource("/application/css/graficaComune.css")).toExternalForm(),
+                Objects.requireNonNull(getClass().getResource("/application/css/diabetologo.css")).toExternalForm(),
+                Objects.requireNonNull(getClass().getResource("/application/css/storico.css")).toExternalForm()
+        );
+
+        Stage stage = new Stage();
+        stage.setTitle("Storico modifiche");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+    }
+
+    private void aggiornaListaStorico(String ricerca) {
+        contenitoreStorico.getChildren().clear();
+
+        String testo = ricerca == null ? "" : ricerca.toLowerCase().trim();
+
+        List<LogOperazione> filtrati = logStoricoCorrente.stream()
+                .filter(log -> testo.isEmpty()
+                        || log.getDescrizione().toLowerCase().contains(testo)
+                        || log.getAutoreString().toLowerCase().contains(testo)
+                        || log.getTimestamp().toLocalDate().toString().contains(testo))
+                .toList();
+
+        if (filtrati.isEmpty()) {
+            Label vuoto = new Label("Nessuna modifica registrata.");
+            vuoto.getStyleClass().add("history-description");
+            contenitoreStorico.getChildren().add(vuoto);
+            return;
+        }
+
+        for (LogOperazione log : filtrati) {
+            contenitoreStorico.getChildren().add(creaBoxLog(log));
+        }
+    }
+
+    private Node creaBoxLog(LogOperazione log) {
+        HBox box = new HBox(15);
+        box.setAlignment(Pos.CENTER_LEFT);
+        box.getStyleClass().add("history-item");
+
+        // -----------------------------------------------------
+        // INFORMAZIONI
+        // -----------------------------------------------------
+        VBox informazioni = new VBox(5);
+
+        Label data = new Label(
+                log.getTimestamp().toLocalDate() + "  " + log.getTimestamp().toLocalTime().withNano(0)
+                        + "  ·  " + log.getAutoreString()
+        );
+        data.getStyleClass().add("history-date");
+
+        Label descrizione = new Label(log.getDescrizione());
+        descrizione.setWrapText(true);
+        descrizione.getStyleClass().add("history-description");
+
+        informazioni.getChildren().addAll(data, descrizione);
+
+        if (log.isRipristinato()) {
+            Label ripristinato = new Label("Modifica già ripristinata");
+            ripristinato.getStyleClass().add("profile-role");
+            informazioni.getChildren().add(ripristinato);
+        }
+
+        // -----------------------------------------------------
+        // SPAZIO
+        // -----------------------------------------------------
+        Region spazio = new Region();
+        HBox.setHgrow(spazio, Priority.ALWAYS);
+
+        box.getChildren().addAll(informazioni, spazio);
+
+        // -----------------------------------------------------
+        // AZIONE DI RIPRISTINO
+        // -----------------------------------------------------
+        if (log.isReversibile()) {
+            Button annullaButton = new Button();
+            annullaButton.getStyleClass().addAll("secondary-button", "modify-button");
+            ImageView icona = new ImageView(new Image("/application/images/vediPrecedenti.png"));
+            icona.setFitHeight(20);
+            icona.setFitWidth(20);
+            icona.setPreserveRatio(true);
+            annullaButton.setGraphic(icona);
+            annullaButton.setOnAction(event -> {
+                boolean esito = GestoreLog.undoOperation(log);
+                if (esito) {
+                    // Ricarico il paziente con lo stato ripristinato
+                    inizializzaPaziente(paziente);
+                    logStoricoCorrente = Database.getInstance().getLogsByAutore(Session.getInstance().getCurrentUser());
+                    aggiornaListaStorico("");
+                }
+            });
+            box.getChildren().add(annullaButton);
+        }
+
+        return box;
     }
 }

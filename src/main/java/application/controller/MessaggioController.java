@@ -19,7 +19,7 @@ public class MessaggioController {
     // =========================================================
 
     public void inizializza(Messaggio messaggio,Runnable messaggioLetto) {
-        String nomeCompleto = messaggio.getMittente() != null ? messaggio.getMittente().getNome() + " " + messaggio.getMittente().getCognome() : "Sistema";
+        String nomeCompleto = messaggio.getMittenteString();
         nomeLabel.setText(nomeCompleto);
         testoLabel.setText(messaggio.getTesto());
         

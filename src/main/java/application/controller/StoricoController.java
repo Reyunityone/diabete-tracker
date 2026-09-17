@@ -320,35 +320,6 @@ public class StoricoController {
     // APERTURA FINESTRA MODIFICA
     // =========================================================
 
-//    private void apriFinestraModifica(Object elemento, String percorsoFXML, String titolo) {
-//        try {
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource(percorsoFXML));
-//            Parent root = loader.load();
-//
-//            if (elemento instanceof Rilevazione) {
-//                RilevazioneController controller = loader.getController();
-//                controller.inizializzaModifica((Rilevazione) elemento, this::aggiornaLista);
-//
-//            } else if (elemento instanceof AssunzioneFarmaco) {
-//                FarmacoController controller = loader.getController();
-//                controller.inizializzaModifica((AssunzioneFarmaco) elemento, this::aggiornaLista);
-//
-//            } else if (elemento instanceof Segnalazione) {
-//                SegnalazioneController controller = loader.getController();
-//                controller.inizializzaModifica((Segnalazione) elemento, this::aggiornaLista);
-//            }
-//
-//            Stage stage = new Stage();
-//            stage.setTitle(titolo);
-//            stage.setScene(new Scene(root));
-//            stage.setResizable(false);
-//            stage.show();
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-    
     private void apriFinestraModifica(Object elemento, String percorsoFXML, String titolo) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(percorsoFXML));

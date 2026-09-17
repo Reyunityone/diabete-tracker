@@ -1,20 +1,26 @@
 package application.classiGeneriche;
 
-public class Rilevazione {
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
-    private String data;
-    private String livelloGlicemia;
-    private String momentoGiornata;
+public class Rilevazione implements Serializable {
+
+    private LocalDate data;
+    private int livelloGlicemia;
+    private LocalTime orarioPasto;
+    private LocalTime orarioRilevazione;
+    private MomentoRilevazione momentoAssunzione;
+    private Paziente paziente;
 
 
-    public Rilevazione(
-            String data,
-            String livelloGlicemia,
-            String momentoGiornata) {
-
+    public Rilevazione(LocalDate data, int livelloGlicemia, LocalTime orarioPasto, LocalTime orarioRilevazione, MomentoRilevazione momentoAssunzione, Paziente paziente) {
         this.data = data;
         this.livelloGlicemia = livelloGlicemia;
-        this.momentoGiornata = momentoGiornata;
+        this.orarioRilevazione = orarioRilevazione;
+        this.orarioPasto = orarioPasto;
+        this.momentoAssunzione=momentoAssunzione;
+        this.paziente = paziente;
     }
 
 
@@ -22,42 +28,63 @@ public class Rilevazione {
     // GETTER
     // =========================================================
 
-    public String getData() {
+
+    public LocalDate getData() {
         return data;
     }
 
+    public LocalTime getOrarioPasto() {
+        return orarioPasto;
+    }
 
-    public String getLivelloGlicemia() {
+    public LocalTime getOrarioRilevazione() {
+        return orarioRilevazione;
+    }
+
+    public int getLivelloGlicemia() {
         return livelloGlicemia;
     }
 
-
-    public String getMomentoGiornata() {
-        return momentoGiornata;
+    public Paziente getPaziente() {
+        return paziente;
     }
+    
 
+	public MomentoRilevazione getMomentoRilevazione() {
+		return momentoAssunzione;
+	}
 
     // =========================================================
     // SETTER
     // =========================================================
 
-    public void setData(String data) {
+
+    public void setPaziente(Paziente paziente) {
+        this.paziente = paziente;
+    }
+
+    public void setOrarioRilevazione(LocalTime orarioRilevazione) {
+        this.orarioRilevazione = orarioRilevazione;
+    }
+
+    public void setOrarioPasto(LocalTime orarioPasto) {
+        this.orarioPasto = orarioPasto;
+    }
+
+    public void setData(LocalDate data) {
         this.data = data;
     }
 
-
     public void setLivelloGlicemia(
-            String livelloGlicemia) {
+            int livelloGlicemia) {
 
         this.livelloGlicemia =
                 livelloGlicemia;
     }
 
 
-    public void setMomentoGiornata(
-            String momentoGiornata) {
+	public void setMomentoRilevazione(MomentoRilevazione momentoAssunzione) {
+		this.momentoAssunzione = momentoAssunzione;
+	}
 
-        this.momentoGiornata =
-                momentoGiornata;
-    }
 }

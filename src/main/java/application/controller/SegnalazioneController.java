@@ -1,7 +1,10 @@
 package application.controller;
 
+import application.classiGeneriche.Database;
+import application.classiGeneriche.Paziente;
 import application.classiGeneriche.Segnalazione;
 
+import application.classiGeneriche.Session;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
@@ -12,16 +15,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 
 public class SegnalazioneController {
+    private Paziente user;
 
     // =========================================================
     // FXML
     // =========================================================
 
-    @FXML
-    private DatePicker dataPicker;
-
-    @FXML
-    private TextArea testoArea;
+    @FXML private DatePicker dataInizioPicker;
+    @FXML private DatePicker dataFinePicker;
+    @FXML private TextArea testoArea;
 
 
     // =========================================================
@@ -29,15 +31,6 @@ public class SegnalazioneController {
     // =========================================================
 
     private Consumer<Segnalazione> salvataggio;
-
-
-    // =========================================================
-    // FORMATO DATA
-    // =========================================================
-
-    private final DateTimeFormatter formatoData =
-            DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
 
     // =========================================================
     // MODALITÀ MODIFICA
@@ -70,7 +63,6 @@ public class SegnalazioneController {
     public void inizializzaModifica(
             Segnalazione segnalazione,
             Runnable aggiornamento) {
-
         this.modalitaModifica = true;
 
         this.segnalazioneDaModificare =
@@ -84,26 +76,21 @@ public class SegnalazioneController {
         // CARICA DATA
         // -----------------------------------------------------
 
-        if (segnalazione.getData() != null
-                && !segnalazione.getData().isEmpty()) {
+        if (segnalazione.getDataInizio() != null) {
 
-            LocalDate data =
-                    LocalDate.parse(
-                            segnalazione.getData(),
-                            formatoData
-                    );
-
-            dataPicker.setValue(data);
+            dataInizioPicker.setValue(segnalazione.getDataInizio());
         }
 
-
+        if(segnalazione.getDataFine() != null){
+            dataFinePicker.setValue(segnalazione.getDataFine());
+        }
         // -----------------------------------------------------
         // CARICA TESTO
         // -----------------------------------------------------
 
-        testoArea.setText(
-                segnalazione.getTesto()
-        );
+        if(segnalazione.getTesto()!=null|| testoArea.getText().trim().isEmpty()) {
+        	testoArea.setText(segnalazione.getTesto());
+        }
     }
 
 
@@ -118,24 +105,24 @@ public class SegnalazioneController {
         // CONTROLLO DATA
         // -----------------------------------------------------
 
-        if (dataPicker.getValue() == null) {
+    	if (dataInizioPicker.getValue() == null
+    	        || dataFinePicker.getValue() == null
+    	        || testoArea.getText() == null
+    	        || testoArea.getText().trim().isEmpty()) {
 
-            return;
-        }
+    	    return;
+    	}
 
 
         // -----------------------------------------------------
         // DATA
         // -----------------------------------------------------
 
-        String data =
-                dataPicker
-                        .getValue()
-                        .format(
-                                formatoData
-                        );
+        LocalDate dataInizio =
+                dataInizioPicker.getValue();
 
-
+        LocalDate dataFine =
+                dataFinePicker.getValue();
         // -----------------------------------------------------
         // TESTO
         // -----------------------------------------------------
@@ -149,9 +136,9 @@ public class SegnalazioneController {
         // =====================================================
 
         if (modalitaModifica) {
-
-            segnalazioneDaModificare.setData(
-                    data
+            Database.getInstance().updateSegnalazione(segnalazioneDaModificare, new Segnalazione(dataInizio,dataFine , (Paziente) Session.getInstance().getCurrentUser(),testo));
+            segnalazioneDaModificare.setDataInizio(
+                    dataInizio
             );
 
             segnalazioneDaModificare.setTesto(
@@ -177,11 +164,13 @@ public class SegnalazioneController {
         // NUOVA SEGNALAZIONE
         // =====================================================
 
-        Segnalazione segnalazione =
-                new Segnalazione(
-                        data,
-                        testo
-                );
+
+            Segnalazione segnalazione = new Segnalazione(
+                    dataInizio,
+                    dataFine,
+                    (Paziente) Session.getInstance().getCurrentUser(),
+                    testo
+            );
 
 
         if (salvataggio != null) {
@@ -203,7 +192,7 @@ public class SegnalazioneController {
     private void chiudiFinestra() {
 
         Stage stage =
-                (Stage) dataPicker
+                (Stage) dataInizioPicker
                         .getScene()
                         .getWindow();
 

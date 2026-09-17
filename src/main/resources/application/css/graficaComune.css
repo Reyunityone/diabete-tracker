@@ -382,6 +382,87 @@
 }
 
 /* ========================================================= */
+/* ELIMINAZIONE */
+/* ========================================================= */
+
+.delete-button {
+
+    -fx-background-color: #c62828;
+
+    -fx-text-fill: white;
+
+    -fx-background-radius: 6px;
+
+    -fx-border-radius: 6px;
+
+    -fx-padding: 6px 10px;
+
+    -fx-font-size: 12px;
+
+    -fx-font-weight: bold;
+
+    -fx-cursor: hand;
+}
+
+.delete-button:hover {
+
+    -fx-background-color: #a91f1f;
+}
+
+
+/* ========================================================= */
+/* ALERT ELIMINAZIONE */
+/* ========================================================= */
+
+.delete-description {
+
+    -fx-font-size: 14px;
+
+    -fx-font-style: italic;
+
+    -fx-text-fill: #333333;
+}
+
+.delete-warning {
+
+    -fx-font-size: 14px;
+
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #222222;
+}
+
+.dialog-pane .button {
+
+    -fx-background-radius: 8px;
+
+    -fx-border-radius: 8px;
+
+    -fx-padding: 7px 18px;
+
+    -fx-font-weight: bold;
+
+    -fx-cursor: hand;
+}
+
+.dialog-pane .button:hover {
+
+    -fx-background-color: #eeeeee;
+}
+
+.dialog-pane .button:default {
+
+    -fx-background-color: #222222;
+
+    -fx-text-fill: white;
+}
+
+.dialog-pane .button:default:hover {
+
+    -fx-background-color: #444444;
+}
+
+/* ========================================================= */
 /* LOGOUT */
 /* ========================================================= */
 

@@ -73,6 +73,8 @@ public class ResponsabileController {
     // =========================================================
 
     private Responsabile responsabile;
+    
+    private boolean modalitaTest = false;
 
 
     // =========================================================
@@ -216,6 +218,18 @@ public class ResponsabileController {
     	        return;
     	    }
     	}
+    	
+    	// MODALITÀ TEST: elimina direttamente senza mostrare l'Alert
+        if (modalitaTest) {
+            if (medico) {
+                Database.getInstance().deleteDiabetologo((Diabetologo) persona);
+            } else {
+                Database.getInstance().deletePaziente((Paziente) persona);
+            }
+
+            aggiornaListe();
+            return;
+        }
     	
     	//CREAZIONE ALR+ERT PER ELIMINAZIONE
         Optional<ButtonType> risultato = getRisultato(persona);
@@ -377,5 +391,12 @@ public class ResponsabileController {
     // =========================================================
     public List<Paziente> getPazienti() {
         return Database.getInstance().getPazienti();
+    }
+    
+    // =========================================================
+    // SET MODALITÁ TEST
+    // =========================================================
+    public void setModalitaTest(boolean modalitaTest) {
+        this.modalitaTest = modalitaTest;
     }
 }

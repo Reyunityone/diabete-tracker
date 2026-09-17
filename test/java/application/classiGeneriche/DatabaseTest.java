@@ -547,4 +547,57 @@ class DatabaseTest {
 	    assertDoesNotThrow(() -> db.updateSegnalazione(nonPresente, altra));
 	    assertTrue(db.getSegnalazioni().isEmpty());
 	}
+	
+	// =========================================================
+    // ELIMINAZIONE DALLO STORICO
+    // =========================================================
+
+	@Test
+	void deleteAssunzioneRimuoveCorrettaAssunzioneDalDatabase() {
+	    Paziente paziente = new Paziente();
+	    Terapia terapia = new Terapia("Insulina",10,2,new Diabetologo(),new ArrayList<>(),"Dopo i pasti");
+	    AssunzioneFarmaco assunzione = new AssunzioneFarmaco(paziente,LocalDate.of(2026, 9, 15),LocalTime.of(13, 0),10,terapia);
+
+	    db.addAssunzione(assunzione);
+
+	    assertEquals(1,db.getAssunzioni().size());
+	    assertTrue(db.getAssunzioni().contains(assunzione));
+
+	    db.deleteAssunzione(assunzione);
+
+	    assertEquals(0,db.getAssunzioni().size());
+	    assertFalse(db.getAssunzioni().contains(assunzione));
+	}
+
+	@Test
+	void deleteRilevazioneRimuoveCorrettaRilevazioneDalDatabase() {
+	    Paziente paziente = new Paziente();
+	    Rilevazione rilevazione = new Rilevazione(LocalDate.of(2026, 9, 15),100,LocalTime.of(12, 30),LocalTime.of(12, 0),MomentoRilevazione.PRIMA_COLAZIONE,paziente);
+
+	    db.addRilevazione(rilevazione);
+
+	    assertEquals(1,db.getRilevazioni().size());
+	    assertTrue(db.getRilevazioni().contains(rilevazione));
+
+	    db.deleteRilevazione(rilevazione);
+
+	    assertEquals(0,db.getRilevazioni().size());
+	    assertFalse(db.getRilevazioni().contains(rilevazione));
+	}
+
+	@Test
+	void deleteSegnalazioneRimuoveCorrettaSegnalazioneDalDatabase() {
+	    Paziente paziente = new Paziente();
+	    Segnalazione segnalazione = new Segnalazione(LocalDate.of(2026, 9, 15),LocalDate.of(2026, 9, 20),paziente,"Segnalazione di prova");
+
+	    db.addSegnalazione(segnalazione);
+
+	    assertEquals(1,db.getSegnalazioni().size());
+	    assertTrue(db.getSegnalazioni().contains(segnalazione));
+
+	    db.deleteSegnalazione(segnalazione);
+
+	    assertEquals(0,db.getSegnalazioni().size());
+	    assertFalse(db.getSegnalazioni().contains(segnalazione));
+	}
 }

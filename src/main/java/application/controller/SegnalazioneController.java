@@ -88,9 +88,9 @@ public class SegnalazioneController {
         // CARICA TESTO
         // -----------------------------------------------------
 
-        testoArea.setText(
-                segnalazione.getTesto()
-        );
+        if(segnalazione.getTesto()!=null|| testoArea.getText().trim().isEmpty()) {
+        	testoArea.setText(segnalazione.getTesto());
+        }
     }
 
 
@@ -105,10 +105,13 @@ public class SegnalazioneController {
         // CONTROLLO DATA
         // -----------------------------------------------------
 
-        if (dataInizioPicker.getValue() == null) {
+    	if (dataInizioPicker.getValue() == null
+    	        || dataFinePicker.getValue() == null
+    	        || testoArea.getText() == null
+    	        || testoArea.getText().trim().isEmpty()) {
 
-            return;
-        }
+    	    return;
+    	}
 
 
         // -----------------------------------------------------

@@ -203,53 +203,8 @@ class DatabaseTest {
     }
 
     // =========================================================
-    // UPDATE
+    // MESSAGGI
     // =========================================================
-
-    @Test
-    void updateRilevazioneSostituisceLElementoNellaLista() {
-        Paziente p = new Paziente();
-        Rilevazione originale = new Rilevazione(LocalDate.now(), 100, LocalTime.now(), LocalTime.now(),
-                MomentoRilevazione.PRIMA_COLAZIONE, p);
-
-        db.addRilevazione(originale);
-
-        Rilevazione aggiornata = new Rilevazione(LocalDate.now(), 130, LocalTime.now(), LocalTime.now(),
-                MomentoRilevazione.DOPO_COLAZIONE, p);
-
-        db.updateRilevazione(originale, aggiornata);
-
-        ArrayList<Rilevazione> tutte = db.getRilevazioni();
-
-        assertEquals(1, tutte.size());
-        assertEquals(130, tutte.getFirst().getLivelloGlicemia());
-    }
-
-    @Test
-    void updateRilevazioneNonFaNienteSeLElementoNonEPresente() {
-        Paziente p = new Paziente();
-        Rilevazione nonPresente = new Rilevazione(LocalDate.now(), 100, LocalTime.now(), LocalTime.now(),
-                MomentoRilevazione.PRIMA_COLAZIONE, p);
-        Rilevazione altra = new Rilevazione(LocalDate.now(), 200, LocalTime.now(), LocalTime.now(),
-                MomentoRilevazione.DOPO_CENA, p);
-
-        assertDoesNotThrow(() -> db.updateRilevazione(nonPresente, altra));
-        assertTrue(db.getRilevazioni().isEmpty());
-    }
-
-    @Test
-    void updateSegnalazioneSostituisceLElementoNellaLista() {
-        Paziente p = new Paziente();
-        Segnalazione originale = new Segnalazione(LocalDate.now(), null, p, "testo originale");
-
-        db.addSegnalazione(originale);
-
-        Segnalazione aggiornata = new Segnalazione(LocalDate.now(), null, p, "testo aggiornato");
-
-        db.updateSegnalazione(originale, aggiornata);
-
-        assertEquals("testo aggiornato", db.getSegnalazioni().getFirst().getTesto());
-    }
 
     @Test
     void getMessaggioFromMedicoRitornaMessaggiDelMedico(){
@@ -278,4 +233,318 @@ class DatabaseTest {
         assertEquals(1, db.getMessaggiFromPaziente(p2).size());
         assertTrue(db.getMessaggiFromPaziente(p2).contains(m2));
     }
+    
+    
+    
+    // =========================================================
+    
+    // TESTING DEI METODI CHE UTILIZZA IL RESPONSABILE
+    
+    // =========================================================
+    
+    
+    
+    // =========================================================
+    // ASSOCIAZIONE PAZIENTE - DIABETOLOGO PER IL SINGOLO PAZIENTE (updatePazienteDiabetologo)
+    // =========================================================
+
+    @Test
+    void pazienteVieneAssociatoAlDiabetologo() {
+        Diabetologo medico = new Diabetologo("medicoAssociazione","password","CFMEDASS","Mario","Rossi","medico@test.it");
+        Paziente paziente = new Paziente("pazienteAssociazione","password","CFPAZASS","Luca","Bianchi","paziente@test.it",null,new Diabetologo(),null,null,null);
+
+        db.addDiabetologo(medico);
+        db.addPaziente(paziente);
+
+        db.updatePazienteDiabetologo(paziente, medico);
+
+        Paziente risultato = db.getPazienti().stream().filter(p -> p.getUsername().equals("pazienteAssociazione")).findFirst().orElseThrow();
+        assertNotNull(risultato.getMedicoDiRiferimento());
+        assertEquals(medico.getUsername(),risultato.getMedicoDiRiferimento().getUsername());
+    }
+    
+    // =========================================================
+    // ASSOCIAZIONE PAZIENTE - DIABETOLOGO PER PIÚ PAZIENTI (updateDiabetologoPazienti)
+    // =========================================================
+
+    @Test
+    void pazientiVengonoAssociatiAlloStessoDiabetologo() {
+        Diabetologo medico = new Diabetologo("medicoAssociazione","password","CFMEDASS","Mario","Rossi","medico@test.it");
+        Paziente paziente1 = new Paziente("paziente1","password","PPPPPPPP","Luca","Bianchi","paziente@test.it",null,new Diabetologo(),null,null,null);
+        Paziente paziente2 = new Paziente("paziente2","password","AAAAAAAA","Luca","Bianchi","paziente@test.it",null,new Diabetologo(),null,null,null);
+        Paziente paziente3 = new Paziente("paziente3","password","ZZZZZZZZ","Luca","Bianchi","paziente@test.it",null,new Diabetologo(),null,null,null);
+
+        db.addDiabetologo(medico);
+        db.addPaziente(paziente1);
+        db.addPaziente(paziente2);
+        db.addPaziente(paziente3);
+
+        ArrayList<Paziente> selezionati=new ArrayList<>();
+        selezionati.add(paziente1);
+        selezionati.add(paziente2);
+        selezionati.add(paziente3);
+        
+        db.updateDiabetologoPazienti(medico, selezionati);
+
+        Paziente risultato1 = db.getPazienti().stream().filter(p -> p.getUsername().equals("paziente1")).findFirst().orElseThrow();
+        Paziente risultato2 = db.getPazienti().stream().filter(p -> p.getUsername().equals("paziente2")).findFirst().orElseThrow();
+        Paziente risultato3 = db.getPazienti().stream().filter(p -> p.getUsername().equals("paziente3")).findFirst().orElseThrow();
+        
+        assertNotNull(risultato1.getMedicoDiRiferimento());
+        assertNotNull(risultato2.getMedicoDiRiferimento());
+        assertNotNull(risultato3.getMedicoDiRiferimento());
+        
+        assertEquals(medico.getUsername(),risultato1.getMedicoDiRiferimento().getUsername());
+        assertEquals(medico.getUsername(),risultato2.getMedicoDiRiferimento().getUsername());
+        assertEquals(medico.getUsername(),risultato3.getMedicoDiRiferimento().getUsername());
+    }
+
+    // =========================================================
+    // PAZIENTI SEGUITI DA UN MEDICO
+    // =========================================================
+
+    @Test
+    void getPazientiByDiabetologoRestituiscePazientiCorretti() {
+        Diabetologo medico = new Diabetologo("medicoSeguiti","password","CFMEDSEG","Mario","Rossi","medico@test.it");
+        Paziente paziente = new Paziente("pazienteSeguito","password","CFPAZSEG","Luca","Bianchi","paziente@test.it",null,medico,null,null,null);
+
+        db.addDiabetologo(medico);
+        db.addPaziente(paziente);
+
+        var pazientiSeguiti =db.getPazientiByMedico(medico);
+
+        assertEquals(1, pazientiSeguiti.size());
+        assertTrue(pazientiSeguiti.contains(paziente));
+    }
+
+    // =========================================================
+    // ELIMINAZIONE PAZIENTE
+    // =========================================================
+
+    @Test
+    void eliminazionePazienteRimuoveIlPazienteDalDatabase() {
+        Paziente paziente = new Paziente("pazienteDelete","password","CFDELETE","Paolo","Verdi","paolo@test.it",null,new Diabetologo(),null,null,null);
+
+        db.addPaziente(paziente);
+        assertTrue(db.getPazienti().contains(paziente));
+
+        db.deletePaziente(paziente);
+        assertFalse(db.getPazienti().contains(paziente));
+    }
+
+    // =========================================================
+    // ELIMINAZIONE DIABETOLOGO
+    // =========================================================
+
+    @Test
+    void eliminazioneDiabetologoRimuoveIlMedicoDalDatabase() {
+        Diabetologo medico = new Diabetologo("medicoDelete","password","CFMEDDELETE","Anna","Neri","anna@test.it");
+        
+        db.addDiabetologo(medico);
+        assertTrue(db.getDiabetologi().contains(medico));
+
+        db.deleteDiabetologo(medico);
+        assertFalse(db.getDiabetologi().contains(medico));
+    }
+
+    // =========================================================
+    // CONTROLLO ELIMINAZIONE MEDICO CON PAZIENTI
+    // =========================================================
+
+    @Test
+    void diabetologoConPazientiNonDovrebbeEssereEliminabile() {
+        Diabetologo medico = new Diabetologo("medicoConPaziente","password","CFMEDPAZ","Mario","Rossi","medico@test.it");
+        Paziente paziente = new Paziente("pazienteMedico","password","CFPAZMED","Luca","Bianchi","paziente@test.it",null,medico,null,null,null);
+        db.addDiabetologo(medico);
+        db.addPaziente(paziente);
+
+        assertFalse(db.getPazientiByMedico(medico).isEmpty());
+    }
+    
+    // =========================================================
+    // USERNAME GIÁ PRESENTE
+    // =========================================================
+
+    @Test
+    void usernameEsistenteRiconosceUnUsernameGiaPresente() {
+        Diabetologo medico = new Diabetologo("usernameEsistente","password","CFMED07","Mario","Rossi","mario@test.it");
+        db.addDiabetologo(medico);
+        assertTrue(db.usernameEsistente("usernameEsistente"));
+    }
+
+    @Test
+    void usernameNonEsistenteRestituisceFalse() {
+        assertFalse(db.usernameEsistente("usernameCheNonEsiste"));
+    }
+    
+    
+    
+    
+    // =========================================================
+    
+    // TESTING DEI METODI CHE UTILIZZA IL PAZIENTE
+    
+    // =========================================================
+    
+    
+	 // =========================================================
+	 // ASSUNZIONE FARMACO
+	 // =========================================================
+	
+	 @Test
+	 void addAssunzioneAggiungeCorrettaAssunzioneAlDatabase() {
+	     Paziente paziente = new Paziente();
+	     Terapia terapia = new Terapia("Insulina",10,2,new Diabetologo(),new ArrayList<>(),"Dopo i pasti");
+	     AssunzioneFarmaco assunzione =new AssunzioneFarmaco(paziente,LocalDate.of(2026, 9, 15),LocalTime.of(13, 0),10,terapia);
+	     db.addAssunzione(assunzione);
+	
+	     assertEquals(1, db.getAssunzioni().size());
+	
+	     AssunzioneFarmaco risultato =db.getAssunzioniByPaziente(paziente).get(0);
+	     
+	     assertEquals(paziente, risultato.getPaziente());
+	     assertEquals(LocalDate.of(2026, 9, 15),risultato.getData());
+	     assertEquals(LocalTime.of(13, 0),risultato.getOrarioAssunzione());
+	     assertEquals(10, risultato.getQuantita());
+	     assertEquals(terapia, risultato.getTerapia());
+	 }
+	
+	
+	 @Test
+	 void updateAssunzioneSostituisceLElementoNellaLista() {
+	     Paziente paziente = new Paziente();
+	     Terapia terapia = new Terapia("Insulina",10,2,new Diabetologo(),new ArrayList<>(),"Dopo i pasti");
+	     AssunzioneFarmaco originale =new AssunzioneFarmaco(paziente,LocalDate.of(2026, 9, 10),LocalTime.of(10, 0),10,terapia);
+	     db.addAssunzione(originale);
+	
+	     AssunzioneFarmaco aggiornata =new AssunzioneFarmaco(paziente,LocalDate.of(2026, 9, 15),LocalTime.of(18, 0),20,terapia);
+	     db.updateAssunzione(originale, aggiornata);
+	
+	     assertEquals(1, db.getAssunzioni().size());
+	
+	     AssunzioneFarmaco risultato =db.getAssunzioniByPaziente(paziente).get(0);
+	
+	     assertEquals(LocalDate.of(2026, 9, 15),risultato.getData());
+	     assertEquals(LocalTime.of(18, 0),risultato.getOrarioAssunzione());
+	     assertEquals(20, risultato.getQuantita());
+	     assertEquals(terapia, risultato.getTerapia());
+	     assertEquals(paziente, risultato.getPaziente());
+	 }
+	 
+	 @Test
+	 void updateAssunzioneNonFaNienteSeLElementoNonEPresente() {
+	     Paziente paziente = new Paziente();
+	     Terapia terapia = new Terapia("Insulina",10,2,new Diabetologo(),new ArrayList<>(),"Dopo i pasti");
+	     AssunzioneFarmaco nonPresente =new AssunzioneFarmaco(paziente,LocalDate.of(2026, 9, 10),LocalTime.of(10, 0),10,terapia);
+	     AssunzioneFarmaco altra =new AssunzioneFarmaco(paziente,LocalDate.of(2026, 9, 15),LocalTime.of(18, 0),20,terapia);
+
+	     assertDoesNotThrow(() -> db.updateAssunzione(nonPresente, altra));
+	     assertTrue(db.getAssunzioni().isEmpty());
+	 }
+	 
+	// =========================================================
+	// RILEVAZIONE
+	// =========================================================
+
+	@Test
+	void addRilevazioneAggiungeCorrettaRilevazioneAlDatabase() {
+	    Paziente paziente = new Paziente();
+	    Rilevazione rilevazione =new Rilevazione(LocalDate.of(2026, 9, 15),100,LocalTime.of(12, 0),LocalTime.of(12, 30),MomentoRilevazione.PRIMA_COLAZIONE,paziente);
+	    db.addRilevazione(rilevazione);
+
+	    assertEquals(1, db.getRilevazioni().size());
+
+	    Rilevazione risultato =db.getRilevazioniByPaziente(paziente).get(0);
+
+	    assertEquals(LocalDate.of(2026, 9, 15),risultato.getData());
+	    assertEquals(100,risultato.getLivelloGlicemia());
+	    assertEquals(LocalTime.of(12, 0),risultato.getOrarioPasto());
+	    assertEquals(LocalTime.of(12, 30),risultato.getOrarioRilevazione());
+	    assertEquals(MomentoRilevazione.PRIMA_COLAZIONE,risultato.getMomentoRilevazione());
+	    assertEquals(paziente,risultato.getPaziente());
+	}
+
+
+	@Test
+	void updateRilevazioneSostituisceLElementoNellaLista() {
+	    Paziente paziente = new Paziente();
+	    Rilevazione originale =new Rilevazione(LocalDate.of(2026, 9, 10),100,LocalTime.of(12, 0),LocalTime.of(12, 30),MomentoRilevazione.PRIMA_COLAZIONE,paziente);
+	    db.addRilevazione(originale);
+
+	    Rilevazione aggiornata =new Rilevazione(LocalDate.of(2026, 9, 15),120,LocalTime.of(12, 30),LocalTime.of(13, 0),MomentoRilevazione.DOPO_COLAZIONE,paziente);
+	    db.updateRilevazione(originale, aggiornata);
+
+	    assertEquals(1, db.getRilevazioni().size());
+
+	    Rilevazione risultato =db.getRilevazioniByPaziente(paziente).get(0);
+
+	    assertEquals(LocalDate.of(2026, 9, 15),risultato.getData());
+	    assertEquals(120,risultato.getLivelloGlicemia());
+	    assertEquals(LocalTime.of(12, 30),risultato.getOrarioPasto());
+	    assertEquals(LocalTime.of(13, 0),risultato.getOrarioRilevazione());
+	    assertEquals(MomentoRilevazione.DOPO_COLAZIONE,risultato.getMomentoRilevazione());
+	    assertEquals(paziente,risultato.getPaziente());
+	}
+	
+	@Test
+    void updateRilevazioneNonFaNienteSeLElementoNonEPresente() {
+        Paziente p = new Paziente();
+        Rilevazione nonPresente = new Rilevazione(LocalDate.now(), 100, LocalTime.now(), LocalTime.now(),MomentoRilevazione.PRIMA_COLAZIONE, p);
+        Rilevazione altra = new Rilevazione(LocalDate.now(), 200, LocalTime.now(), LocalTime.now(),MomentoRilevazione.DOPO_CENA, p);
+
+        assertDoesNotThrow(() -> db.updateRilevazione(nonPresente, altra));
+        assertTrue(db.getRilevazioni().isEmpty());
+    }
+	
+	// =========================================================
+	// SEGNALAZIONE
+	// =========================================================
+
+	@Test
+	void addSegnalazioneAggiungeCorrettaSegnalazioneAlDatabase() {
+	    Paziente paziente = new Paziente();
+	    Segnalazione segnalazione =new Segnalazione(LocalDate.of(2026, 9, 15),LocalDate.of(2026, 9, 20),paziente,"Segnalazione di prova");
+	    db.addSegnalazione(segnalazione);
+
+	    assertEquals(1, db.getSegnalazioni().size());
+
+	    Segnalazione risultato =db.getSegnalazioniByPaziente(paziente).get(0);
+
+	    assertEquals(LocalDate.of(2026, 9, 15),risultato.getDataInizio());
+	    assertEquals(LocalDate.of(2026, 9, 20),risultato.getDataFine());
+	    assertEquals("Segnalazione di prova",risultato.getTesto());
+	    assertEquals(paziente,risultato.getPaziente());
+	}
+
+
+	@Test
+	void updateSegnalazioneSostituisceLElementoNellaLista() {
+	    Paziente paziente = new Paziente();
+	    Segnalazione originale =new Segnalazione(LocalDate.of(2026, 9, 10),LocalDate.of(2026, 9, 12),paziente,"Testo precedente");
+
+	    db.addSegnalazione(originale);
+
+	    Segnalazione aggiornata =new Segnalazione(LocalDate.of(2026, 9, 15),LocalDate.of(2026, 9, 20),paziente,"Testo modificato");
+
+	    db.updateSegnalazione(originale,aggiornata);
+
+	    assertEquals(1,db.getSegnalazioni().size());
+
+	    Segnalazione risultato =db.getSegnalazioniByPaziente(paziente).get(0);
+
+	    assertEquals(LocalDate.of(2026, 9, 15),risultato.getDataInizio());
+	    assertEquals(LocalDate.of(2026, 9, 20),risultato.getDataFine());
+	    assertEquals("Testo modificato",risultato.getTesto());
+	    assertEquals(paziente,risultato.getPaziente());
+	}
+	
+	@Test
+	void updateSegnalazioneNonFaNienteSeLElementoNonEPresente() {
+	    Paziente paziente = new Paziente();
+	    Segnalazione nonPresente =new Segnalazione(LocalDate.of(2026, 9, 10),LocalDate.of(2026, 9, 12),paziente,"Segnalazione non presente");
+	    Segnalazione altra =new Segnalazione(LocalDate.of(2026, 9, 15),LocalDate.of(2026, 9, 20),paziente,"Nuova segnalazione");
+
+	    assertDoesNotThrow(() -> db.updateSegnalazione(nonPresente, altra));
+	    assertTrue(db.getSegnalazioni().isEmpty());
+	}
 }

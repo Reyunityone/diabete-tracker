@@ -458,4 +458,8 @@ public class AndamentoController {
     private boolean isPrimaDelPasto(MomentoRilevazione momento) {
         return momento ==MomentoRilevazione.PRIMA_COLAZIONE|| momento ==MomentoRilevazione.PRIMA_PRANZO|| momento ==MomentoRilevazione.PRIMA_CENA;
     }
+    
+    public Paziente getPaziente() {
+        return paziente;
+    }
 }

@@ -45,6 +45,11 @@ public class StoricoTerapieController {
 
     @FXML
     private TextField searchField;
+    
+    private boolean modalitaTest = false;
+    
+    private TerapiaController terapiaControllerTest;
+    private TerapieEsistentiController terapieEsistentiControllerTest;
 
     private Paziente paziente;
     private Diabetologo medico;
@@ -89,11 +94,11 @@ public class StoricoTerapieController {
         aggiornaLista();
     }
 
-    private void aggiornaLista() {
+    public void aggiornaLista() {
             aggiornaLista("");
         }
 
-    private void aggiornaLista(String ricerca) {
+    public void aggiornaLista(String ricerca) {
 
         terapieContainer.getChildren().clear();
 
@@ -206,12 +211,18 @@ public class StoricoTerapieController {
                         aggiornaLista();
                     }
             );
+            
+            if (modalitaTest) {
+                terapiaControllerTest = controller;
+            }
 
             Stage stage = new Stage();
             stage.setTitle("Nuova terapia");
             stage.setScene(new Scene(root));
             stage.setResizable(false);
-            stage.show();
+            if (!modalitaTest) {
+                stage.show();
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -241,7 +252,10 @@ public class StoricoTerapieController {
             stage.setTitle("Modifica terapia");
             stage.setScene(new Scene(root));
             stage.setResizable(false);
-            stage.show();
+            
+            if (!modalitaTest) {
+                stage.show();
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -264,6 +278,13 @@ public class StoricoTerapieController {
     }
 
     private void eliminaTerapia(Terapia terapia) {
+    	
+    	if (modalitaTest) {
+            terapia.getPazienti().remove(paziente);
+            Database.getInstance().save();
+            aggiornaLista();
+            return;
+        }
 
         Alert alert = new Alert(
                 Alert.AlertType.CONFIRMATION
@@ -323,6 +344,10 @@ public class StoricoTerapieController {
                     medico,
                     this::aggiornaLista
             );
+            
+            if (modalitaTest) {
+                terapieEsistentiControllerTest = controller;
+            }
 
             Stage stage = new Stage();
 
@@ -334,12 +359,18 @@ public class StoricoTerapieController {
 
             stage.setResizable(false);
 
-            stage.show();
+            if (!modalitaTest) {
+                stage.show();
+            }
 
         } catch (IOException e) {
 
             e.printStackTrace();
         }
+    }
+    
+    public void setModalitaTest(boolean modalitaTest) {
+        this.modalitaTest = modalitaTest;
     }
 
 }

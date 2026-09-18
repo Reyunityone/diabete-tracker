@@ -600,4 +600,211 @@ class DatabaseTest {
 	    assertEquals(0,db.getSegnalazioni().size());
 	    assertFalse(db.getSegnalazioni().contains(segnalazione));
 	}
+	
+	
+	
+	
+	
+	// =========================================================================================
+	
+	// CASI DI TEST PER LE TERAPIE CHE IL DIABETOLOGO ASSEGNA/MODIFICA AD UN PAZIENTE
+	
+	// =========================================================================================
+
+
+	// =========================================================
+	// AGGIUNTA TERAPIA
+	// =========================================================
+
+	@Test
+	void addTerapiaAggiungeCorrettaTerapiaAlDatabase() {
+		Diabetologo medico = new Diabetologo("medicoTerapia", "password", "CFTERAPIA", "Mario", "Rossi", "medico@test.it");
+		Terapia terapia = new Terapia("Insulina", 10, 2, medico, new ArrayList<>(), "Prima dei pasti");
+
+		db.addTerapia(terapia);
+
+		assertEquals(1, db.getTerapie().size());
+		assertTrue(db.getTerapie().contains(terapia));
+	}
+
+
+	@Test
+	void addTerapiaNonAggiungeDuplicatiConTuttiICampiUguali() {
+		Diabetologo medico = new Diabetologo("medicoTerapia", "password", "CFTERAPIA", "Mario", "Rossi", "medico@test.it");
+		Terapia terapia1 = new Terapia("Insulina", 10, 2, medico, new ArrayList<>(), "Prima dei pasti");
+		Terapia terapia2 = new Terapia("Insulina", 10, 2, medico, new ArrayList<>(), "Prima dei pasti");
+
+		db.addTerapia(terapia1);
+		db.addTerapia(terapia2);
+
+		assertEquals(1, db.getTerapie().size());
+		assertEquals(terapia1, db.getTerapie().getFirst());
+	}
+
+
+	// =========================================================
+	// MODIFICA TERAPIA
+	// =========================================================
+
+	@Test
+	void modificaTerapiaPazienteSostituisceLaVecchiaTerapia() {
+		Diabetologo medico = new Diabetologo("medicoTerapia", "password", "CFTERAPIA", "Mario", "Rossi", "medico@test.it");
+		Paziente paziente = new Paziente("pazienteTerapia", "password", "CFPAZTERAPIA", "Luca", "Bianchi", "paziente@test.it", null, medico, null, null, null);
+		Terapia vecchia = new Terapia("Insulina", 10, 2, medico, new ArrayList<>(), "Prima dei pasti");
+		Terapia nuova = new Terapia("Insulina", 20, 3, medico, new ArrayList<>(), "Dopo i pasti");
+
+		db.addTerapia(vecchia);
+		db.addPaziente(paziente);
+		db.assegnaTerapia(vecchia, paziente);
+
+		db.modificaTerapiaPaziente(vecchia, paziente, nuova);
+
+		assertEquals(1, db.getTerapie().size());
+		assertEquals(nuova, db.getTerapie().getFirst());
+		assertTrue(db.getTerapie().getFirst().getPazienti().contains(paziente));
+		assertFalse(db.getTerapie().getFirst().equals(vecchia));
+	}
+
+
+	@Test
+	void modificaTerapiaPazienteConTerapiaGiaEsistenteNonCreaDuplicati() {
+		Diabetologo medico = new Diabetologo("medicoTerapia", "password", "CFTERAPIA", "Mario", "Rossi", "medico@test.it");
+		Paziente paziente = new Paziente("pazienteTerapia", "password", "CFPAZTERAPIA", "Luca", "Bianchi", "paziente@test.it", null, medico, null, null, null);
+		Terapia vecchia = new Terapia("Insulina", 10, 2, medico, new ArrayList<>(), "Prima dei pasti");
+		Terapia terapiaEsistente = new Terapia("Metformina", 500, 1, medico, new ArrayList<>(), "Dopo cena");
+		Terapia nuova = new Terapia("Metformina", 500, 1, medico, new ArrayList<>(), "Dopo cena");
+
+		db.addPaziente(paziente);
+		db.addTerapia(vecchia);
+		db.addTerapia(terapiaEsistente);
+		db.assegnaTerapia(vecchia, paziente);
+
+		db.modificaTerapiaPaziente(vecchia, paziente, nuova);
+
+		assertEquals(1, db.getTerapie().size());
+		assertEquals(terapiaEsistente, db.getTerapie().getFirst());
+		assertTrue(db.getTerapie().getFirst().getPazienti().contains(paziente));
+	}
+
+
+	// =========================================================
+	// ASSEGNAZIONE TERAPIA ESISTENTE
+	// =========================================================
+
+	@Test
+	void assegnaTerapiaAggiungeIlPazienteAllaTerapia() {
+		Diabetologo medico = new Diabetologo("medicoTerapia", "password", "CFTERAPIA", "Mario", "Rossi", "medico@test.it");
+		Paziente paziente = new Paziente("pazienteTerapia", "password", "CFPAZTERAPIA", "Luca", "Bianchi", "paziente@test.it", null, medico, null, null, null);
+		Terapia terapia = new Terapia("Insulina", 10, 2, medico, new ArrayList<>(), "Prima dei pasti");
+
+		db.addPaziente(paziente);
+		db.addTerapia(terapia);
+
+		assertFalse(terapia.getPazienti().contains(paziente));
+
+		db.assegnaTerapia(terapia, paziente);
+
+		assertTrue(terapia.getPazienti().contains(paziente));
+		assertEquals(1, terapia.getPazienti().size());
+	}
+
+
+	@Test
+	void assegnaTerapiaNonDuplicaUnPazienteGiaAssegnato() {
+		Diabetologo medico = new Diabetologo("medicoTerapia", "password", "CFTERAPIA", "Mario", "Rossi", "medico@test.it");
+		Paziente paziente = new Paziente("pazienteTerapia", "password", "CFPAZTERAPIA", "Luca", "Bianchi", "paziente@test.it", null, medico, null, null, null);
+		Terapia terapia = new Terapia("Insulina", 10, 2, medico, new ArrayList<>(), "Prima dei pasti");
+
+		db.addPaziente(paziente);
+		db.addTerapia(terapia);
+
+		db.assegnaTerapia(terapia, paziente);
+		db.assegnaTerapia(terapia, paziente);
+
+		assertEquals(1, terapia.getPazienti().size());
+		assertTrue(terapia.getPazienti().contains(paziente));
+	}
+
+
+	// =========================================================
+	// ELIMINAZIONE TERAPIA DAL SINGOLO PAZIENTE
+	// =========================================================
+
+	@Test
+	void rimuoverePazienteDaTerapiaNonRimuoveLaTerapiaDalDatabase() {
+		Diabetologo medico = new Diabetologo("medicoTerapia", "password", "CFTERAPIA", "Mario", "Rossi", "medico@test.it");
+		Paziente paziente = new Paziente("pazienteTerapia", "password", "CFPAZTERAPIA", "Luca", "Bianchi", "paziente@test.it", null, medico, null, null, null);
+		Terapia terapia = new Terapia("Insulina", 10, 2, medico, new ArrayList<>(), "Prima dei pasti");
+
+		db.addPaziente(paziente);
+		db.addTerapia(terapia);
+		db.assegnaTerapia(terapia, paziente);
+
+		assertTrue(terapia.getPazienti().contains(paziente));
+
+		terapia.getPazienti().remove(paziente);
+		db.save();
+
+		assertFalse(terapia.getPazienti().contains(paziente));
+		assertTrue(db.getTerapie().contains(terapia));
+		assertTrue(db.getTerapieByPaziente(paziente).isEmpty());
+	}
+
+
+	@Test
+	void rimuoverePazienteDaTerapiaLasciaLaTerapiaNelDatabase() {
+		Diabetologo medico = new Diabetologo("medicoTerapia", "password", "CFTERAPIA", "Mario", "Rossi", "medico@test.it");
+		Paziente paziente = new Paziente("pazienteTerapia", "password", "CFPAZTERAPIA", "Luca", "Bianchi", "paziente@test.it", null, medico, null, null, null);
+		Terapia terapia = new Terapia("Insulina", 10, 2, medico, new ArrayList<>(), "Prima dei pasti");
+
+		db.addPaziente(paziente);
+		db.addTerapia(terapia);
+		db.assegnaTerapia(terapia, paziente);
+
+		terapia.getPazienti().remove(paziente);
+		db.save();
+
+		assertEquals(1, db.getTerapie().size());
+		assertTrue(db.getTerapie().contains(terapia));
+		assertTrue(terapia.getPazienti().isEmpty());
+	}
+
+
+	// =========================================================
+	// ELIMINAZIONE TERAPIA DAL DATABASE
+	// =========================================================
+
+	@Test
+	void removeTerapiaRimuoveLaTerapiaDalDatabase() {
+		Diabetologo medico = new Diabetologo("medicoTerapia", "password", "CFTERAPIA", "Mario", "Rossi", "medico@test.it");
+		Terapia terapia = new Terapia("Insulina", 10, 2, medico, new ArrayList<>(), "Prima dei pasti");
+
+		db.addTerapia(terapia);
+
+		assertTrue(db.getTerapie().contains(terapia));
+
+		db.removeTerapia(terapia);
+
+		assertFalse(db.getTerapie().contains(terapia));
+		assertTrue(db.getTerapie().isEmpty());
+	}
+
+
+	@Test
+	void removeTerapiaRimuoveLaTerapiaAncheDalleTerapieDelPaziente() {
+		Diabetologo medico = new Diabetologo("medicoTerapia", "password", "CFTERAPIA", "Mario", "Rossi", "medico@test.it");
+		Paziente paziente = new Paziente("pazienteTerapia", "password", "CFPAZTERAPIA", "Luca", "Bianchi", "paziente@test.it", null, medico, null, null, null);
+		Terapia terapia = new Terapia("Insulina", 10, 2, medico, new ArrayList<>(), "Prima dei pasti");
+
+		db.addPaziente(paziente);
+		db.addTerapia(terapia);
+		db.assegnaTerapia(terapia, paziente);
+
+		assertTrue(db.getTerapieByPaziente(paziente).contains(terapia));
+
+		db.removeTerapia(terapia);
+
+		assertFalse(db.getTerapie().contains(terapia));
+		assertFalse(db.getTerapieByPaziente(paziente).contains(terapia));
+	}
 }

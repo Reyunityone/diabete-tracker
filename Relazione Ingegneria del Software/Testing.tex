@@ -10,9 +10,9 @@ Per la classe \texttt{Database} sono stati verificati l'inserimento degli utenti
 Per \texttt{GestoreAlert} sono stati verificati casi relativi alla mancata assunzione di farmaci, all'aderenza della terapia per più giorni consecutivi e alla regolarità dei valori glicemici prima e dopo i pasti, considerando soglie che attivino l'invio di alert con diversi livelli di urgenza.\\
 
 Sono inoltre stati realizzati test sui controller dell'applicazione: \\
-Sono stati inoltre realizzati test sui controller dell'applicazione. Per \texttt{DiabetologoController} sono state verificate l'inizializzazione della schermata, la visualizzazione dei pazienti associati al medico, la ricerca per nome, cognome e codice fiscale, la gestione della ricerca senza risultati e la corretta apertura delle funzionalità relative ad andamento, terapia e informazioni del paziente.
+Per \texttt{DiabetologoController} sono state verificate l'inizializzazione della schermata, la visualizzazione dei pazienti associati al medico, la ricerca per nome, cognome e codice fiscale, la ricerca senza risultati e l'apertura delle informazioni su andamento, terapia e dettagli del paziente.
 
-Per la gestione delle terapie sono stati verificati la visualizzazione e la ricerca delle terapie, l'apertura delle finestre per la creazione e la selezione di terapie esistenti, l'assegnazione e la rimozione delle terapie e il comportamento dei relativi pulsanti.
+Per la gestione delle terapie sono stati verificati visualizzazione e ricerca delle terapie, l'apertura delle finestre per la creazione e la selezione di terapie esistenti oltre che  assegnazione e rimozione delle terapie.
 
 Per \texttt{MessaggiController} sono stati testati la visualizzazione dei messaggi, la ricerca per mittente, la gestione dei messaggi letti e non letti, la visualizzazione del livello di urgenza e l'aggiornamento delle notifiche.
 
@@ -20,11 +20,11 @@ Per \texttt{PazienteController} sono state verificate le operazioni di inserimen
 
 Per \texttt{StoricoController} sono state verificate la visualizzazione e la ricerca degli elementi dello storico, le operazioni di modifica con e senza salvataggio e le operazioni di eliminazione.
 
-Infine, per \texttt{ResponsabileController}, \texttt{ModificaCredenzialiController} e \texttt{AggiungiPersonaController} sono state verificate la gestione delle liste di utenti, la ricerca, la modifica dei dati, l'associazione tra pazienti e diabetologi e la creazione di nuovi utenti, compresi i controlli sui dati obbligatori e sugli username già presenti.
+Infine, per \texttt{ResponsabileController}, \texttt{ModificaCredenzialiController} e \texttt{AggiungiPersonaController} sono state verificate la gestione delle liste di utenti, ricerca e modifica dei dati, l'associazione tra pazienti e diabetologi e la creazione di nuovi utenti, compresi i controlli sui dati obbligatori e sugli username già presenti.
 
 \subsection{System Test}
- \textcolor{red}{TODO: Tutto}\\
-(Test sull'applicazione completa)\\
+ \textcolor{red}{TODO: Bruh cosa mettiamo qui?}\\
+
 Probabili casi da verificare:\\
 -Registrazione di una glicemia fuori soglia -$>$ alert $>$ nella dashboard del diabetologo di riferimento\\
 -Mancata registrazione di assunzioni farmaco per più di 3 giorni consecutivi -$>$ alert generato al medico\\

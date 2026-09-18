@@ -80,6 +80,8 @@ class ResponsabileControllerTest {
         creaComponentiJavaFX();
 
         collegaComponentiAlController();
+        
+        controller.setModalitaTest(true);
     }
 
 
@@ -316,6 +318,86 @@ class ResponsabileControllerTest {
             assertTrue(box.getChildren().stream().anyMatch(node ->node instanceof Button&& ((Button) node).getText().equals("Elimina account")));
         });
     }
+    
+    
+	 // =========================================================
+	 // TASTO ELIMINA
+	 // =========================================================
+	
+	 @Test
+	 void pulsanteEliminaPazienteRimuoveElementoDalDatabase() {
+	     Paziente paziente = new Paziente(
+	             "pazienteDelete",
+	             "password",
+	             "CFPAZDELETE",
+	             "Paolo",
+	             "Verdi",
+	             "paolo@test.it",
+	             null,
+	             new Diabetologo(),
+	             null,
+	             null,
+	             null
+	     );
+	
+	     db.addPaziente(paziente);
+	
+	     runAndWait(() -> {
+	         searchField.setText("");
+	         controller.initialize();
+	     });
+	
+	     assertEquals(1, pazientiContainer.getChildren().size());
+	     assertTrue(db.getPazienti().contains(paziente));
+	
+	     HBox box = (HBox) pazientiContainer.getChildren().getFirst();
+	
+	     Button elimina = (Button) box.getChildren().get(4);
+	
+	     assertEquals("Elimina account", elimina.getText());
+	
+	     runAndWait(elimina::fire);
+	
+	     assertFalse(db.getPazienti().contains(paziente));
+	     assertEquals(0, db.getPazienti().size());
+	     assertEquals(0, pazientiContainer.getChildren().size());
+	 }
+	
+	
+	 @Test
+	 void pulsanteEliminaDiabetologoRimuoveElementoDalDatabase() {
+	     Diabetologo medico = new Diabetologo(
+	             "medicoDelete",
+	             "password",
+	             "CFMEDDELETE",
+	             "Anna",
+	             "Neri",
+	             "anna@test.it"
+	     );
+	
+	     db.addDiabetologo(medico);
+	
+	     runAndWait(() -> {
+	         searchField.setText("");
+	         controller.initialize();
+	     });
+	
+	     assertEquals(1, mediciContainer.getChildren().size());
+	     assertTrue(db.getDiabetologi().contains(medico));
+	
+	     HBox box = (HBox) mediciContainer.getChildren().getFirst();
+	
+	     Button elimina = (Button) box.getChildren().get(4);
+	
+	     assertEquals("Elimina account", elimina.getText());
+	
+	     runAndWait(elimina::fire);
+	
+	     assertFalse(db.getDiabetologi().contains(medico));
+	     assertEquals(0, db.getDiabetologi().size());
+	     assertEquals(0, mediciContainer.getChildren().size());
+	 }
+
 
 
     // =========================================================

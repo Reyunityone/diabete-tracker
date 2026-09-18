@@ -600,4 +600,83 @@ class DatabaseTest {
 	    assertEquals(0,db.getSegnalazioni().size());
 	    assertFalse(db.getSegnalazioni().contains(segnalazione));
 	}
+	
+    // TESTING DEI METODI CHE UTILIZZA IL DIABETOLOGO PER INFO PAZIENTE
+    
+    // =========================================================
+	
+	@Test
+	void getLogsByPazienteRestituisceSoloIlogDelPaziente() {
+	    Paziente p1 = new Paziente();
+	    Paziente p2 = new Paziente("altro1", "pw", "ZZZZZZ", "Altro", "Paziente", "altro@mail.it",
+	            null, new Diabetologo(), null, null, null);
+
+	    Diabetologo medico = new Diabetologo("medico", "pw", "MMMMMM", "Mario", "Rossi", "medico@mail.it");
+
+	    LogOperazione.SnapshotPaziente snapshot1 = new LogOperazione.SnapshotPaziente(
+	            p1.getFattoriDiRischio(), p1.getComorbidita(), p1.getDettagli(), p1.getPatologiePregresse());
+
+	    LogOperazione.SnapshotPaziente snapshot2 = new LogOperazione.SnapshotPaziente(
+	            p2.getFattoriDiRischio(), p2.getComorbidita(), p2.getDettagli(), p2.getPatologiePregresse());
+
+	    LogOperazione log1 = new LogOperazione(medico, p1, "Modifica paziente", snapshot1, snapshot1);
+	    LogOperazione log2 = new LogOperazione(medico, p2, "Altra modifica", snapshot2, snapshot2);
+
+	    db.addLog(log1);
+	    db.addLog(log2);
+
+	    ArrayList<LogOperazione> risultato = db.getLogsByPaziente(p1);
+
+	    assertEquals(1, risultato.size());
+	    assertTrue(risultato.contains(log1));
+	}
+	
+	@Test
+	void getLogsByAutoreRestituisceSoloILogDellAutore() {
+	    Paziente paziente = new Paziente();
+	    Diabetologo d1 = new Diabetologo("medico1", "pw", "MMMMMM", "Mario", "Rossi", "mario@mail.it");
+	    Diabetologo d2 = new Diabetologo("medico2", "pw", "NNNNNN", "Luigi", "Bianchi", "luigi@mail.it");
+
+	    LogOperazione.SnapshotPaziente snapshot = new LogOperazione.SnapshotPaziente(
+	            paziente.getFattoriDiRischio(), paziente.getComorbidita(), paziente.getDettagli(), paziente.getPatologiePregresse());
+
+	    LogOperazione log1 = new LogOperazione(d1, paziente, "Modifica 1", snapshot, snapshot);
+	    LogOperazione log2 = new LogOperazione(d2, paziente, "Modifica 2", snapshot, snapshot);
+
+	    db.addLog(log1);
+	    db.addLog(log2);
+
+	    ArrayList<LogOperazione> risultato = db.getLogsByAutore(d1);
+
+	    assertEquals(1, risultato.size());
+	    assertTrue(risultato.contains(log1));
+	}
+	
+	@Test
+	void updatePazienteAggiornaLeInformazioniPersonali() {
+	    Paziente paziente = new Paziente("paziente", "pw", "AAAAAA", "Mario", "Rossi", "mario@mail.it",
+	            null, new Diabetologo(), "Appendicite", "Nessuna", "Nessun dettaglio");
+
+	    db.addPaziente(paziente);
+
+	    paziente.setPatologiePregresse("Ipertensione");
+	    paziente.setComorbidita("Obesità");
+	    paziente.setDettagli("Nuovo trattamento");
+
+	    ArrayList<RiskFactor> fattori = new ArrayList<>();
+	    fattori.add(RiskFactor.FUMATORE);
+	    fattori.add(RiskFactor.OBESITA);
+	    paziente.setFattoriDiRischio(fattori);
+
+	    db.updatePaziente(paziente, paziente);
+
+	    assertEquals("Ipertensione", db.getPatologiePregresseByPaziente(paziente));
+	    assertEquals("Obesità", db.getComorbiditaByPaziente(paziente));
+	    assertEquals("Nuovo trattamento", db.getDettagliByPaziente(paziente));
+
+	    ArrayList<RiskFactor> risultato = (ArrayList) db.getFattoriDiRischioByPaziente(paziente);
+	    assertEquals(2, risultato.size());
+	    assertTrue(risultato.contains(RiskFactor.FUMATORE));
+	    assertTrue(risultato.contains(RiskFactor.OBESITA));
+	}
 }

@@ -141,26 +141,22 @@ public class InfoPazienteController {
 
     private List<LogOperazione> logStoricoCorrente = new ArrayList<>();
     private VBox contenitoreStorico;
-
+    
     private void apriStoricoModifiche() {
         if (paziente == null) return;
 
-        // -----------------------------------------------------
-        // TITOLO
-        // -----------------------------------------------------
+        Stage stage = creaStoricoStage();
+        stage.show();
+    }
+    
+    public Stage creaStoricoStage() {
         Label titolo = new Label("Storico modifiche - " + paziente.getNome() + " " + paziente.getCognome());
         titolo.getStyleClass().add("history-title");
 
-        // -----------------------------------------------------
-        // RICERCA
-        // -----------------------------------------------------
         TextField ricercaField = new TextField();
         ricercaField.setPromptText("Cerca nello storico...");
         ricercaField.getStyleClass().add("search-field");
 
-        // -----------------------------------------------------
-        // CONTENITORE VOCI DI STORICO
-        // -----------------------------------------------------
         contenitoreStorico = new VBox(12);
 
         ScrollPane scrollPane = new ScrollPane(contenitoreStorico);
@@ -172,9 +168,6 @@ public class InfoPazienteController {
                 (observable, oldValue, newValue) -> aggiornaListaStorico(newValue)
         );
 
-        // -----------------------------------------------------
-        // ROOT
-        // -----------------------------------------------------
         VBox root = new VBox(15, titolo, ricercaField, scrollPane);
         root.setPadding(new Insets(25, 30, 25, 30));
         root.setPrefSize(500, 550);
@@ -193,7 +186,8 @@ public class InfoPazienteController {
         stage.setTitle("Storico modifiche");
         stage.setScene(scene);
         stage.setResizable(false);
-        stage.show();
+
+        return stage;
     }
 
     private void aggiornaListaStorico(String ricerca) {

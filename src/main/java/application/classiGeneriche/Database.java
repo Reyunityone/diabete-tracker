@@ -17,6 +17,7 @@ public class Database {
     private ArrayList<Segnalazione> segnalazioni;
     private ArrayList<Responsabile> responsabili;
     private ArrayList<Messaggio> messaggi;
+    private ArrayList<LogOperazione> logs;
 
     public Database(String fileName){
         this.fileName = fileName;
@@ -43,6 +44,7 @@ public class Database {
             this.segnalazioni = (ArrayList<Segnalazione>) ois.readObject();
             this.responsabili = (ArrayList<Responsabile>) ois.readObject();
             this.messaggi = (ArrayList<Messaggio>) ois.readObject();
+            this.logs = (ArrayList<LogOperazione>) ois.readObject();
             System.out.println("LETTURA COMPLETATA");
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("ERRORE NELLA LETTURA DB");
@@ -54,6 +56,7 @@ public class Database {
             this.segnalazioni = new ArrayList<>();
             this.responsabili = new ArrayList<>();
             this.messaggi = new ArrayList<>();
+            this.logs = new ArrayList<>();
         }
 
     }
@@ -68,6 +71,7 @@ public class Database {
             oos.writeObject(this.segnalazioni);
             oos.writeObject(this.responsabili);
             oos.writeObject(this.messaggi);
+            oos.writeObject(this.logs);
             System.out.println("SCRITTURA COMPLETATA");
         } catch(IOException e){
             System.err.println("ERRORE NELLA SCRITTURA DEL DATABASE");
@@ -76,11 +80,6 @@ public class Database {
     }
 
 
-    
-    //=========================================================
-  	// CREAZIONE LISTE
-  	//=========================================================
-    
     public ArrayList<Diabetologo> getDiabetologi() {
         return new ArrayList<>(diabetologi);
     }
@@ -111,12 +110,10 @@ public class Database {
         return new ArrayList<>(messaggi);
     }
 
-    
-    
-    //=========================================================
-  	// ADD
-  	//=========================================================
-    
+    public ArrayList<LogOperazione> getLogs(){
+        return new ArrayList<>(logs);
+    }
+
     public void addDiabetologo(Diabetologo d){
         if (!diabetologi.contains(d)) {
             this.diabetologi.add(d);
@@ -164,11 +161,11 @@ public class Database {
         save();
     }
 
-    
-    //=========================================================
-  	//GETTERS DEI DATI SPECIFICI
-  	//=========================================================
-    
+    public void addLog(LogOperazione l){
+        this.logs.add(l);
+        save();
+    }
+
     public ArrayList<Terapia> getTerapieByPaziente(Paziente p){
         ArrayList<Terapia> result = new ArrayList<>();
         for(Terapia t: terapie){
@@ -230,6 +227,26 @@ public class Database {
         return result;
     }
 
+    public ArrayList<LogOperazione> getLogsByPaziente(Paziente p){
+        ArrayList<LogOperazione> result = new ArrayList<>();
+        for(LogOperazione l : logs){
+            if(l.getPazienteModificato().equals(p)) result.add(l);
+        }
+
+        return result;
+    }
+
+    public ArrayList<LogOperazione> getLogsByAutore(User u){
+        ArrayList<LogOperazione> result = new ArrayList<>();
+        for(LogOperazione l : logs){
+            if(l.getAuthor() != null){
+                if(l.getAuthor().equals(u)) result.add(l);
+            }
+        }
+        return result;
+    }
+
+
     public void setMessaggioLetto(Messaggio m){
         if(!this.messaggi.contains(m)) return;
         int i = this.messaggi.indexOf(m);
@@ -265,12 +282,6 @@ public class Database {
         }
         return null;
     }
-    
-    
-    
-    //=========================================================
-  	//LOGIN
-  	//=========================================================
 
     public User login(String username, String password){
         for(Diabetologo d : diabetologi){
@@ -285,12 +296,6 @@ public class Database {
         return null;
     }
 
-    
-    
-    //=========================================================
-  	//UPDATE DEI DATI
-  	//=========================================================
-    
     public void updateAssunzione(AssunzioneFarmaco vecchio, AssunzioneFarmaco nuovo){
         int i = assunzioni.indexOf(vecchio);
         if(i != -1){
@@ -409,12 +414,6 @@ public class Database {
             save();
         }
     }
-    
-    
-    
-    //=========================================================
-  	//REMOVE DEI DATI
-  	//=========================================================
 
     public void removeTerapia(Terapia t) {
         if (terapie.remove(t)) {
@@ -434,24 +433,24 @@ public class Database {
             save();
         }
     }
-    
+
     public void deleteAssunzione(AssunzioneFarmaco a) {
     	if(assunzioni.remove(a)) {
     		save();
     	}
     }
-    
+
     public void deleteRilevazione(Rilevazione r) {
     	if(rilevazioni.remove(r)) {
     		save();
     	}
     }
-    
+
     public void deleteSegnalazione(Segnalazione s) {
     	if(segnalazioni.remove(s)) {
     		save();
     	}
     }
-    
-    
+
+
 }

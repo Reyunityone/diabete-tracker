@@ -57,9 +57,7 @@
         <ImageView fitWidth="25"
                    fitHeight="25"
                    preserveRatio="true">
-            <image>
-                <Image url="@../images/aggiungi.png"/>
-            </image>
+            <Image url="@../images/aggiungi.png"/>
         </ImageView>
     </graphic>
 
@@ -87,5 +85,11 @@
     <Button fx:id="salvaButton"
             text="Salva"
             styleClass="standard-button"/>
+    <Button fx:id="storicoButton"
+            text="Apri storico"
+            styleClass="standard-button"
+    >
+
+    </Button>
 
 </VBox>

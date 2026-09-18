@@ -4,14 +4,14 @@
 Il software segue principalmente un'architettura a strati, nella quale le responsabilità sono suddivise tra interfaccia grafica, logica applicativa e gestione della persistenza.\\
 Il Presentation Layer è costituito dalle viste JavaFX e dai relativi controller, che gestiscono l'interazione con l'utente e la visualizzazione dei dati.\\
 Il Business Logic Layer comprende le classi del dominio, tra cui Utente, Paziente, Diabetologo, Terapia, Rilevazione, AssunzioneFarmaco, Segnalazione e le classi responsabili della gestione degli alert e delle regole applicative.\\
-Il Data Access Layer è rappresentato dalla classe Database, che centralizza l'accesso ai dati persistenti. I controller e le altre classi che necessitano di recuperare o modificare informazioni persistenti utilizzano il Database come punto di accesso, evitando di gestire direttamente la scrittura sul file. La persistenza viene dunque realizzata tramite serializzazione Java degli oggetti all'interno del file database.data.\\
+Il Data Access Layer è rappresentato dalla classe Database, che centralizza l'accesso ai dati persistenti. I controller e le altre classi che necessitano di recuperare o modificare informazioni persistenti utilizzano il Database come punto di accesso, evitando di gestire direttamente la scrittura sul file. La persistenza viene dunque realizzata tramite serializzazione Java degli oggetti all'interno del file database.data. Nel sistema è inoltre implementato un modo per tracciare le modifiche effettuate sui dati dei pazienti: esse vengono infatti registrate tramite appositi log, consentendo di associare ogni modifica al diabetologo che l'ha effettuata, garantendo così la tracciabilità delle operazioni eseguite.
+\\
 
 
 \subsection{Design Pattern}
-Nel progetto è utilizzato il Design Pattern Singleton per la classe Database. Il sistema mantiene infatti una sola istanza condivisa del database, ottenuta tramite il metodo getInstance(). Questo permette di centralizzare l'accesso ai dati e di avere un unico punto di gestione della persistenza durante l'esecuzione dell'applicazione.\\
+Nel progetto è utilizzato il Design Pattern Singleton per la classe Database. Il sistema mantiene infatti una sola istanza condivisa del database, ottenuta tramite il metodo getInstance(). Questo permette di centralizzare l'accesso ai dati e di avere un unico punto di gestione della persistenza durante l'esecuzione dell'applicazione. Un altro  utilizzo del Design Pattern Singleton è presente nella classe Session, che mantiene l'utente attualmente autenticato e permette ai diversi controller di accedere alla sessione corrente tramite un'unica istanza condivisa.\\
 Il Database espone inoltre metodi specifici per il recupero e la modifica dei dati, ad esempio per ottenere i pazienti associati a un determinato diabetologo, le rilevazioni di un paziente o i messaggi destinati a un medico o a un paziente.\\
 Per la gestione della GUI viene utilizzata la struttura controller-view di JavaFX, nella quale i controller gestiscono gli eventi e coordinano l'accesso ai dati necessari alle diverse schermate.
- \textcolor{red}{TODO: Log?}\\
 
  \textcolor{red}{TODO: Creazionali(Factory?)/Strutturali/Comportamentali}
 

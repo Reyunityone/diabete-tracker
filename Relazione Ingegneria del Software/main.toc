@@ -5,9 +5,9 @@
 \contentsline {section}{\numberline {3}Use Case Diagram}{8}{}%
 \contentsline {section}{\numberline {4}Sequence Diagram}{17}{}%
 \contentsline {section}{\numberline {5}Activity Diagram}{21}{}%
-\contentsline {section}{\numberline {6}Stili Architetturali e Pattern}{25}{}%
-\contentsline {subsection}{\numberline {6.1}Stili Architetturali}{25}{}%
-\contentsline {subsection}{\numberline {6.2}Design Pattern}{25}{}%
+\contentsline {section}{\numberline {6}Stili Architetturali e Pattern}{24}{}%
+\contentsline {subsection}{\numberline {6.1}Stili Architetturali}{24}{}%
+\contentsline {subsection}{\numberline {6.2}Design Pattern}{24}{}%
 \contentsline {section}{\numberline {7}Testing}{26}{}%
 \contentsline {subsection}{\numberline {7.1}Unit Test}{26}{}%
 \contentsline {subsection}{\numberline {7.2}System Test}{27}{}%

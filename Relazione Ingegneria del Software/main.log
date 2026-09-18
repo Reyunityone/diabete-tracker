@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.6.1)  18 SEP 2026 19:17
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.6.1)  18 SEP 2026 19:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -786,40 +786,34 @@ Overfull \hbox (98.58179pt too wide) in paragraph at lines 24--30
  []
 
 [22]
-Overfull \hbox (1.43205pt too wide) in paragraph at lines 36--37
+Overfull \hbox (1.43205pt too wide) in paragraph at lines 34--35
 []\OT1/cmr/m/n/12 Registrazione di una seg-nalazione: il paziente sceglie il ti
 po di seg-nalazione
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 36--37
+Underfull \hbox (badness 10000) in paragraph at lines 34--35
 
  []
 
-) [23 <./Immagini/ActivityDiagram_22.png>] [24]
-(ArchitecturalStylesAndPatterns.tex
-Overfull \hbox (8.63478pt too wide) in paragraph at lines 4--8
+) [23 <./Immagini/ActivityDiagram_22.png>] (ArchitecturalStylesAndPatterns.tex
+Overfull \hbox (8.63478pt too wide) in paragraph at lines 4--9
 \OT1/cmr/m/n/12 Paziente, Di-a-betol-ogo, Ter-apia, Ril-e-vazione, As-sun-zione
 -Far-maco, Seg-nalazione
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 4--8
+Underfull \hbox (badness 10000) in paragraph at lines 4--9
 
  []
 
 
-Overfull \hbox (3.88202pt too wide) in paragraph at lines 11--15
+Overfull \hbox (3.88202pt too wide) in paragraph at lines 12--15
 \OT1/cmr/m/n/12 dati e di avere un unico punto di ges-tione della per-sis-tenza
  du-rante l'esecuzione
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 11--15
-
- []
-
-) [25] (Testing.tex
+) [24] [25] (Testing.tex
 Underfull \hbox (badness 10000) in paragraph at lines 6--7
 
  []
@@ -867,10 +861,10 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 10337 strings out of 467870
- 200128 string characters out of 5417388
+ 10338 strings out of 467870
+ 200137 string characters out of 5417388
  1034678 words of memory out of 5000000
- 39114 multiletter control sequences out of 15000+600000
+ 39115 multiletter control sequences out of 15000+600000
  633058 words of font info for 58 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  66i,8n,67p,806b,803s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -880,7 +874,7 @@ m/cmbx12.pfb><C:/Users/Windows/AppData/Local/Programs/MiKTeX/fonts/type1/public
 ype1/public/amsfonts/cm/cmr12.pfb><C:/Users/Windows/AppData/Local/Programs/MiKT
 eX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/Windows/AppData/Local/Pro
 grams/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on main.pdf (27 pages, 785166 bytes).
+Output written on main.pdf (27 pages, 785599 bytes).
 PDF statistics:
  159 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

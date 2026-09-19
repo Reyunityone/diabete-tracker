@@ -6,30 +6,22 @@ Il testing è stato realizzato sulla base dell'approccio White Box. Sono stati s
 Sono stati realizzati test unitari per verificare il comportamento delle principali parti del sistema.\\
 
 Per la classe \texttt{Session} è stato verificato il corretto funzionamento del pattern Singleton, controllando che chiamate multiple a getInstance() restituiscano sempre la stessa istanza. È inoltre stata verificata la corretta gestione dell'utente corrente tramite setCurrentUser(), getCurrentUser() e logout().\\
+Per \texttt{GestoreAlert} sono stati verificati, tramite dati fittizi, casi relativi alla mancata assunzione di farmaci, all'aderenza della terapia per più giorni consecutivi e alla regolarità dei valori glicemici prima e dopo i pasti, considerando soglie che attivino l'invio di alert con diversi livelli di urgenza.\\
+
+\subsection{Integration Test}
 Per la classe \texttt{Database} sono stati verificati l'inserimento degli utenti senza la creazione di duplicati, la corretta gestione delle associazioni tra pazienti e diabetologi, il recupero delle informazioni relative a un paziente a cui sono stati applicati dei filtri nella ricerca, la gestione dei messaggi e le operazioni di inserimento, modifica ed eliminazione di rilevazioni, assunzioni, segnalazioni e terapie. Riguardo alla gestione delle terapie sono inoltre stati verificati casi quali l'assegnazione a un paziente, il comportamento in caso di assegnazione ripetuta e la modifica di una terapia già assegnata; in particolare, che la modifica di una terapia assegnata a più pazienti comporti la modifica per un paziente soltanto.\\
-Per \texttt{GestoreAlert} sono stati verificati casi relativi alla mancata assunzione di farmaci, all'aderenza della terapia per più giorni consecutivi e alla regolarità dei valori glicemici prima e dopo i pasti, considerando soglie che attivino l'invio di alert con diversi livelli di urgenza.\\
-
-Sono inoltre stati realizzati test sui controller dell'applicazione: \\
-Per \texttt{DiabetologoController} sono state verificate l'inizializzazione della schermata, la visualizzazione dei pazienti associati al medico, la ricerca per nome, cognome e codice fiscale, la ricerca senza risultati e l'apertura delle informazioni su andamento, terapia e dettagli del paziente.
-
-Per la gestione delle terapie sono stati verificati visualizzazione e ricerca delle terapie, l'apertura delle finestre per la creazione e la selezione di terapie esistenti oltre che  assegnazione e rimozione delle terapie.
-
-Per \texttt{MessaggiController} sono stati testati la visualizzazione dei messaggi, la ricerca per mittente, la gestione dei messaggi letti e non letti, la visualizzazione del livello di urgenza e l'aggiornamento delle notifiche.
-
-Per \texttt{PazienteController} sono state verificate le operazioni di inserimento e salvataggio di rilevazioni, assunzioni di farmaci, segnalazioni ed email, compresi i casi di compilazione incompleta dei dati.
-
-Per \texttt{StoricoController} sono state verificate la visualizzazione e la ricerca degli elementi dello storico, le operazioni di modifica con e senza salvataggio e le operazioni di eliminazione.
-
-Infine, per \texttt{ResponsabileController}, \texttt{ModificaCredenzialiController} e \texttt{AggiungiPersonaController} sono state verificate la gestione delle liste di utenti, ricerca e modifica dei dati, l'associazione tra pazienti e diabetologi e la creazione di nuovi utenti, compresi i controlli sui dati obbligatori e sugli username già presenti.
 
 \subsection{System Test}
- \textcolor{red}{TODO: Bruh cosa mettiamo qui?}\\
+ Per \texttt{DiabetologoController} sono state verificate l'inizializzazione della schermata, la visualizzazione dei pazienti associati al medico, la ricerca per nome, cognome e codice fiscale, la ricerca senza risultati e l'apertura delle informazioni su andamento, terapia e dettagli del paziente.
+ 
+ Per la gestione delle terapie sono stati verificati visualizzazione e ricerca delle terapie, l'apertura delle finestre per la creazione e la selezione di terapie esistenti oltre che  assegnazione e rimozione delle terapie.
+ 
+ Per \texttt{MessaggiController} sono stati testati la visualizzazione dei messaggi, la ricerca per mittente, la gestione dei messaggi letti e non letti, la visualizzazione del livello di urgenza e l'aggiornamento delle notifiche.
+ 
+ Per \texttt{PazienteController} sono state verificate le operazioni di inserimento e salvataggio di rilevazioni, assunzioni di farmaci, segnalazioni ed email, compresi i casi di compilazione incompleta dei dati.
+ 
+ Per \texttt{StoricoController} sono state verificate la visualizzazione e la ricerca degli elementi dello storico, le operazioni di modifica con e senza salvataggio e le operazioni di eliminazione.
+ 
+ Infine, per \texttt{ResponsabileController}, \texttt{ModificaCredenzialiController} e \texttt{AggiungiPersonaController} sono state verificate la gestione delle liste di utenti, ricerca e modifica dei dati, l'associazione tra pazienti e diabetologi e la creazione di nuovi utenti, compresi i controlli sui dati obbligatori e sugli username già presenti.
 
-Probabili casi da verificare:\\
--Registrazione di una glicemia fuori soglia -$>$ alert $>$ nella dashboard del diabetologo di riferimento\\
--Mancata registrazione di assunzioni farmaco per più di 3 giorni consecutivi -$>$ alert generato al medico\\
--Modifica di una terapia da parte del medico -$>$ le assunzioni successive vengono validate sulla nuova terapia\\
--Login con credenziali errate -$>$ accesso rifiutato\\
--Impossibilità di accedere a dati altrui per chi non ne ha le facoltà\\
-
-
+ \textcolor{red}{TODO: Da riorganizzare. Quali sono system test?}\\

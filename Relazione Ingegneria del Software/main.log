@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.6.1)  18 SEP 2026 19:29
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.6.1)  19 SEP 2026 19:38
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -473,7 +473,7 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 \openout4 = `main.toc'.
 
  [2] (Introduzione.tex
-Underfull \hbox (badness 10000) in paragraph at lines 3--10
+Underfull \hbox (badness 10000) in paragraph at lines 3--8
 
  []
 
@@ -796,7 +796,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 34--35
 
  []
 
-) [23 <./Immagini/ActivityDiagram_22.png>] (ArchitecturalStylesAndPatterns.tex
+
+Underfull \hbox (badness 10000) in paragraph at lines 36--37
+
+ []
+
+) [23 <./Immagini/ActivityDiagram_22.png>] [24]
+(ArchitecturalStylesAndPatterns.tex
 Overfull \hbox (8.63478pt too wide) in paragraph at lines 4--9
 \OT1/cmr/m/n/12 Paziente, Di-a-betol-ogo, Ter-apia, Ril-e-vazione, As-sun-zione
 -Far-maco, Seg-nalazione
@@ -813,45 +819,45 @@ Overfull \hbox (3.88202pt too wide) in paragraph at lines 12--15
  du-rante l'esecuzione
  []
 
-) [24] [25] (Testing.tex
+) [25] [26] (Testing.tex
 Underfull \hbox (badness 10000) in paragraph at lines 6--7
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 8--11
+Underfull \hbox (badness 10000) in paragraph at lines 8--10
 
  []
 
 
-Overfull \hbox (6.36258pt too wide) in paragraph at lines 12--14
+Underfull \hbox (badness 10000) in paragraph at lines 12--13
+
+ []
+
+
+Overfull \hbox (6.36258pt too wide) in paragraph at lines 15--16
 \OT1/cmr/m/n/12 Per \OT1/cmtt/m/n/12 DiabetologoController \OT1/cmr/m/n/12 sono
  state ver-ifi-cate l'inizializzazione della scher-
  []
 
-[26]
-Overfull \hbox (0.59293pt too wide) in paragraph at lines 21--22
+[27]
+Overfull \hbox (0.59293pt too wide) in paragraph at lines 23--24
 []\OT1/cmr/m/n/12 Per \OT1/cmtt/m/n/12 StoricoController \OT1/cmr/m/n/12 sono s
 tate ver-ifi-cate la vi-su-al-iz-zazione e la ricerca
  []
 
 
-Overfull \hbox (3.12296pt too wide) in paragraph at lines 23--24
+Overfull \hbox (3.12296pt too wide) in paragraph at lines 25--26
 []\OT1/cmr/m/n/12 Infine, per \OT1/cmtt/m/n/12 ResponsabileController\OT1/cmr/m
 /n/12 , \OT1/cmtt/m/n/12 ModificaCredenzialiController
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 26--27
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 28--34
+)
+Underfull \hbox (badness 10000) in paragraph at lines 27--45
 
  []
 
-) [27] (main.aux)
+[28] (main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
@@ -861,22 +867,21 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 10338 strings out of 467870
- 200137 string characters out of 5417388
+ 10337 strings out of 467870
+ 200119 string characters out of 5417388
  1034678 words of memory out of 5000000
- 39115 multiletter control sequences out of 15000+600000
+ 39114 multiletter control sequences out of 15000+600000
  633058 words of font info for 58 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  66i,8n,67p,806b,803s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/Windows/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/c
 m/cmbx12.pfb><C:/Users/Windows/AppData/Local/Programs/MiKTeX/fonts/type1/public
-/amsfonts/cm/cmmi12.pfb><C:/Users/Windows/AppData/Local/Programs/MiKTeX/fonts/t
-ype1/public/amsfonts/cm/cmr12.pfb><C:/Users/Windows/AppData/Local/Programs/MiKT
-eX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/Windows/AppData/Local/Pro
-grams/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on main.pdf (27 pages, 785599 bytes).
+/amsfonts/cm/cmr12.pfb><C:/Users/Windows/AppData/Local/Programs/MiKTeX/fonts/ty
+pe1/public/amsfonts/cm/cmr17.pfb><C:/Users/Windows/AppData/Local/Programs/MiKTe
+X/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on main.pdf (28 pages, 777448 bytes).
 PDF statistics:
- 159 PDF objects out of 1000 (max. 8388607)
+ 157 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  111 words of extra memory for PDF output out of 10000 (max. 10000000)
 

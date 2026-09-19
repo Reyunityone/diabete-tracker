@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.6.1)  19 SEP 2026 20:29
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.6.1)  19 SEP 2026 22:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -477,38 +477,37 @@ Underfull \hbox (badness 10000) in paragraph at lines 3--8
 
  []
 
-) (ClassDiagram.tex
-<Immagini/Bozza-UML(6).drawio.png, id=11, 1437.87187pt x 772.38562pt>
+) (ClassDiagram.tex [3]
+<Immagini/Bozza-UML(6).drawio.png, id=14, 1437.87187pt x 772.38562pt>
 File: Immagini/Bozza-UML(6).drawio.png Graphic file (type png)
 <use Immagini/Bozza-UML(6).drawio.png>
 Package pdftex.def Info: Immagini/Bozza-UML(6).drawio.png  used on input line 1
 0.
-(pdftex.def)             Requested size: 1437.86838pt x 772.38373pt.
- [3]
-Overfull \vbox (10.82922pt too high) has occurred while \output is active []
+(pdftex.def)             Requested size: 592.01053pt x 318.01193pt.
+ [4
 
-
-[4 <./Immagini/Bozza-UML(6).drawio.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 19--20
+ <./Immagini/Bozza-UML(6).drawio.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 20--21
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 21--24
+Underfull \hbox (badness 10000) in paragraph at lines 22--25
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 25--27
+Underfull \hbox (badness 10000) in paragraph at lines 26--28
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 28--29
+Underfull \hbox (badness 10000) in paragraph at lines 29--30
 
  []
 
 ) [5
+
 
 ] [6] (UseCaseDiagram.tex
 <Immagini/UseCaseDiagram.png, id=26, 886.31125pt x 1065.9825pt>
@@ -746,6 +745,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 37--38
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 39--40
+
+ []
+
 ) [19] (ActivityDiagram.tex
 <Immagini/ActivityDiagram_11.png, id=106, 1357.07pt x 1396.21625pt>
 File: Immagini/ActivityDiagram_11.png Graphic file (type png)
@@ -812,12 +816,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 4--9
  []
 
 
-Overfull \hbox (3.88202pt too wide) in paragraph at lines 12--15
+Overfull \hbox (3.88202pt too wide) in paragraph at lines 12--16
 \OT1/cmr/m/n/12 dati e di avere un unico punto di ges-tione della per-sis-tenza
  du-rante l'esecuzione
  []
 
-) [24] [25] (Testing.tex
+[24]) [25] (Testing.tex
 Underfull \hbox (badness 10000) in paragraph at lines 6--7
 
  []
@@ -865,19 +869,19 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 10337 strings out of 467870
- 200119 string characters out of 5417388
- 1034677 words of memory out of 5000000
- 39114 multiletter control sequences out of 15000+600000
+ 10339 strings out of 467870
+ 200181 string characters out of 5417388
+ 1035677 words of memory out of 5000000
+ 39116 multiletter control sequences out of 15000+600000
  633058 words of font info for 58 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 66i,8n,67p,806b,803s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 66i,7n,67p,1186b,803s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/Windows/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/c
 m/cmbx12.pfb><C:/Users/Windows/AppData/Local/Programs/MiKTeX/fonts/type1/public
 /amsfonts/cm/cmr12.pfb><C:/Users/Windows/AppData/Local/Programs/MiKTeX/fonts/ty
 pe1/public/amsfonts/cm/cmr17.pfb><C:/Users/Windows/AppData/Local/Programs/MiKTe
 X/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on main.pdf (27 pages, 778290 bytes).
+Output written on main.pdf (27 pages, 779550 bytes).
 PDF statistics:
  154 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

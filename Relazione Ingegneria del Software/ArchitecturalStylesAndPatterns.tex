@@ -1,29 +1,23 @@
-\section{Stili Architetturali e Pattern}
+\section{Processo di sviluppo}
+
+\subsection{Modelli utilizzati}
+
+Lo sviluppo del progetto è iniziato attraverso la realizzazione di un prototipo contenente la maggior parte delle funzionalità previste. L'obiettivo iniziale era definire e condividere la struttura generale del software, verificando la coerenza tra l'interfaccia grafica, l'esperienza utente, i casi d'uso analizzati e i vincoli imposti dal progetto. Il prototipo ha quindi permesso di verificare fin dalle prime fasi che fossero state considerate tutte le funzionalità necessarie.
+Il prototipo disponeva inoltre di una struttura software già organizzata, comprendente le classi del dominio, i controller, le viste FXML, i fogli CSS, le immagini e le altre risorse necessarie. Questa organizzazione ha costituito la base per gli sviluppi successivi, permettendo di concentrarsi sul perfezionamento delle funzionalità senza dover ridefinire la struttura generale dell'applicazione.\\
+A partire da questa base è stato adottato un approccio di sviluppo incrementale. Il lavoro è stato suddiviso tra i membri del gruppo, sviluppando progressivamente le funzionalità relative al Responsabile, al Paziente e al Diabetologo e le operazioni che ciascun ruolo può effettuare. Successivamente sono state integrate e perfezionate ulteriori funzionalità trasversali, tra cui la gestione dei messaggi scambiati tra gli utenti e il sistema di registrazione delle modifiche effettuate sui dati dei pazienti.\\
+La fase finale è stata dedicata al testing, con l'obiettivo di verificare il corretto funzionamento delle singole componenti e dell'applicazione nel suo complesso.\\
+Il processo di sviluppo è quindi partito da un prototipo utilizzato per definire i requisiti e la struttura iniziale del sistema, per poi procedere attraverso incrementi successivi che hanno permesso di analizzare, sviluppare e perfezionare progressivamente le diverse parti del software fino al raggiungimento della versione finale.
 
 \subsection{Stili Architetturali}
+
 Il software segue principalmente un'architettura a strati, nella quale le responsabilità sono suddivise tra interfaccia grafica, logica applicativa e gestione della persistenza.\\
 Il Presentation Layer è costituito dalle viste JavaFX e dai relativi controller, che gestiscono l'interazione con l'utente e la visualizzazione dei dati.\\
-Il Business Logic Layer comprende le classi del dominio, tra cui Utente, Paziente, Diabetologo, Terapia, Rilevazione, AssunzioneFarmaco, Segnalazione e le classi responsabili della gestione degli alert e delle regole applicative.\\
-Il Data Access Layer è rappresentato dalla classe Database, che centralizza l'accesso ai dati persistenti. I controller e le altre classi che necessitano di recuperare o modificare informazioni persistenti utilizzano il Database come punto di accesso, evitando di gestire direttamente la scrittura sul file. La persistenza viene dunque realizzata tramite serializzazione Java degli oggetti all'interno del file database.data. Nel sistema è inoltre implementato un modo per tracciare le modifiche effettuate sui dati dei pazienti: esse vengono infatti registrate tramite appositi log, consentendo di associare ogni modifica al diabetologo che l'ha effettuata, garantendo così la tracciabilità delle operazioni eseguite.
-\\
-
+Il Business Logic Layer comprende le classi del dominio, tra cui User, Paziente, Diabetologo, Terapia, Rilevazione, AssunzioneFarmaco, Segnalazione e le classi responsabili della gestione degli alert e delle regole applicative.\\
+Il Data Access Layer è rappresentato dalla classe Database, che centralizza l'accesso ai dati persistenti. I controller e le altre classi che necessitano di recuperare o modificare informazioni persistenti utilizzano il Database come punto di accesso, evitando di gestire direttamente la scrittura sul file. La persistenza viene dunque realizzata tramite serializzazione Java degli oggetti all'interno del file database.data. Nel sistema è inoltre implementato un meccanismo per tracciare le modifiche effettuate sui dati dei pazienti: esse vengono infatti registrate tramite appositi log, consentendo di associare ogni modifica al diabetologo che l'ha effettuata e garantendo così la tracciabilità delle operazioni eseguite.
 
 \subsection{Design Pattern}
-Nel progetto è utilizzato il Design Pattern Singleton per la classe Database. Il sistema mantiene infatti una sola istanza condivisa del database, ottenuta tramite il metodo getInstance(). Questo permette di centralizzare l'accesso ai dati e di avere un unico punto di gestione della persistenza durante l'esecuzione dell'applicazione. Un altro  utilizzo del Design Pattern Singleton è presente nella classe Session, che mantiene l'utente attualmente autenticato e permette ai diversi controller di accedere alla sessione corrente tramite un'unica istanza condivisa.\\
+
+Nel progetto è utilizzato il Design Pattern Singleton per la classe Database. Il sistema mantiene infatti una sola istanza condivisa del database, ottenuta tramite il metodo getInstance(). Questo permette di centralizzare l'accesso ai dati e di avere un unico punto di gestione della persistenza durante l'esecuzione dell'applicazione. Un altro utilizzo del Design Pattern Singleton è presente nella classe Session, che mantiene l'utente attualmente autenticato e permette ai diversi controller di accedere alla sessione corrente tramite un'unica istanza condivisa.\\
 Il Database espone inoltre metodi specifici per il recupero e la modifica dei dati, ad esempio per ottenere i pazienti associati a un determinato diabetologo, le rilevazioni di un paziente o i messaggi destinati a un medico o a un paziente.\\
-Per la gestione della GUI viene utilizzato il pattern Model-View-Controller, attraverso la struttura controller-view di JavaFX. Il pattern prevede la separazione dell'applicazione in tre componenti: il Model, che rappresenta i dati e la logica dell'applicazione, la View, che definisce l'interfaccia grafica, e il Controller, che gestisce le interazioni dell'utente coordinando le operazioni richieste. Nel progetto, il Model è rappresentato dalle classi del dominio, quali, tra le altre, User, Paziente, Diabetologo e Terapia. Le View sono invece  definite tramite file FXML e descrivono la struttura e gli elementi grafici delle varie schermate, senza contenere direttamente la logica per la gestione delle operazioni. Infine i controller, ovvero le apposite classi controller delle classi del Model, gestiscono gli eventi originati dall'utente, inizializzando i componenti dell'interfaccia e coordinando le operazioni necessarie al funzionamento. I controller interagiscono inoltre con le classi e con il database per recuperare, modificare e salvare i dati, aggiornando la View in base al risultato delle operazioni. \\
-L'adozione di questa struttura basata sulla divisione delle responsabilità permette di separare la definizione dell'interfaccia dai dati dell'applicazione e dalla gestione degli eventi, rendendo le singole componenti più facilmente  e mantenibili.
-
- \textcolor{red}{TODO: Creazionali(Factory?)/Strutturali/Comportamentali}
-
-
-
-
-
-
-
-
-
-
-
-
+Per la gestione della GUI viene utilizzato il pattern Model-View-Controller, attraverso la struttura controller-view di JavaFX. Il pattern prevede la separazione dell'applicazione in tre componenti: il Model, che rappresenta i dati e la logica dell'applicazione, la View, che definisce l'interfaccia grafica, e il Controller, che gestisce le interazioni dell'utente coordinando le operazioni richieste. Nel progetto, il Model è rappresentato dalle classi del dominio, quali, tra le altre, User, Paziente, Diabetologo e Terapia. Le View sono invece definite tramite file FXML e descrivono la struttura e gli elementi grafici delle varie schermate, senza contenere direttamente la logica per la gestione delle operazioni. Infine, i controller, ovvero le apposite classi che gestiscono le View, gestiscono gli eventi originati dall'utente, inizializzando i componenti dell'interfaccia e coordinando le operazioni necessarie al funzionamento. I controller interagiscono inoltre con le classi del dominio e con il database per recuperare, modificare e salvare i dati, aggiornando la View in base al risultato delle operazioni.\\
+L'adozione di questa struttura basata sulla divisione delle responsabilità permette di separare la definizione dell'interfaccia dai dati dell'applicazione e dalla gestione degli eventi, rendendo le singole componenti più facilmente comprensibili e manutenibili.

@@ -1,7 +1,9 @@
-package application.controller;
+package application.classiGeneriche;
 
-import application.classiGeneriche.*;
-
+import application.controller.FarmacoController;
+import application.controller.RilevazioneController;
+import application.controller.ScriviEmailController;
+import application.controller.SegnalazioneController;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

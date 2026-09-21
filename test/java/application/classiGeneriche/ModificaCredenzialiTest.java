@@ -1,10 +1,7 @@
-package application.controller;
+package application.classiGeneriche;
 
-import application.classiGeneriche.Database;
-import application.classiGeneriche.Diabetologo;
-import application.classiGeneriche.Paziente;
-import application.classiGeneriche.User;
-
+import application.controller.ModificaCredenzialiController;
+import application.controller.ResponsabileController;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
@@ -22,7 +19,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.util.ArrayList;

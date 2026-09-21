@@ -1,7 +1,9 @@
-package application.controller;
+package application.classiGeneriche;
 
-import application.classiGeneriche.*;
-
+import application.controller.FarmacoController;
+import application.controller.RilevazioneController;
+import application.controller.SegnalazioneController;
+import application.controller.StoricoController;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,7 +15,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;

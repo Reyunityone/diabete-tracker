@@ -200,7 +200,8 @@ class DiabetologoControllerTest {
 
     @Test
     void listaVisualizzaSoloIPazientiSeguitiDalMedico() {
-
+    	aggiungiPaziente("paziente1","Luca","Bianchi","CFLUCA");
+    	
         Diabetologo altroMedico = new Diabetologo("altroMedico", "password", "CFALTRO", "Anna", "Neri", "anna@test.it");
         db.addDiabetologo(altroMedico);
 
@@ -435,11 +436,12 @@ class DiabetologoControllerTest {
         runAndWait(() -> {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/Diabetologo.fxml"));
-
+                loader.load();
+                
                 controller = loader.getController();
                 searchField = getCampo(controller, "searchField");
                 pazientiContainer = getCampo(controller, "pazientiContainer");
-
+                
                 controller.inizializzaProfilo();
             } catch (Exception e) {
                 throw new RuntimeException(e);

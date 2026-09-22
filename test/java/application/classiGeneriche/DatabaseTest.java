@@ -678,6 +678,7 @@ class DatabaseTest {
 	    assertEquals(2, risultato.size());
 	    assertTrue(risultato.contains(RiskFactor.FUMATORE));
 	    assertTrue(risultato.contains(RiskFactor.OBESITA));
+	}
 	
 	
 	

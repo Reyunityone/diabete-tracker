@@ -1,9 +1,8 @@
-package application.controller;
+package application.classiGeneriche;
 
-import application.classiGeneriche.Database;
-import application.classiGeneriche.Diabetologo;
-import application.classiGeneriche.Paziente;
-import application.classiGeneriche.Terapia;
+import application.controller.StoricoTerapieController;
+import application.controller.TerapiaController;
+import application.controller.TerapieEsistentiController;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

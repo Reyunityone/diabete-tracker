@@ -20,23 +20,6 @@ public class LoginController {
     @FXML
     private PasswordField passwordField;
 
-
-    @FXML
-    public void initialize() {
-        Paziente luca = new Paziente();
-        Diabetologo mario = new Diabetologo();
-        Database.getInstance().addDiabetologo(mario);
-        Database.getInstance().addPaziente(luca);
-        Database.getInstance().addResponsabile(new Responsabile());
-        ArrayList<Paziente> pazientiTerapia = new ArrayList<>();
-        pazientiTerapia.add(luca);
-        Terapia t1 = new Terapia("dolipran", 12, 3, mario, new ArrayList<>(pazientiTerapia), "prima dei pasti");
-        Terapia t2 = new Terapia("tachi", 10, 2, mario, new ArrayList<>(pazientiTerapia), "dopo i pasti");
-        Database.getInstance().addTerapia(t1);
-        Database.getInstance().addTerapia(t2);
-    }
-
-
     @FXML
     private void handleLogin() {
         Database db = Database.getInstance();

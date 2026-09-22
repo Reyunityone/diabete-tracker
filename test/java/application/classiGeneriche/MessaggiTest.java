@@ -1,17 +1,11 @@
-package application.controller;
+package application.classiGeneriche;
 
-import application.classiGeneriche.Database;
-import application.classiGeneriche.Diabetologo;
-import application.classiGeneriche.Messaggio;
-import application.classiGeneriche.Paziente;
-import application.classiGeneriche.TipoAlert;
-import application.classiGeneriche.UrgenzaAlert;
-
+import application.controller.MessaggiController;
+import application.controller.MessaggioController;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;

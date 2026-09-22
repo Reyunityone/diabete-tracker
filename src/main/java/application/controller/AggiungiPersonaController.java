@@ -1,7 +1,6 @@
 package application.controller;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import application.classiGeneriche.Database;
 import application.classiGeneriche.Diabetologo;
@@ -134,7 +133,7 @@ public class AggiungiPersonaController {
     // ============================================================
 
     @FXML
-    protected void handleConferma() {
+	public void handleConferma() {
         String nome =nomeField.getText().trim();
         String cognome =cognomeField.getText().trim();
         String codiceFiscale =codiceFiscaleField.getText().trim();

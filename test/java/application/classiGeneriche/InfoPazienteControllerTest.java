@@ -1,7 +1,6 @@
-package application.controller;
+package application.classiGeneriche;
 
-import application.classiGeneriche.*;
-
+import application.controller.InfoPazienteController;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -43,7 +42,6 @@ class InfoPazienteControllerTest {
     private InfoPazienteController infoPazienteController;
     private Button fattoriRischioButton;
     private Button salvaButton;
-    private Button storicoButton;
     private TextArea fattoriRischioArea;
     private TextArea patologieArea;
     private TextArea comorbiditaArea;
@@ -357,7 +355,6 @@ class InfoPazienteControllerTest {
 
         fattoriRischioButton = getCampo(infoPazienteController, "fattoriRischioButton");
         salvaButton = getCampo(infoPazienteController, "salvaButton");
-        storicoButton = getCampo(infoPazienteController, "storicoButton");
         fattoriRischioArea = getCampo(infoPazienteController, "fattoriRischioArea");
         patologieArea = getCampo(infoPazienteController, "patologieArea");
         comorbiditaArea = getCampo(infoPazienteController, "comorbiditaArea");

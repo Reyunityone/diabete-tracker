@@ -11,32 +11,9 @@
 \contentsline {subsection}{\numberline {7.2}Stili Architetturali}{30}{}%
 \contentsline {subsection}{\numberline {7.3}Design Pattern}{31}{}%
 \contentsline {section}{\numberline {8}Testing}{33}{}%
-\contentsline {subsection}{\numberline {8.1}Informazioni di testing}{33}{}%
+\contentsline {subsection}{\numberline {8.1}Informazioni sul testing}{33}{}%
 \contentsline {subsection}{\numberline {8.2}Casi di testing}{34}{}%
 \contentsline {subsubsection}{\numberline {8.2.1}Unit Test}{34}{}%
-\contentsline {subsubsection}{\numberline {8.2.2}\normalfont SessionTest}{34}{}%
-\contentsline {subsubsection}{\numberline {8.2.3}\normalfont GestoreAlertTest}{35}{}%
-\contentsline {subsubsection}{\numberline {8.2.4}Integration Test}{37}{}%
-\contentsline {subsubsection}{\numberline {8.2.5}\normalfont DatabaseTest}{37}{}%
-\contentsline {subsubsection}{\numberline {8.2.6}System Test}{42}{}%
-\contentsline {subsubsection}{\numberline {8.2.7}Diabetologo}{42}{}%
-\contentsline {paragraph}{\texttt {DiabetologoControllerTest}}{42}{}%
-\contentsline {paragraph}{\texttt {TerapiePazienteTest}}{44}{}%
-\contentsline {paragraph}{\texttt {InfoPazienteControllerTest}}{45}{}%
-\contentsline {subsubsection}{\numberline {8.2.8}Messaggi}{46}{}%
-\contentsline {paragraph}{\texttt {MessaggiTest}}{46}{}%
-\contentsline {subsubsection}{\numberline {8.2.9}Paziente}{47}{}%
-\contentsline {paragraph}{\texttt {PazienteControllerTest}}{47}{}%
-\contentsline {paragraph}{Rilevazione}{47}{}%
-\contentsline {paragraph}{Assunzione farmaco}{48}{}%
-\contentsline {paragraph}{Segnalazione}{48}{}%
-\contentsline {paragraph}{Email}{48}{}%
+\contentsline {subsubsection}{\numberline {8.2.2}Integration Test}{37}{}%
+\contentsline {subsubsection}{\numberline {8.2.3}System Test}{42}{}%
 \contentsline {paragraph}{\texttt {StoricoControllerTest}}{49}{}%
-\contentsline {paragraph}{Apertura e visualizzazione}{49}{}%
-\contentsline {paragraph}{Ricerca}{49}{}%
-\contentsline {paragraph}{Modifica}{49}{}%
-\contentsline {paragraph}{Eliminazione}{50}{}%
-\contentsline {subsubsection}{\numberline {8.2.10}Responsabile}{50}{}%
-\contentsline {paragraph}{\texttt {ResponsabileControllerTest}}{50}{}%
-\contentsline {paragraph}{\texttt {ModificaCredenzialiTest}}{52}{}%
-\contentsline {paragraph}{\texttt {AggiungiPersonaTest}}{53}{}%

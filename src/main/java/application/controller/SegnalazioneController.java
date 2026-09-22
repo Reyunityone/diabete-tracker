@@ -1,10 +1,7 @@
 package application.controller;
 
-import application.classiGeneriche.Database;
-import application.classiGeneriche.Paziente;
-import application.classiGeneriche.Segnalazione;
+import application.classiGeneriche.*;
 
-import application.classiGeneriche.Session;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
@@ -106,7 +103,6 @@ public class SegnalazioneController {
         // -----------------------------------------------------
 
     	if (dataInizioPicker.getValue() == null
-    	        || dataFinePicker.getValue() == null
     	        || testoArea.getText() == null
     	        || testoArea.getText().trim().isEmpty()) {
 
@@ -136,7 +132,11 @@ public class SegnalazioneController {
         // =====================================================
 
         if (modalitaModifica) {
-            Database.getInstance().updateSegnalazione(segnalazioneDaModificare, new Segnalazione(dataInizio,dataFine , (Paziente) Session.getInstance().getCurrentUser(),testo));
+            Segnalazione nuova = new Segnalazione(dataInizio,dataFine , (Paziente) Session.getInstance().getCurrentUser(),testo);
+            Paziente p = (Paziente) Session.getInstance().getCurrentUser();
+            Messaggio m = new Messaggio(null, p.getMedicoDiRiferimento(), "[Rettifica segnalazione] " + segnalazioneDaModificare.toString() + "--->" + nuova.toString(), TipoAlert.SISTEMA_MEDICO, UrgenzaAlert.MEDIUM);
+            Database.getInstance().updateSegnalazione(segnalazioneDaModificare, nuova);
+            Database.getInstance().addMessaggio(m);
             segnalazioneDaModificare.setDataInizio(
                     dataInizio
             );
@@ -174,7 +174,9 @@ public class SegnalazioneController {
 
 
         if (salvataggio != null) {
-
+            Paziente p = (Paziente) Session.getInstance().getCurrentUser();
+            Messaggio m = new Messaggio(null, p.getMedicoDiRiferimento(), "[Segnalazione/Sintomo]:  " + segnalazione.toString(), TipoAlert.SISTEMA_MEDICO, UrgenzaAlert.MEDIUM);
+            Database.getInstance().addMessaggio(m);
             salvataggio.accept(
                     segnalazione
             );

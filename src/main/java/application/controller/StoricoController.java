@@ -290,7 +290,10 @@ public class StoricoController {
         } else if (elemento instanceof AssunzioneFarmaco) {
             db.deleteAssunzione((AssunzioneFarmaco) elemento);
         } else if (elemento instanceof Segnalazione) {
+            Paziente p = (Paziente) Session.getInstance().getCurrentUser();
+            Messaggio m = new Messaggio(null,p.getMedicoDiRiferimento(), "[Segnalazione eliminata] " + elemento.toString(), TipoAlert.SISTEMA_MEDICO, UrgenzaAlert.LOW);
             db.deleteSegnalazione((Segnalazione) elemento);
+            db.addMessaggio(m);
         }
 
         aggiornaLista();

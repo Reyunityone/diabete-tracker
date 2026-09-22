@@ -54,4 +54,9 @@ public class Segnalazione implements Serializable {
     public void setTesto(String testo) {
         this.testo = testo;
     }
+
+    @Override
+    public String toString() {
+        return "Il paziente " + getPaziente().getCognome() + " " + getPaziente().getNome() + " segnala il seguente con inizio in data " + getDataInizio().toString() + (getDataFine() == null ? "" : " e fine in data " + getDataFine().toString()) + ": " + getTesto();
+    }
 }

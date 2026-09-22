@@ -53,7 +53,6 @@ public class GeneratoreDatiTest {
                 || momento == MomentoRilevazione.PRIMA_PRANZO
                 || momento == MomentoRilevazione.PRIMA_CENA;
 
-        // valore anomalo occasionale, utile per testare gli alert
         if (random.nextInt(10) == 0) {
             return primaDelPasto
                     ? 55 + random.nextInt(15)     // ipoglicemia (<70)

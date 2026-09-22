@@ -4,37 +4,39 @@
 \contentsline {section}{\numberline {3}Class Diagram del software}{6}{}%
 \contentsline {section}{\numberline {4}Use Case Diagram}{8}{}%
 \contentsline {section}{\numberline {5}Sequence Diagram}{17}{}%
-\contentsline {section}{\numberline {6}Sequence Diagram del Software progettato}{20}{}%
-\contentsline {section}{\numberline {7}Activity Diagram}{21}{}%
-\contentsline {section}{\numberline {8}Processo di sviluppo}{24}{}%
-\contentsline {subsection}{\numberline {8.1}Modelli utilizzati}{24}{}%
-\contentsline {subsection}{\numberline {8.2}Stili Architetturali}{24}{}%
-\contentsline {subsection}{\numberline {8.3}Design Pattern}{25}{}%
-\contentsline {section}{\numberline {9}Testing}{27}{}%
-\contentsline {subsection}{\numberline {9.1}Unit Test}{27}{}%
-\contentsline {subsubsection}{\numberline {9.1.1}\normalfont SessionTest}{27}{}%
-\contentsline {subsubsection}{\numberline {9.1.2}\normalfont GestoreAlertTest}{28}{}%
-\contentsline {subsection}{\numberline {9.2}Integration Test}{30}{}%
-\contentsline {subsubsection}{\numberline {9.2.1}\normalfont DatabaseTest}{30}{}%
-\contentsline {subsection}{\numberline {9.3}System Test}{35}{}%
-\contentsline {subsubsection}{\numberline {9.3.1}Diabetologo}{35}{}%
-\contentsline {paragraph}{\texttt {DiabetologoControllerTest}}{35}{}%
-\contentsline {paragraph}{\texttt {TerapiePazienteTest}}{37}{}%
-\contentsline {paragraph}{\texttt {InfoPazienteControllerTest}}{38}{}%
-\contentsline {subsubsection}{\numberline {9.3.2}Messaggi}{39}{}%
-\contentsline {paragraph}{\texttt {MessaggiTest}}{39}{}%
-\contentsline {subsubsection}{\numberline {9.3.3}Paziente}{40}{}%
-\contentsline {paragraph}{\texttt {PazienteControllerTest}}{40}{}%
-\contentsline {paragraph}{Rilevazione}{40}{}%
-\contentsline {paragraph}{Assunzione farmaco}{41}{}%
-\contentsline {paragraph}{Segnalazione}{41}{}%
-\contentsline {paragraph}{Email}{42}{}%
-\contentsline {paragraph}{\texttt {StoricoControllerTest}}{42}{}%
-\contentsline {paragraph}{Apertura e visualizzazione}{42}{}%
-\contentsline {paragraph}{Ricerca}{42}{}%
-\contentsline {paragraph}{Modifica}{43}{}%
-\contentsline {paragraph}{Eliminazione}{43}{}%
-\contentsline {subsubsection}{\numberline {9.3.4}Responsabile}{44}{}%
-\contentsline {paragraph}{\texttt {ResponsabileControllerTest}}{44}{}%
-\contentsline {paragraph}{\texttt {ModificaCredenzialiTest}}{45}{}%
-\contentsline {paragraph}{\texttt {AggiungiPersonaTest}}{46}{}%
+\contentsline {section}{\numberline {6}Sequence Diagram del software progettato}{21}{}%
+\contentsline {section}{\numberline {7}Activity Diagram}{25}{}%
+\contentsline {section}{\numberline {8}Processo di sviluppo}{28}{}%
+\contentsline {subsection}{\numberline {8.1}Modelli utilizzati}{28}{}%
+\contentsline {subsection}{\numberline {8.2}Stili Architetturali}{28}{}%
+\contentsline {subsection}{\numberline {8.3}Design Pattern}{29}{}%
+\contentsline {section}{\numberline {9}Testing}{31}{}%
+\contentsline {subsection}{\numberline {9.1}Informazioni di testing}{31}{}%
+\contentsline {subsection}{\numberline {9.2}Casi di testing}{32}{}%
+\contentsline {subsubsection}{\numberline {9.2.1}Unit Test}{32}{}%
+\contentsline {subsubsection}{\numberline {9.2.2}\normalfont SessionTest}{32}{}%
+\contentsline {subsubsection}{\numberline {9.2.3}\normalfont GestoreAlertTest}{33}{}%
+\contentsline {subsubsection}{\numberline {9.2.4}Integration Test}{35}{}%
+\contentsline {subsubsection}{\numberline {9.2.5}\normalfont DatabaseTest}{35}{}%
+\contentsline {subsubsection}{\numberline {9.2.6}System Test}{40}{}%
+\contentsline {subsubsection}{\numberline {9.2.7}Diabetologo}{40}{}%
+\contentsline {paragraph}{\texttt {DiabetologoControllerTest}}{40}{}%
+\contentsline {paragraph}{\texttt {TerapiePazienteTest}}{42}{}%
+\contentsline {paragraph}{\texttt {InfoPazienteControllerTest}}{43}{}%
+\contentsline {subsubsection}{\numberline {9.2.8}Messaggi}{44}{}%
+\contentsline {paragraph}{\texttt {MessaggiTest}}{44}{}%
+\contentsline {subsubsection}{\numberline {9.2.9}Paziente}{45}{}%
+\contentsline {paragraph}{\texttt {PazienteControllerTest}}{45}{}%
+\contentsline {paragraph}{Rilevazione}{45}{}%
+\contentsline {paragraph}{Assunzione farmaco}{46}{}%
+\contentsline {paragraph}{Segnalazione}{46}{}%
+\contentsline {paragraph}{Email}{46}{}%
+\contentsline {paragraph}{\texttt {StoricoControllerTest}}{47}{}%
+\contentsline {paragraph}{Apertura e visualizzazione}{47}{}%
+\contentsline {paragraph}{Ricerca}{47}{}%
+\contentsline {paragraph}{Modifica}{47}{}%
+\contentsline {paragraph}{Eliminazione}{48}{}%
+\contentsline {subsubsection}{\numberline {9.2.10}Responsabile}{48}{}%
+\contentsline {paragraph}{\texttt {ResponsabileControllerTest}}{48}{}%
+\contentsline {paragraph}{\texttt {ModificaCredenzialiTest}}{50}{}%
+\contentsline {paragraph}{\texttt {AggiungiPersonaTest}}{51}{}%

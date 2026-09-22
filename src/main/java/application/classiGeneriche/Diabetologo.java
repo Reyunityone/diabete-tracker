@@ -13,7 +13,7 @@ public final class Diabetologo extends User {
     }
 
     public Diabetologo(){
-        super("doc","doc" ,"MMMMMM", "Mario", "Rossi", "rossimario@ulss9.it");
+        super("mariorossi1","diabetologo" ,"MMMMMM", "Mario", "Rossi", "rossimario@ulss9.it");
     }
 
     @Override

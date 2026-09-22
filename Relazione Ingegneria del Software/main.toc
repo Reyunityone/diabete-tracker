@@ -1,14 +1,40 @@
 \contentsline {section}{\numberline {1}Introduzione}{3}{}%
 \contentsline {section}{\numberline {2}Class Diagram}{4}{}%
 \contentsline {subsection}{\numberline {2.1}Class Diagram della modellazione concettuale}{5}{}%
-\contentsline {subsection}{\numberline {2.2}Class Diagram del software}{6}{}%
-\contentsline {section}{\numberline {3}Use Case Diagram}{7}{}%
-\contentsline {section}{\numberline {4}Sequence Diagram}{16}{}%
-\contentsline {section}{\numberline {5}Activity Diagram}{20}{}%
-\contentsline {section}{\numberline {6}Stili Architetturali e Pattern}{24}{}%
-\contentsline {subsection}{\numberline {6.1}Stili Architetturali}{24}{}%
-\contentsline {subsection}{\numberline {6.2}Design Pattern}{24}{}%
-\contentsline {section}{\numberline {7}Testing}{26}{}%
-\contentsline {subsection}{\numberline {7.1}Unit Test}{26}{}%
-\contentsline {subsection}{\numberline {7.2}Integration Test}{26}{}%
-\contentsline {subsection}{\numberline {7.3}System Test}{26}{}%
+\contentsline {section}{\numberline {3}Class Diagram del software}{6}{}%
+\contentsline {section}{\numberline {4}Use Case Diagram}{8}{}%
+\contentsline {section}{\numberline {5}Sequence Diagram}{17}{}%
+\contentsline {section}{\numberline {6}Sequence Diagram del Software progettato}{20}{}%
+\contentsline {section}{\numberline {7}Activity Diagram}{21}{}%
+\contentsline {section}{\numberline {8}Processo di sviluppo}{24}{}%
+\contentsline {subsection}{\numberline {8.1}Modelli utilizzati}{24}{}%
+\contentsline {subsection}{\numberline {8.2}Stili Architetturali}{24}{}%
+\contentsline {subsection}{\numberline {8.3}Design Pattern}{25}{}%
+\contentsline {section}{\numberline {9}Testing}{27}{}%
+\contentsline {subsection}{\numberline {9.1}Unit Test}{27}{}%
+\contentsline {subsubsection}{\numberline {9.1.1}\normalfont SessionTest}{27}{}%
+\contentsline {subsubsection}{\numberline {9.1.2}\normalfont GestoreAlertTest}{28}{}%
+\contentsline {subsection}{\numberline {9.2}Integration Test}{30}{}%
+\contentsline {subsubsection}{\numberline {9.2.1}\normalfont DatabaseTest}{30}{}%
+\contentsline {subsection}{\numberline {9.3}System Test}{35}{}%
+\contentsline {subsubsection}{\numberline {9.3.1}Diabetologo}{35}{}%
+\contentsline {paragraph}{\texttt {DiabetologoControllerTest}}{35}{}%
+\contentsline {paragraph}{\texttt {TerapiePazienteTest}}{37}{}%
+\contentsline {paragraph}{\texttt {InfoPazienteControllerTest}}{38}{}%
+\contentsline {subsubsection}{\numberline {9.3.2}Messaggi}{39}{}%
+\contentsline {paragraph}{\texttt {MessaggiTest}}{39}{}%
+\contentsline {subsubsection}{\numberline {9.3.3}Paziente}{40}{}%
+\contentsline {paragraph}{\texttt {PazienteControllerTest}}{40}{}%
+\contentsline {paragraph}{Rilevazione}{40}{}%
+\contentsline {paragraph}{Assunzione farmaco}{41}{}%
+\contentsline {paragraph}{Segnalazione}{41}{}%
+\contentsline {paragraph}{Email}{42}{}%
+\contentsline {paragraph}{\texttt {StoricoControllerTest}}{42}{}%
+\contentsline {paragraph}{Apertura e visualizzazione}{42}{}%
+\contentsline {paragraph}{Ricerca}{42}{}%
+\contentsline {paragraph}{Modifica}{43}{}%
+\contentsline {paragraph}{Eliminazione}{43}{}%
+\contentsline {subsubsection}{\numberline {9.3.4}Responsabile}{44}{}%
+\contentsline {paragraph}{\texttt {ResponsabileControllerTest}}{44}{}%
+\contentsline {paragraph}{\texttt {ModificaCredenzialiTest}}{45}{}%
+\contentsline {paragraph}{\texttt {AggiungiPersonaTest}}{46}{}%

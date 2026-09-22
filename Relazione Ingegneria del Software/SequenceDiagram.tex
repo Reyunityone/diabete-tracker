@@ -12,19 +12,12 @@
 	\label{fig:sequence-diagram_1}
 \end{figure}
 
-
-Login: L'utente inserisce username e password nella schermata di accesso. Il sistema inoltra le credenziali al database, il quale verifica la corrispondenza con un utente registrato. Se sono valide, viene avviata la sessione ed è aperta la schermata corrispondente al ruolo dell'utente. In caso contrario il sistema segnala un errore e  impedisce l'accesso.\\
-
-Rilevazione giornaliera: il paziente inserisce i dati relativi a una nuova rilevazione, ovvero data, livello di glicemia, orario, orario dell'ultimo pasto e momento della rilevazione. Dopodiché il sistema la salva e verifica il livello di glicemia riportato rispetto alle soglie previste. Se esso è fuori dai limiti, viene creato un alert che notifica il diabetologo di riferimento di tale irregolarità, con un livello di urgenza maggiore se la glicemia si discosta particolarmente dalla norma. Il sistema conferma infine l'avvenuta  registrazione all'utente.\\
-
-Registrazione di un'assunzione e verifica della coerenza: il paziente inserisce i dati relativi all'assunzione di un farmaco, indicando data, orario, quantità e terapia di riferimento. Tali dati vengono salvati e verificati, confrontandoli con le informazioni della terapia prescritta dal medico. Se essi sono discrepanti con la terapia, ciò viene segnalato all'utente.
-
 \begin{figure}[H]
 	\makebox[\paperwidth][c]{
 		\hspace*{-7.5cm}
 		\includegraphics[
-	width=0.98\paperwidth,
-	height=0.98\textheight,
+		width=0.98\paperwidth,
+		height=0.98\textheight,
 		keepaspectratio
 		]{Immagini/SequenceDiagram33.png}
 	}
@@ -32,16 +25,23 @@ Registrazione di un'assunzione e verifica della coerenza: il paziente inserisce 
 	\label{fig:sequence-diagram_2}
 \end{figure}
 
+Login: L'utente inserisce username e password nella schermata di accesso. Il sistema inoltra le credenziali al database, il quale verifica la corrispondenza con un utente registrato. Se sono valide, viene avviata la sessione ed è aperta la schermata corrispondente al ruolo dell'utente. In caso contrario il sistema segnala un errore e  impedisce l'accesso.\\
+
+Rilevazione giornaliera: il paziente inserisce i dati relativi a una nuova rilevazione, ovvero data, livello di glicemia, orario, orario dell'ultimo pasto e momento della rilevazione. Dopodiché il sistema la salva e verifica il livello di glicemia riportato rispetto alle soglie previste. Se esso è fuori dai limiti, viene creato un alert che notifica il diabetologo di riferimento di tale irregolarità, con un livello di urgenza maggiore se la glicemia si discosta particolarmente dalla norma. Il sistema conferma infine l'avvenuta  registrazione all'utente.\\
+
+Registrazione di un'assunzione e verifica della coerenza: il paziente inserisce i dati relativi all'assunzione di un farmaco, indicando data, orario, quantità e terapia di riferimento. Tali dati vengono salvati e verificati, confrontandoli con le informazioni della terapia prescritta dal medico. Se essi sono discrepanti con la terapia, ciò viene segnalato all'utente.
+
 Aggiornamento cartella del paziente: il diabetologo di riferimento accede alle informazioni del paziente e ne  modifica i dati, ovvero fattori di rischio, patologie pregresse, comorbidità e dettagli aggiuntivi. I dati vengono salvati e viene creato un log dell'operazione, associando la modifica all'utente che l'ha effettuata, in modo da mantenere la tracciabilità delle modifiche apportate.\\ 
 
-Prescrizione e modifica di una terapia: il diabetologo di riferimento crea una nuova terapia oppure modifica le specifiche di una terapia già assegnata in passato modificando i dati rilevanti. La nuova terapia viene salvata in memoria e viene creato un log. Nel caso di modifica di una terapia condivisa da più pazienti, il sistema crea una nuova versione della terapia per il paziente interessato, evitando di modificare la terapia degli altri pazienti che continuano a utilizzare quella precedente.\\
-
- \textcolor{red}{TODO: Non ditelo a voce alta, ma non è vero che "La nuova terapia viene salvata in memoria e viene creato un log" nel paragrafo sopra. Non so se lasciarlo (è già nell'UML) o toglierlo}\\
+Prescrizione e modifica di una terapia: il diabetologo di riferimento crea una nuova terapia oppure modifica le specifiche di una terapia già assegnata in passato modificando i dati rilevanti. Nel caso di modifica di una terapia condivisa da più pazienti, il sistema crea una nuova versione della terapia per il paziente interessato, evitando di modificare la terapia degli altri pazienti che continuano a utilizzare quella precedente.\\
 
 Scambio di messaggi tra paziente e diabetologo: il paziente apre la schermata di comunicazione e scrive un messaggio al proprio medico di riferimento. Il medico viene notificato e può aprirlo, leggerlo e inviare una risposta al paziente.
 
- \textcolor{red}{TODO: Ampliare?}
+ \textcolor{red}{TODO: Lasciamo "inviare una risposta al paziente"?}
  
+ \clearpage
+ 
+ \section{Sequence Diagram del software progettato}
  
 
 

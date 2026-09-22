@@ -10,7 +10,7 @@ public final class Responsabile extends User{
 	}
 
 	public Responsabile(){
-		super("topolinopippo1", "topolino1", "TTTTTT", "Topolino", "Pluto", "plutotopolino@ulss9.it");
+		super("francescobianchi1", "responsabile", "TTTTTT", "Francesco", "Bianchi", "francescobianchi@ulss9.it");
 	}
 
 	@Override

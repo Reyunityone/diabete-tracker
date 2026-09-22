@@ -4,7 +4,7 @@
 
 Il testing del sistema è stato realizzato secondo un approccio White Box, con l'obiettivo di verificare il corretto comportamento delle principali componenti dell'applicazione e delle funzionalità offerte all'utente. Sono stati sviluppati test relativi sia alle classi della business logic e della persistenza dei dati, sia ai controller JavaFX. I test sono stati organizzati in Unit Test, Integration Test e System Test, in modo da verificare il sistema a diversi livelli di integrazione.\\
 
-La progettazione dei test è stata effettuata considerando sia il normale utilizzo dell'applicazione sia situazioni particolari o di errore. Sono quindi stati verificati casi con dati validi, dati mancanti o incompleti, valori limite, valori fuori dalle soglie previste, elementi duplicati, elementi non presenti e ricerche senza risultati. In questo modo non è stato verificato solamente il comportamento atteso nel caso ideale, ma anche la capacità del sistema di gestire correttamente situazioni anomale o ai limiti delle condizioni previste. Per le funzionalità che modificano i dati, i test verificano inoltre l'effetto dell'operazione sia sull'interfaccia grafica sia sul database. 
+La progettazione dei test è stata effettuata considerando sia il normale utilizzo dell'applicazione sia situazioni particolari o di errore. Sono quindi stati verificati casi con dati validi, dati mancanti o incompleti, valori limite, valori fuori dalle soglie previste, elementi duplicati, elementi non presenti e ricerche senza risultati. In questo modo non è stato verificato solamente il comportamento atteso nel caso ideale, ma anche la capacità del sistema di gestire correttamente situazioni anomale o ai limiti delle condizioni previste. Per le funzionalità che modificano i dati, i test verificano inoltre l'effetto dell'operazione sia sull'interfaccia grafica sia sul database.
 
 Ad esempio, quando viene premuto un pulsante per inserire, modificare o eliminare un elemento, viene controllato che l'interfaccia venga aggiornata correttamente e che la modifica venga effettivamente registrata nel database di test. Analogamente, nei casi in cui un'operazione non deve essere eseguita, viene verificato che i dati rimangano invariati.\\
 
@@ -32,9 +32,9 @@ Il metodo gestisce inoltre eventuali eccezioni generate durante l'esecuzione sul
 
 \subsubsection{Unit Test}
 
-I test unitari sono stati utilizzati per verificare il comportamento delle singole componenti del sistema considerate indipendentemente dalle altre funzionalità dell'applicazione. In particolare, sono state testate la gestione della sessione dell'utente e la logica relativa alla generazione degli alert.
+I test unitari sono stati utilizzati per verificare il comportamento delle singole componenti del sistema considerate indipendentemente dalle altre funzionalità dell'applicazione. In particolare, sono state testate la gestione della sessione dell'utente e la logica relativa alla generazione degli alert.\\
 
-\subsubsection[\normalfont SessionTest]{\texttt{SessionTest}}
+\textbf{\texttt{SessionTest}}
 
 La classe \texttt{SessionTest} verifica il corretto funzionamento della sessione dell'utente e del relativo pattern Singleton, controllando che venga mantenuta una singola istanza della sessione e che l'utente corrente venga correttamente impostato e rimosso.
 
@@ -46,7 +46,7 @@ La classe \texttt{SessionTest} verifica il corretto funzionamento della sessione
 
 \end{itemize}
 
-\subsubsection[\normalfont GestoreAlertTest]{\texttt{GestoreAlertTest}}
+\textbf{\texttt{GestoreAlertTest}}
 
 La classe \texttt{GestoreAlertTest} verifica la logica di generazione degli alert automatici, considerando sia la mancata assunzione dei farmaci e l'aderenza alle terapie, sia i valori glicemici rilevati prima e dopo i pasti. I test verificano inoltre le soglie associate ai diversi livelli di urgenza e impediscono la generazione ripetuta dello stesso alert.
 
@@ -110,9 +110,9 @@ La classe \texttt{GestoreAlertTest} verifica la logica di generazione degli aler
 
 \subsubsection{Integration Test}
 
-I test di integrazione sono stati utilizzati per verificare il corretto funzionamento della persistenza e delle interazioni tra le principali classi del modello e il database. In particolare, la classe \texttt{Database} è stata testata attraverso operazioni di inserimento, ricerca, modifica, associazione ed eliminazione dei diversi elementi gestiti dall'applicazione.
+I test di integrazione sono stati utilizzati per verificare il corretto funzionamento della persistenza e delle interazioni tra le principali classi del modello e il database. In particolare, la classe \texttt{Database} è stata testata attraverso operazioni di inserimento, ricerca, modifica, associazione ed eliminazione dei diversi elementi gestiti dall'applicazione.\\
 
-\subsubsection[\normalfont DatabaseTest]{\texttt{DatabaseTest}}
+\textbf{\texttt{DatabaseTest}}
 
 La classe \texttt{DatabaseTest} verifica il comportamento del database relativamente alla gestione degli utenti, delle associazioni tra pazienti e diabetologi, delle terapie, delle rilevazioni, delle assunzioni, delle segnalazioni, dei messaggi e dei log delle operazioni.
 
@@ -216,13 +216,13 @@ La classe \texttt{DatabaseTest} verifica il comportamento del database relativam
 
 \subsubsection{System Test}
 
-I test di sistema sono stati utilizzati per verificare il comportamento delle funzionalità dell'applicazione dal punto di vista dell'interazione tra interfaccia grafica, controller, modello e database. I test sono stati organizzati in base alle principali aree funzionali dell'applicazione.
+I test di sistema sono stati utilizzati per verificare il comportamento delle funzionalità dell'applicazione dal punto di vista dell'interazione tra interfaccia grafica, controller, modello e database. I test sono stati organizzati in base alle principali aree funzionali dell'applicazione.\\
 
-\subsubsection{Diabetologo}
+\textbf{Diabetologo}
 
-In questa parte sono state verificate le funzionalità disponibili al diabetologo, comprendenti la visualizzazione e la ricerca dei pazienti, la consultazione dei relativi dati e dell'andamento glicemico, la modifica delle informazioni del paziente e la gestione delle terapie assegnate ai pazienti.
+In questa parte sono state verificate le funzionalità disponibili al diabetologo, comprendenti la visualizzazione e la ricerca dei pazienti, la consultazione dei relativi dati e dell'andamento glicemico, la modifica delle informazioni del paziente e la gestione delle terapie assegnate ai pazienti.\\
 
-\paragraph{\texttt{DiabetologoControllerTest}}\mbox{}\
+\textbf{\texttt{DiabetologoControllerTest}}
 
 La classe \texttt{DiabetologoControllerTest} verifica il comportamento della schermata principale del diabetologo, la ricerca e visualizzazione dei pazienti associati e l'apertura delle funzionalità relative all'andamento glicemico e alle informazioni del paziente.
 
@@ -256,7 +256,7 @@ La classe \texttt{DiabetologoControllerTest} verifica il comportamento della sch
 
 \end{itemize}
 
-\paragraph{\texttt{TerapiePazienteTest}}\mbox{}\
+\textbf{\texttt{TerapiePazienteTest}}
 
 La classe \texttt{TerapiePazienteTest} verifica la gestione delle terapie del paziente, dalla visualizzazione e ricerca fino alla creazione, assegnazione, rimozione ed eliminazione delle terapie.
 
@@ -282,7 +282,7 @@ La classe \texttt{TerapiePazienteTest} verifica la gestione delle terapie del pa
 
 \end{itemize}
 
-\paragraph{\texttt{InfoPazienteControllerTest}}\mbox{}\
+\textbf{\texttt{InfoPazienteControllerTest}}
 
 La classe \texttt{InfoPazienteControllerTest} verifica la modifica delle informazioni del paziente, comprendendo i fattori di rischio, le patologie, le comorbidità e i dettagli aggiuntivi. Viene inoltre verificata la registrazione delle modifiche nello storico, il comportamento dell'operazione di annullamento e la successiva registrazione di nuove modifiche.
 
@@ -306,11 +306,11 @@ La classe \texttt{InfoPazienteControllerTest} verifica la modifica delle informa
 
 \end{itemize}
 
-\subsubsection{Messaggi}
+\textbf{Messaggi}
 
-La gestione dei messaggi è stata verificata attraverso test relativi alla visualizzazione, alla ricerca per mittente, allo stato di lettura, al livello di urgenza e alla gestione delle notifiche.
+La gestione dei messaggi è stata verificata attraverso test relativi alla visualizzazione, alla ricerca per mittente, allo stato di lettura, al livello di urgenza e alla gestione delle notifiche.\\
 
-\paragraph{\texttt{MessaggiTest}}\mbox{}\
+\textbf{\texttt{MessaggiTest}}
 
 La classe \texttt{MessaggiTest} verifica la corretta visualizzazione e gestione dei messaggi ricevuti dal diabetologo, compreso il comportamento associato all'apertura dei messaggi e alle notifiche.
 
@@ -338,19 +338,17 @@ La classe \texttt{MessaggiTest} verifica la corretta visualizzazione e gestione 
 
 \item \texttt{messaggioMostraIlLivelloDiUrgenza()}: visualizzazione di un messaggio ad alta urgenza per verificare che il relativo livello venga mostrato correttamente.
 
-\item \texttt{aperturaMessaggioVisualizzaMittenteETestoCompleto()}: apertura di un messaggio per verificare che vengano visualizzati correttamente mittente, testo completo e livello di urgenza.
+\item \texttt{aperturaMessaggioVisualizzaMittenteETestoCompleto()}: apertura di un messaggio per verificare che vengano visualizzati correttamente mittente, testo completo e livello di urgenza.\\
 
 \end{itemize}
 
-\subsubsection{Paziente}
+\textbf{Paziente}
 
-In questa parte sono state verificate le principali funzionalità disponibili al paziente e la gestione dello storico dei dati. I test comprendono l'inserimento di rilevazioni, assunzioni e segnalazioni, l'invio di comunicazioni al diabetologo e la consultazione, modifica ed eliminazione degli elementi dello storico.
+In questa parte sono state verificate le principali funzionalità disponibili al paziente e la gestione dello storico dei dati. I test comprendono l'inserimento di rilevazioni, assunzioni e segnalazioni, l'invio di comunicazioni al diabetologo e la consultazione, modifica ed eliminazione degli elementi dello storico.\\
 
-\paragraph{\texttt{PazienteControllerTest}}\mbox{}\
+\textbf{\texttt{PazienteControllerTest}}
 
-La classe \texttt{PazienteControllerTest} verifica l'inserimento e il salvataggio delle rilevazioni, delle assunzioni di farmaci e delle segnalazioni, considerando sia i casi validi sia i casi in cui i dati inseriti risultano incompleti. Viene inoltre verificata la corretta gestione dell'invio di email al diabetologo di riferimento.
-
-\paragraph{Rilevazione}
+La classe \texttt{PazienteControllerTest} verifica l'inserimento e il salvataggio delle rilevazioni, delle assunzioni di farmaci e delle segnalazioni, considerando sia i casi validi sia i casi in cui i dati inseriti risultano incompleti. Viene inoltre verificata la corretta gestione dell'invio di email al diabetologo di riferimento.\\
 
 \begin{itemize}
 
@@ -364,8 +362,6 @@ La classe \texttt{PazienteControllerTest} verifica l'inserimento e il salvataggi
 
 \end{itemize}
 
-\paragraph{Assunzione farmaco}
-
 \begin{itemize}
 
 \item \texttt{inserimentoAssunzioneValidaInserisceTuttiICampi()}: compilazione di un'assunzione valida per verificare che paziente, data, orario, quantità e terapia vengano salvati correttamente.
@@ -377,8 +373,6 @@ La classe \texttt{PazienteControllerTest} verifica l'inserimento e il salvataggi
 \item \texttt{salvataggioAssunzioneConUnCampoMancanteNonInserisceNelDatabase()}: compilazione di tutti i dati tranne la terapia per verificare che l'assunzione non venga salvata.
 
 \end{itemize}
-
-\paragraph{Segnalazione}
 
 \begin{itemize}
 
@@ -392,8 +386,6 @@ La classe \texttt{PazienteControllerTest} verifica l'inserimento e il salvataggi
 
 \end{itemize}
 
-\paragraph{Email}
-
 \begin{itemize}
 
 \item \texttt{emailDelDiabetologoECorretta()}: apertura della schermata di scrittura email per verificare che il destinatario sia correttamente impostato con l'indirizzo del diabetologo.
@@ -402,12 +394,9 @@ La classe \texttt{PazienteControllerTest} verifica l'inserimento e il salvataggi
 
 \end{itemize}
 
-\paragraph{\texttt{StoricoControllerTest}}\mbox{}\
+\textbf{\texttt{StoricoControllerTest}}
 
-La classe \texttt{StoricoControllerTest} verifica la visualizzazione e la ricerca degli elementi presenti nello storico del paziente, oltre alle operazioni di modifica e di eliminazione delle rilevazioni, delle assunzioni e delle segnalazioni.
-
-\paragraph{Apertura e visualizzazione}
-
+La classe \texttt{StoricoControllerTest} verifica la visualizzazione e la ricerca degli elementi presenti nello storico del paziente, oltre alle operazioni di modifica e di eliminazione delle rilevazioni, delle assunzioni e delle segnalazioni.\\\\
 \begin{itemize}
 
 \item \texttt{aperturaStoricoCaricaCorrettaLaSchermata()}: apertura dello storico per verificare che controller, campo di ricerca e contenitore degli elementi vengano correttamente caricati.
@@ -420,8 +409,6 @@ La classe \texttt{StoricoControllerTest} verifica la visualizzazione e la ricerc
 
 \end{itemize}
 
-\paragraph{Ricerca}
-
 \begin{itemize}
 
 \item \texttt{ricercaDataMostraSoloGliElementiCorrispondenti()}: inserimento di rilevazioni in date diverse e ricerca per data per verificare che venga visualizzato solo l'elemento corrispondente.
@@ -429,8 +416,6 @@ La classe \texttt{StoricoControllerTest} verifica la visualizzazione e la ricerc
 \item \texttt{ricercaDataSenzaCorrispondenzeNonMostraElementi()}: ricerca di una data senza elementi corrispondenti per verificare che lo storico rimanga vuoto.
 
 \end{itemize}
-
-\paragraph{Modifica}
 
 \begin{itemize}
 
@@ -448,8 +433,6 @@ La classe \texttt{StoricoControllerTest} verifica la visualizzazione e la ricerc
 
 \end{itemize}
 
-\paragraph{Eliminazione}
-
 \begin{itemize}
 
 \item \texttt{pulsanteEliminaRilevazioneRimuoveElementoDalDatabase()}: pressione del pulsante di eliminazione di una rilevazione per verificare che venga rimossa sia dal database sia dallo storico visualizzato.
@@ -460,11 +443,11 @@ La classe \texttt{StoricoControllerTest} verifica la visualizzazione e la ricerc
 
 \end{itemize}
 
-\subsubsection{Responsabile}
+\textbf{Responsabile}
 
-La parte relativa al responsabile verifica la gestione degli utenti del sistema, comprendendo la visualizzazione e la ricerca di medici e pazienti, la modifica delle credenziali, la gestione delle associazioni tra pazienti e diabetologi e l'inserimento di nuovi utenti.
+La parte relativa al responsabile verifica la gestione degli utenti del sistema, comprendendo la visualizzazione e la ricerca di medici e pazienti, la modifica delle credenziali, la gestione delle associazioni tra pazienti e diabetologi e l'inserimento di nuovi utenti.\\
 
-\paragraph{\texttt{ResponsabileControllerTest}}\mbox{}\
+\textbf{\texttt{ResponsabileControllerTest}}
 
 La classe \texttt{ResponsabileControllerTest} verifica il comportamento della schermata del responsabile, dalla corretta inizializzazione del profilo alla visualizzazione, ricerca, modifica ed eliminazione degli utenti presenti nel sistema.
 
@@ -496,7 +479,7 @@ La classe \texttt{ResponsabileControllerTest} verifica il comportamento della sc
 
 \end{itemize}
 
-\paragraph{\texttt{ModificaCredenzialiTest}}\mbox{}\
+\textbf{\texttt{ModificaCredenzialiTest}}
 
 La classe \texttt{ModificaCredenzialiTest} verifica il caricamento e la modifica dei dati personali di diabetologi e pazienti, comprese le associazioni tra pazienti e medici.
 
@@ -524,7 +507,7 @@ La classe \texttt{ModificaCredenzialiTest} verifica il caricamento e la modifica
 
 \end{itemize}
 
-\paragraph{\texttt{AggiungiPersonaTest}}\mbox{}\
+\textbf{\texttt{AggiungiPersonaTest}}
 
 La classe \texttt{AggiungiPersonaTest} verifica la creazione di nuovi utenti, controllando la configurazione dell'interfaccia in base al tipo di utente, il caricamento delle associazioni disponibili e i controlli sui dati obbligatori e sugli username già presenti.
 

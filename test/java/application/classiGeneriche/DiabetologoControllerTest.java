@@ -1,16 +1,10 @@
-package application.controller;
+package application.classiGeneriche;
 
-import application.classiGeneriche.Database;
-import application.classiGeneriche.Diabetologo;
-import application.classiGeneriche.MomentoRilevazione;
-import application.classiGeneriche.Paziente;
-import application.classiGeneriche.Rilevazione;
-import application.classiGeneriche.Session;
-
+import application.controller.AndamentoController;
+import application.controller.DiabetologoController;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -206,7 +200,6 @@ class DiabetologoControllerTest {
 
     @Test
     void listaVisualizzaSoloIPazientiSeguitiDalMedico() {
-        Paziente pazienteSeguito = aggiungiPaziente("pazienteSeguito", "Luca", "Bianchi", "CFLUCA");
 
         Diabetologo altroMedico = new Diabetologo("altroMedico", "password", "CFALTRO", "Anna", "Neri", "anna@test.it");
         db.addDiabetologo(altroMedico);
@@ -442,7 +435,6 @@ class DiabetologoControllerTest {
         runAndWait(() -> {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/view/Diabetologo.fxml"));
-                Parent root = loader.load();
 
                 controller = loader.getController();
                 searchField = getCampo(controller, "searchField");
@@ -484,7 +476,6 @@ class DiabetologoControllerTest {
     // SUPPORTO - GRAFICO
     // =========================================================
 
-    @SuppressWarnings("unchecked")
     private LineChartData leggiGrafico(AndamentoController controller) throws Exception {
         javafx.scene.chart.LineChart<String, Number> grafico = getCampo(controller, "grafico");
         List<XYChart.Series<String, Number>> serie = new ArrayList<>(grafico.getData());

@@ -17,7 +17,9 @@
         prefWidth="500"
         prefHeight="420"
 
-        styleClass="window-background">
+        styleClass="window-background"
+        
+        stylesheets="@../css/graficaComune.css">
 
     <padding>
 
@@ -36,13 +38,21 @@
 
 
     <Label
-            text="Data"
+            text="Data inizio sintomo/terapia"
             styleClass="field-label"/>
 
 
     <DatePicker
-            fx:id="dataPicker"/>
+            fx:id="dataInizioPicker"
+            styleClass="modern-date-picker"/>
 
+
+    <Label
+        text="Data fine(opz)"
+        styleClass="field-label"/>
+    <DatePicker
+        fx:id="dataFinePicker"
+        styleClass="modern-date-picker"/>
 
     <Label
             text="Segnalazione"
@@ -51,7 +61,7 @@
 
     <TextArea
             fx:id="testoArea"
-            promptText="Descrivi la segnalazione..."
+            promptText="Descrivi la segnalazione di terapia precedente o sintomo avvertito.."
             wrapText="true"
             VBox.vgrow="ALWAYS"/>
 
@@ -59,6 +69,6 @@
     <Button
             text="Salva"
             onAction="#salva"
-            styleClass="save-button"/>
+            styleClass="standard-button"/>
 
 </VBox>

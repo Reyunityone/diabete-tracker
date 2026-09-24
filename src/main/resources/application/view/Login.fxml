@@ -12,69 +12,62 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="750.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.LoginController">
+<AnchorPane prefHeight="750.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/26"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.LoginController">
 
-    <children>
+    <VBox alignment="CENTER" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
-        <VBox alignment="CENTER" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <!-- TITOLO -->
 
-            <children>
+        <Label style="-fx-font-family: 'Century Gothic'; -fx-font-size: 48px; -fx-font-weight: bold;" text="Benvenuto"/>
 
-                <!-- TITOLO -->
+        <!-- CAMPI -->
 
-                <Label style="-fx-font-family: 'Century Gothic'; -fx-font-size: 48px; -fx-font-weight: bold;" text="LOGIN" />
-              
-                <!-- CAMPI -->
+        <GridPane alignment="CENTER" hgap="20.0" maxWidth="500.0" vgap="20.0">
 
-                <GridPane alignment="CENTER" hgap="20.0" maxWidth="500.0" vgap="20.0">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            </padding>
 
-                    <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                    </padding>
+            <!-- COLONNE -->
 
-                    <!-- COLONNE -->
+            <columnConstraints>
 
-                    <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" minWidth="100.0"/>
 
-                        <ColumnConstraints halignment="RIGHT" minWidth="100.0" />
+                <ColumnConstraints halignment="LEFT" minWidth="250.0"/>
 
-                        <ColumnConstraints halignment="LEFT" minWidth="250.0" />
+            </columnConstraints>
 
-                    </columnConstraints>
+            <!-- USERNAME -->
 
-                    <!-- NOME -->
+            <Label style="-fx-font-size: 16px;" text="Username:"
+                   GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="0"/>
+            <TextField fx:id="usernameField" prefHeight="38.0" prefWidth="250.0" promptText="Inserisci il tuo username"
+                       style="-fx-font-size: 15px;" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <!-- PASSWORD -->
 
-                    <Label prefHeight="25.0" prefWidth="66.0" style="-fx-font-size: 16px;" text="Nome:" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="0" />
-                    <TextField fx:id="nomeField" prefHeight="38.0" prefWidth="250.0" promptText="Inserisci il nome" style="-fx-font-size: 15px;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                    <!-- COGNOME -->
+            <Label style="-fx-font-size: 16px;" text="Password:" GridPane.columnIndex="0"
+                   GridPane.halignment="LEFT" GridPane.rowIndex="2"/>
+            <PasswordField fx:id="passwordField" prefHeight="38.0" prefWidth="250.0"
+                           promptText="Inserisci la tua password" style="-fx-font-size: 15px;"
+                           GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            <rowConstraints>
+                <RowConstraints/>
+                <RowConstraints/>
+                <RowConstraints/>
+                <RowConstraints/>
+            </rowConstraints>
 
-					<Label style="-fx-font-size: 16px;" text="Cognome:" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-                    <TextField fx:id="cognomeField" prefHeight="38.0" prefWidth="250.0" promptText="Inserisci il cognome" style="-fx-font-size: 15px;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                    <!-- CREDENZIALI -->
+        </GridPane>
 
-                    <Label style="-fx-font-size: 16px;" text="Credenziali:" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
-                    <PasswordField fx:id="credenzialiField" prefHeight="38.0" prefWidth="250.0" promptText="Inserisci le credenziali" style="-fx-font-size: 15px;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                    <!-- RUOLO -->
+        <!-- BOTTONE -->
 
-                    <Label style="-fx-font-size: 16px;" text="Ruolo:" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
-                    <ComboBox fx:id="ruoloComboBox" prefHeight="38.0" prefWidth="250.0" promptText="Seleziona ruolo" style="-fx-font-size: 15px;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-          <rowConstraints>
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-               </rowConstraints>
+        <Button fx:id="confermaButton" onAction="#handleLogin" prefHeight="45.0" prefWidth="150.0"
+                style="-fx-background-color: black; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 6px;"
+                text="Login"/>
 
-                </GridPane>
-
-                <!-- BOTTONE -->
-
-                <Button fx:id="confermaButton" onAction="#handleLogin" prefHeight="45.0" prefWidth="150.0" style="-fx-background-color: black; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 6px;" text="Login" />
-        
-        </children>
-
-        </VBox>
-
-    </children>
+    </VBox>
 
 </AnchorPane>

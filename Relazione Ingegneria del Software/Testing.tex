@@ -1,20 +1,555 @@
 \section{Testing}
-Il testing è stato realizzato sulla base dell'approccio White Box.
-\subsection{Unit Test}
-(Test sulle singole classi in isolamento)\\
-Probabili casi da verificare:\\
--Controllo login valido e non valido\\
--Controllo soglia glicemia vicino e lontano dai pasti\\
--Creazione degli alert per ricordare l'assunzione dei farmaci e in caso la terapia non sia effettivemente seguita per più di 3 giorni\\
--Verificare che il sistema riconosca che i farmaci sono o  non sono coerenti con la terapia assegnata
 
-\subsection{System Test}
-(Test sull'applicazione completa)\\
-Probabili casi da verificare:\\
--Registrazione di una glicemia fuori soglia -$>$ alert $>$ nella dashboard del diabetologo di riferimento\\
--Mancata registrazione di assunzioni farmaco per più di 3 giorni consecutivi -$>$ alert generato al medico\\
--Modifica di una terapia da parte del medico -$>$ le assunzioni successive vengono validate sulla nuova terapia\\
--Login con credenziali errate -$>$ accesso rifiutato\\
--Impossibilità di accedere a dati altrui per chi non ne ha le facoltà\\
+\subsection{Informazioni sul testing}
 
+Il testing del sistema è stato realizzato secondo un approccio White Box, con l'obiettivo di verificare il corretto comportamento delle principali componenti dell'applicazione e delle funzionalità offerte all'utente. Sono stati sviluppati test relativi sia alle classi della business logic e della persistenza dei dati, sia ai controller JavaFX. I test sono stati organizzati in Unit Test, Integration Test e System Test, in modo da verificare il sistema a diversi livelli di integrazione.\\
 
+La progettazione dei test è stata effettuata considerando sia il normale utilizzo dell'applicazione sia situazioni particolari o di errore. Sono quindi stati verificati casi con dati validi, dati mancanti o incompleti, valori limite, valori fuori dalle soglie previste, elementi duplicati, elementi non presenti e ricerche senza risultati. In questo modo non è stato verificato solamente il comportamento atteso nel caso ideale, ma anche la capacità del sistema di gestire correttamente situazioni anomale o ai limiti delle condizioni previste. Per le funzionalità che modificano i dati, i test verificano inoltre l'effetto dell'operazione sia sull'interfaccia grafica sia sul database. 
+
+Ad esempio, quando viene premuto un pulsante per inserire, modificare o eliminare un elemento, viene controllato che l'interfaccia venga aggiornata correttamente e che la modifica venga effettivamente registrata nel database di test. Analogamente, nei casi in cui un'operazione non deve essere eseguita, viene verificato che i dati rimangano invariati.\\
+
+\textbf{Database di test e isolamento dei dati}
+
+Per rendere i test indipendenti dai dati utilizzati durante l'esecuzione dell'applicazione, è stato predisposto un database di test isolato. In questo modo i test possono inserire, modificare ed eliminare dati fittizi senza alterare il database utilizzato normalmente dall'applicazione.
+
+La struttura del database di test viene predisposta prima dell'esecuzione dei singoli test, permettendo di partire da uno stato controllato e prevedibile. Inoltre, il riferimento al Singleton \texttt{Database} viene sostituito con l'istanza del database di test. Al termine dei test il riferimento viene ripristinato, evitando che lo stato utilizzato da un test possa influenzare l'esecuzione dei test successivi.\\
+
+\textbf{Modalità di test dei controller JavaFX}
+
+Per alcuni controller è presente un attributo booleano \texttt{modalitaTest}. Questa modalità viene utilizzata per adattare il comportamento del controller durante l'esecuzione automatica dei test.
+
+Quando \texttt{modalitaTest} è attiva, le finestre e gli \texttt{Stage} che normalmente verrebbero mostrati all'utente non vengono visualizzati a schermo. La logica interna del controller continua però ad essere eseguita normalmente. In questo modo è possibile testare autonomamente il comportamento di bottoni, campi di testo, liste, \texttt{ComboBox}, \texttt{MenuButton}, contenitori e altri elementi JavaFX, verificando il risultato delle interazioni senza aprire continuamente finestre durante l'esecuzione della suite di test.\\
+
+\textbf{Sincronizzazione con JavaFX tramite \texttt{runAndWait}}
+
+Le operazioni sui componenti JavaFX devono essere eseguite sul JavaFX Application Thread. Per questo motivo nei test dei controller viene utilizzato un metodo comune \texttt{runAndWait}, basato su \texttt{Platform.runLater()} e \texttt{CountDownLatch}.
+
+Il metodo verifica innanzitutto se il codice è già in esecuzione sul JavaFX Application Thread. In caso contrario, l'operazione viene inserita nella coda di JavaFX tramite \texttt{Platform.runLater()}. Il \texttt{CountDownLatch} permette al thread del test di attendere fino al completamento dell'operazione grafica prima di continuare l'esecuzione.
+
+Il metodo gestisce inoltre eventuali eccezioni generate durante l'esecuzione sul JavaFX Application Thread, memorizzandole e propagandole successivamente al thread del test. In questo modo eventuali errori nelle operazioni sui componenti grafici non vengono persi e possono causare il fallimento del test.
+
+\subsection{Casi di testing}
+
+\subsubsection{Unit Test}
+
+I test unitari sono stati utilizzati per verificare il comportamento delle singole componenti del sistema considerate indipendentemente dalle altre funzionalità dell'applicazione. In particolare, sono state testate la gestione della sessione dell'utente e la logica relativa alla generazione degli alert.
+
+\subsubsection*{\texttt{SessionTest}}
+
+La classe \texttt{SessionTest} verifica il corretto funzionamento della sessione dell'utente e del relativo pattern Singleton, controllando che venga mantenuta una singola istanza della sessione e che l'utente corrente venga correttamente impostato e rimosso.
+
+\begin{itemize}
+	
+	\item \texttt{getInstanceStessaIstanza()}: chiamata multipla di \texttt{getInstance()} per verificare che venga sempre restituita la stessa istanza della sessione.
+	
+	\item \texttt{funzionamentoSetELogout()}: impostazione dell'utente corrente e successivo logout per verificare che l'utente venga correttamente impostato e poi rimosso dalla sessione.
+	
+\end{itemize}
+
+\subsubsection*{\texttt{GestoreAlertTest}}
+
+La classe \texttt{GestoreAlertTest} verifica la logica di generazione degli alert automatici, considerando sia la mancata assunzione dei farmaci e l'aderenza alle terapie, sia i valori glicemici rilevati prima e dopo i pasti. I test verificano inoltre le soglie associate ai diversi livelli di urgenza e impediscono la generazione ripetuta dello stesso alert.
+
+\begin{itemize}
+	
+	\item \texttt{verificaAssunzioniGiornaliereNonInviaPromSeTutteLeAssunzSonoFatte()}: inserimento di tutte le assunzioni previste per la giornata per verificare che non venga inviato alcun promemoria.
+	
+	\item \texttt{verificaAssunzioniGiornaliereInviaPromemoriaSeMancaUnaAssunzione()}: inserimento di una sola delle due assunzioni previste per verificare che venga inviato un promemoria con urgenza bassa.
+	
+	\item \texttt{verificaAssunzioniGiornaliereInviaPromemoriaSeNonCiSonoAssunzioni()}: verifica che, in assenza di assunzioni nella giornata, venga inviato un promemoria al paziente.
+	
+	\item \texttt{verificaAssunzioniGiornaliereNonInviaDueVolteLoStessoPromemoria()}: esecuzione due volte del controllo giornaliero per verificare che lo stesso promemoria non venga inviato due volte.
+	
+	\item \texttt{verificaAssunzioniGiornaliereIgnoraLeAssunzioniDiAltriGiorni()}: inserimento di assunzioni relative a giorni diversi per verificare che vengano considerate solo quelle della giornata corrente.
+	
+	\item \texttt{verificaAssunzioniGiornaliereGestiscePiuTerapieSeparatamente()}: presenza di più terapie con assunzioni diverse per verificare che venga generato un promemoria separato per ogni terapia incompleta.
+	
+	\item \texttt{verificaAderenzaTerapiaInviaAlertDopoTreGiorniMancati()}: verifica che dopo tre giorni consecutivi di mancata aderenza venga inviato un alert al medico con urgenza media.
+	
+	\item \texttt{verificaAderenzaTerapiaNonInviaAlertConMenoDiTreGiorniMancati()}: presenza di meno di tre giorni consecutivi di mancata aderenza per verificare che non venga inviato alcun alert.
+	
+	\item \texttt{verificaAderenzaTerapiaNonInviaAlertSeLaTerapiaECompleta()}: completamento della terapia nei tre giorni precedenti per verificare che non venga generato alcun alert.
+	
+	\item \texttt{verificaAderenzaTerapiaNonInviaDueVolteLoStessoAlert()}: esecuzione ripetuta del controllo di aderenza per verificare che lo stesso alert non venga inviato due volte.
+	
+	\item \texttt{verificaAderenzaTerapiaControllaTreGiorniDiversi()}: alternanza tra giornate complete e incomplete per verificare che il controllo consideri correttamente i tre giorni precedenti e conteggi solo quelli mancati.
+	
+	\item \texttt{verificaGlicemiaPrePastoSotto70InviaAlertHigh()}: rilevazione pre-pasto con glicemia pari a 69 per verificare che venga inviato un alert ad alta urgenza.
+	
+	\item \texttt{verificaGlicemiaPrePastoA70InviaAlertLow()}: rilevazione pre-pasto con glicemia pari a 70 per verificare che venga inviato un alert a bassa urgenza.
+	
+	\item \texttt{verificaGlicemiaPrePastoA79InviaAlertLow()}: rilevazione pre-pasto con glicemia pari a 79 per verificare che venga inviato un alert a bassa urgenza.
+	
+	\item \texttt{verificaGlicemiaPrePastoA80NonInviaAlert()}: rilevazione pre-pasto con glicemia pari a 80 per verificare che non venga inviato alcun alert.
+	
+	\item \texttt{verificaGlicemiaPrePastoA130NonInviaAlert()}: rilevazione pre-pasto con glicemia pari a 130 per verificare che non venga inviato alcun alert.
+	
+	\item \texttt{verificaGlicemiaPrePastoA131InviaAlertMedium()}: rilevazione pre-pasto con glicemia pari a 131 per verificare che venga inviato un alert a media urgenza.
+	
+	\item \texttt{verificaGlicemiaPrePastoA249InviaAlertMedium()}: rilevazione pre-pasto con glicemia pari a 249 per verificare che venga inviato un alert a media urgenza.
+	
+	\item \texttt{verificaGlicemiaPrePastoA250InviaAlertHigh()}: rilevazione pre-pasto con glicemia pari a 250 per verificare che venga inviato un alert ad alta urgenza.
+	
+	\item \texttt{verificaGlicemiaPostPastoSotto70InviaAlertHigh()}: rilevazione post-pasto con glicemia pari a 69 per verificare che venga inviato un alert ad alta urgenza.
+	
+	\item \texttt{verificaGlicemiaPostPastoA180NonInviaAlert()}: rilevazione post-pasto con glicemia pari a 180 per verificare che non venga inviato alcun alert.
+	
+	\item \texttt{verificaGlicemiaPostPastoA181InviaAlertMedium()}: rilevazione post-pasto con glicemia pari a 181 per verificare che venga inviato un alert a media urgenza.
+	
+	\item \texttt{verificaGlicemiaPostPastoA249InviaAlertMedium()}: rilevazione post-pasto con glicemia pari a 249 per verificare che venga inviato un alert a media urgenza.
+	
+	\item \texttt{verificaGlicemiaPostPastoA250InviaAlertHigh()}: rilevazione post-pasto con glicemia pari a 250 per verificare che venga inviato un alert ad alta urgenza.
+	
+	\item \texttt{verificaTuttiIPazientiControllaIPazientiDelMedico()}: verifica che il controllo di tutti i pazienti di un medico generi gli alert previsti per il suo paziente.
+	
+	\item \texttt{verificaTuttiIPazientiNonControllaPazientiDiUnAltroMedico()}: presenza di pazienti associati a medici diversi per verificare che vengano controllati solo quelli del medico specificato.
+	
+	\item \texttt{verificaTuttiIPazientiGestiscePazienteSenzaTerapie()}: presenza di un paziente senza terapie per verificare che non vengano generati alert per quel paziente.
+	
+\end{itemize}
+
+\subsubsection{Integration Test}
+
+I test di integrazione sono stati utilizzati per verificare il corretto funzionamento della persistenza e delle interazioni tra le principali classi del modello e il database. In particolare, la classe \texttt{Database} è stata testata attraverso operazioni di inserimento, ricerca, modifica, associazione ed eliminazione dei diversi elementi gestiti dall'applicazione.
+
+\subsubsection*{\texttt{DatabaseTest}}
+
+La classe \texttt{DatabaseTest} verifica il comportamento del database relativamente alla gestione degli utenti, delle associazioni tra pazienti e diabetologi, delle terapie, delle rilevazioni, delle assunzioni, delle segnalazioni, dei messaggi e dei log delle operazioni.
+
+\begin{itemize}
+	
+	\item \texttt{addPazienteNonAggiungeDuplicatiConStessoCodiceFiscale()}: creazione di due pazienti con lo stesso codice fiscale e aggiunta al database per verificare che non vengano inseriti duplicati.
+	
+	\item \texttt{addDiabetologoNonAggiungeDuplicatiConStessoCodiceFiscale()}: creazione di due diabetologi con lo stesso codice fiscale e aggiunta al database per verificare che non vengano inseriti duplicati.
+	
+	\item \texttt{addResponsabileNonAggiungeDuplicatiCodiceFiscaleUguale()}: creazione di due responsabili con lo stesso codice fiscale e aggiunta al database per verificare che non vengano inseriti duplicati.
+	
+	\item \texttt{addResponsabileNonAggiungeDuplicatiUsernameUguale()}: creazione di due responsabili con lo stesso username e aggiunta al database per verificare che non vengano inseriti duplicati.
+	
+	\item \texttt{getTerapieByPazienteRestituisceSoloLeTerapieDelPaziente()}: creazione di terapie associate a pazienti diversi per verificare che vengano restituite solo quelle del paziente specificato.
+	
+	\item \texttt{getAssunzioniByPazienteRestituisceSoloQuelleDelPaziente()}: creazione di assunzioni appartenenti a pazienti diversi per verificare che vengano restituite solo quelle del paziente specificato.
+	
+	\item \texttt{getRilevazioniByPazienteRestituisceSoloQuelleDelPaziente()}: creazione di rilevazioni appartenenti a pazienti diversi per verificare che vengano restituite solo quelle del paziente specificato.
+	
+	\item \texttt{getSegnalazioniByPazienteRestituisceSoloQuelleDelPaziente()}: creazione di segnalazioni appartenenti a pazienti diversi per verificare che vengano restituite solo quelle del paziente specificato.
+	
+	\item \texttt{loginRestituisceLUtenteConCredenzialiCorrette()}: inserimento di un paziente e verifica che il login restituisca l'utente con username e password corrette.
+	
+	\item \texttt{loginRestituisceNullConPasswordErrata()}: inserimento di un paziente e verifica che il login restituisca null con una password errata.
+	
+	\item \texttt{loginRestituisceNullConUtenteInesistente()}: tentativo di login con un utente inesistente per verificare che venga restituito null.
+	
+	\item \texttt{loginFunzionaAncheConUnResponsabile()}: inserimento di un responsabile e verifica che possa effettuare correttamente il login.
+	
+	\item \texttt{getMessaggioFromMedicoRitornaMessaggiDelMedico()}: inserimento di messaggi associati a diversi diabetologi per verificare che vengano restituiti solo quelli del medico specificato.
+	
+	\item \texttt{getMessaggioFromPazienteRitornaMessaggiDelPaziente()}: inserimento di messaggi associati a diversi pazienti per verificare che vengano restituiti solo quelli del paziente specificato.
+	
+	\item \texttt{pazienteVieneAssociatoAlDiabetologo()}: associazione di un paziente a un diabetologo per verificare che il paziente abbia correttamente il medico di riferimento.
+	
+	\item \texttt{pazientiVengonoAssociatiAlloStessoDiabetologo()}: associazione di più pazienti a uno stesso diabetologo per verificare che tutti abbiano correttamente lo stesso medico di riferimento.
+	
+	\item \texttt{getPazientiByDiabetologoRestituiscePazientiCorretti()}: associazione di un paziente a un diabetologo per verificare che vengano restituiti correttamente i pazienti seguiti dal medico.
+	
+	\item \texttt{eliminazionePazienteRimuoveIlPazienteDalDatabase()}: inserimento di un paziente e successiva eliminazione per verificare che venga rimosso dal database.
+	
+	\item \texttt{eliminazioneDiabetologoRimuoveIlMedicoDalDatabase()}: inserimento di un diabetologo e successiva eliminazione per verificare che venga rimosso dal database.
+	
+	\item \texttt{diabetologoConPazientiNonDovrebbeEssereEliminabile()}: associazione di un paziente a un diabetologo per verificare che il medico risulti ancora associato a dei pazienti e quindi non sia eliminabile.
+	
+	\item \texttt{usernameEsistenteRiconosceUnUsernameGiaPresente()}: inserimento di un utente e verifica che il metodo riconosca correttamente uno username già presente.
+	
+	\item \texttt{usernameNonEsistenteRestituisceFalse()}: verifica che uno username non presente nel database venga riconosciuto come inesistente.
+	
+	\item \texttt{addAssunzioneAggiungeCorrettaAssunzioneAlDatabase()}: inserimento di un'assunzione di farmaco e verifica che venga salvata correttamente con tutti i relativi dati.
+	
+	\item \texttt{updateAssunzioneSostituisceLElementoNellaLista()}: inserimento di un'assunzione e successiva modifica per verificare che quella originale venga sostituita con i nuovi dati.
+	
+	\item \texttt{updateAssunzioneNonFaNienteSeLElementoNonEPresente()}: tentativo di modificare un'assunzione non presente per verificare che il database rimanga invariato.
+	
+	\item \texttt{addRilevazioneAggiungeCorrettaRilevazioneAlDatabase()}: inserimento di una rilevazione e verifica che venga salvata correttamente con tutti i relativi dati.
+	
+	\item \texttt{updateRilevazioneSostituisceLElementoNellaLista()}: inserimento di una rilevazione e successiva modifica per verificare che quella originale venga sostituita con i nuovi dati.
+	
+	\item \texttt{updateRilevazioneNonFaNienteSeLElementoNonEPresente()}: tentativo di modificare una rilevazione non presente per verificare che il database rimanga invariato.
+	
+	\item \texttt{addSegnalazioneAggiungeCorrettaSegnalazioneAlDatabase()}: inserimento di una segnalazione e verifica che venga salvata correttamente con tutti i relativi dati.
+	
+	\item \texttt{updateSegnalazioneSostituisceLElementoNellaLista()}: inserimento di una segnalazione e successiva modifica per verificare che quella originale venga sostituita con i nuovi dati.
+	
+	\item \texttt{updateSegnalazioneNonFaNienteSeLElementoNonEPresente()}: tentativo di modificare una segnalazione non presente per verificare che il database rimanga invariato.
+	
+	\item \texttt{deleteAssunzioneRimuoveCorrettaAssunzioneDalDatabase()}: inserimento e successiva eliminazione di un'assunzione per verificare che venga rimossa dal database.
+	
+	\item \texttt{deleteRilevazioneRimuoveCorrettaRilevazioneDalDatabase()}: inserimento e successiva eliminazione di una rilevazione per verificare che venga rimossa dal database.
+	
+	\item \texttt{deleteSegnalazioneRimuoveCorrettaSegnalazioneDalDatabase()}: inserimento e successiva eliminazione di una segnalazione per verificare che venga rimossa dal database.
+	
+	\item \texttt{addTerapiaAggiungeCorrettaTerapiaAlDatabase()}: inserimento di una terapia per verificare che venga correttamente aggiunta al database.
+	
+	\item \texttt{addTerapiaNonAggiungeDuplicatiConTuttiICampiUguali()}: inserimento di due terapie con gli stessi dati per verificare che non vengano inseriti duplicati.
+	
+	\item \texttt{modificaTerapiaPazienteSostituisceLaVecchiaTerapia()}: assegnazione di una terapia a un paziente e successiva modifica per verificare che la vecchia terapia venga sostituita dalla nuova.
+	
+	\item \texttt{modificaTerapiaPazienteConTerapiaGiaEsistenteNonCreaDuplicati()}: modifica di una terapia con una terapia già presente nel database per verificare che non venga creato un duplicato.
+	
+	\item \texttt{assegnaTerapiaAggiungeIlPazienteAllaTerapia()}: assegnazione di una terapia a un paziente per verificare che il paziente venga aggiunto alla terapia.
+	
+	\item \texttt{assegnaTerapiaNonDuplicaUnPazienteGiaAssegnato()}: assegnazione ripetuta della stessa terapia allo stesso paziente per verificare che il paziente non venga duplicato.
+	
+	\item \texttt{rimuoverePazienteDaTerapiaNonRimuoveLaTerapiaDalDatabase()}: rimozione di un paziente da una terapia per verificare che la terapia rimanga comunque presente nel database.
+	
+	\item \texttt{rimuoverePazienteDaTerapiaLasciaLaTerapiaNelDatabase()}: rimozione del paziente dalla lista della terapia per verificare che la terapia rimanga nel database senza pazienti associati.
+	
+	\item \texttt{removeTerapiaRimuoveLaTerapiaDalDatabase()}: inserimento e successiva rimozione di una terapia per verificare che venga eliminata dal database.
+	
+	\item \texttt{removeTerapiaRimuoveLaTerapiaAncheDalleTerapieDelPaziente()}: rimozione di una terapia dal database per verificare che venga eliminata anche dalle terapie associate al paziente.
+	
+	\item \texttt{getLogsByPazienteRestituisceSoloIlogDelPaziente()}: inserimento di log associati a pazienti diversi per verificare che vengano restituiti solo i log relativi al paziente specificato.
+	
+	\item \texttt{getLogsByAutoreRestituisceSoloILogDellAutore()}: inserimento di log creati da autori diversi per verificare che vengano restituiti solo i log relativi all'autore specificato.
+	
+	\item \texttt{updatePazienteAggiornaLeInformazioniPersonali()}: modifica delle informazioni personali, dei fattori di rischio e degli altri dati del paziente per verificare che le nuove informazioni vengano correttamente aggiornate nel database.
+	
+\end{itemize}
+
+\subsubsection{System Test}
+
+I test di sistema sono stati utilizzati per verificare il comportamento delle funzionalità dell'applicazione dal punto di vista dell'interazione tra interfaccia grafica, controller, modello e database. I test sono stati organizzati in base alle principali aree funzionali dell'applicazione.
+
+\subsubsection*{Diabetologo}
+
+In questa parte sono state verificate le funzionalità disponibili al diabetologo, comprendenti la visualizzazione e la ricerca dei pazienti, la consultazione dei relativi dati e dell'andamento glicemico, la modifica delle informazioni del paziente e la gestione delle terapie assegnate ai pazienti.
+
+\subsubsection*{\texttt{DiabetologoControllerTest}}
+
+La classe \texttt{DiabetologoControllerTest} verifica il comportamento della schermata principale del diabetologo, la ricerca e visualizzazione dei pazienti associati e l'apertura delle funzionalità relative all'andamento glicemico e alle informazioni del paziente.
+
+\begin{itemize}
+	
+	\item \texttt{aperturaDiabetologoCaricaCorrettaLaSchermata()}: caricamento della schermata del diabetologo per verificare che controller, barra di ricerca e container dei pazienti vengano inizializzati correttamente.
+	
+	\item \texttt{ricercaPerNomeMostraSoloIlPazienteCorrispondente()}: inserimento di due pazienti e ricerca tramite nome per verificare che venga visualizzato solo il paziente corrispondente.
+	
+	\item \texttt{ricercaPerCognomeMostraSoloIlPazienteCorrispondente()}: inserimento di due pazienti e ricerca tramite cognome per verificare che venga visualizzato solo il paziente corrispondente.
+	
+	\item \texttt{ricercaPerCodiceFiscaleMostraIlPazienteCorrispondente()}: inserimento di due pazienti e ricerca tramite codice fiscale per verificare che venga visualizzato il paziente corretto.
+	
+	\item \texttt{ricercaNonFaDifferenzaTraMaiuscoleEMinuscole()}: ricerca di un paziente usando maiuscole e minuscole miste per verificare che la ricerca non sia case-sensitive.
+	
+	\item \texttt{ricercaSenzaRisultatiLasciaVuotoIlContainer()}: ricerca di un paziente inesistente per verificare che il container rimanga vuoto.
+	
+	\item \texttt{modificaDelTestoDiRicercaAggiornaAutomaticamenteLaLista()}: modifica consecutiva del testo di ricerca per verificare che la lista dei pazienti venga aggiornata automaticamente.
+	
+	\item \texttt{listaVisualizzaSoloIPazientiSeguitiDalMedico()}: inserimento di pazienti seguiti da medici diversi per verificare che il diabetologo visualizzi solo i propri pazienti.
+	
+	\item \texttt{boxPazienteContieneAvatarNomeEIBottoni()}: visualizzazione di un paziente per verificare che il relativo box contenga avatar, nome e pulsanti `Andamento'', `Terapia'' e ``Info Paziente''.
+	
+	\item \texttt{andamentoRiceveIlPazienteCorretto()}: creazione di due pazienti con rilevazioni diverse e apertura dell'andamento del primo per verificare che venga passato il paziente corretto e visualizzata la sua rilevazione.
+	
+	\item \texttt{andamentoVisualizzaCorrettaRilevazioneDelGiorno()}: inserimento di una rilevazione in una determinata giornata per verificare che la visualizzazione giornaliera mostri correttamente orario e valore della glicemia.
+	
+	\item \texttt{andamentoVisualizzaMediaSettimanaleCorretta()}: inserimento di rilevazioni durante la settimana per verificare che la visualizzazione settimanale mostri correttamente i valori medi distinti tra prima e dopo i pasti.
+	
+	\item \texttt{andamentoVisualizzaMediaMensileCorretta()}: inserimento di più rilevazioni nello stesso giorno del mese per verificare che la visualizzazione mensile calcoli e mostri correttamente la media.
+	
+\end{itemize}
+
+\subsubsection*{\texttt{TerapiePazienteTest}}
+
+La classe \texttt{TerapiePazienteTest} verifica la gestione delle terapie del paziente, dalla visualizzazione e ricerca fino alla creazione, assegnazione, rimozione ed eliminazione delle terapie.
+
+\begin{itemize}
+	
+	\item \texttt{visualizzaCorrettamenteTerapiePaziente()}: creazione e assegnazione di due terapie al paziente per verificare che vengano visualizzate entrambe nello storico delle terapie.
+	
+	\item \texttt{ricercaTerapiaPerNomeFarmaco()}: creazione di due terapie e ricerca tramite nome del farmaco per verificare che venga visualizzata solo la terapia corrispondente.
+	
+	\item \texttt{pulsanteAggiungiMostraSceltaTerapia()}: pressione del pulsante ``Aggiungi'' per verificare che vengano visualizzate le opzioni per creare una nuova terapia o scegliere una terapia esistente.
+	
+	\item \texttt{pulsanteNuovaTerapiaApreFinestraCorretta()}: apertura del menu `Aggiungi'' e pressione di `Nuova terapia'' per verificare che il menu venga chiuso e venga creato correttamente il TerapiaController.
+	
+	\item \texttt{pulsanteTerapiaEsistenteApreFinestraCorretta()}: apertura del menu `Aggiungi'' e pressione di `Terapia esistente'' per verificare che il menu venga chiuso e venga creato correttamente il TerapieEsistentiController.
+	
+	\item \texttt{pulsanteSalvaInserisceTerapiaNelDatabase()}: compilazione dei dati di una nuova terapia e pressione di ``Salva'' per verificare che la terapia venga inserita correttamente nel database con tutti i dati.
+	
+	\item \texttt{pulsanteAssegnaAggiungeTerapiaAlPaziente()}: visualizzazione di una terapia disponibile e pressione di ``Assegna'' per verificare che la terapia venga associata al paziente.
+	
+	\item \texttt{pulsanteRimuoviEliminaTerapiaDalDatabase()}: visualizzazione di una terapia disponibile e pressione di ``Rimuovi'' per verificare che venga eliminata dal database e dalla lista visualizzata.
+	
+	\item \texttt{pulsanteEliminaRimuoveTerapiaDalPaziente()}: visualizzazione di una terapia già associata al paziente e pressione di ``Elimina'' per verificare che venga rimossa dal paziente ma rimanga presente nel database.
+	
+\end{itemize}
+
+\subsubsection*{\texttt{InfoPazienteControllerTest}}
+
+La classe \texttt{InfoPazienteControllerTest} verifica la modifica delle informazioni del paziente, comprendendo i fattori di rischio, le patologie, le comorbidità e i dettagli aggiuntivi. Viene inoltre verificata la registrazione delle modifiche nello storico, il comportamento dell'operazione di annullamento e la successiva registrazione di nuove modifiche.
+
+\begin{itemize}
+	
+	\item \texttt{pulsanteFattoriRischioApreMenuESelezionaFattore()}: apertura del menu dei fattori di rischio e selezione del fattore Fumatore per verificare che il fattore venga correttamente selezionato e visualizzato.
+	
+	\item \texttt{salvataggioFattoreDiRischioAggiornaPazienteEDatabase()}: selezione del fattore Fumatore e successivo salvataggio per verificare che il fattore di rischio venga correttamente associato al paziente e salvato nel database.
+	
+	\item \texttt{salvataggioModificaCampiTestualiAggiornaPaziente()}: modifica dei campi relativi a patologie pregresse, comorbidità e dettagli del paziente per verificare che le nuove informazioni vengano correttamente salvate nel database.
+	
+	\item \texttt{salvataggioModificaFattoriECampiTestualiCreaUnSoloLog()}: modifica di più fattori di rischio e dei campi testuali del paziente per verificare che tutte le modifiche vengano salvate correttamente e che venga creato un unico log dell'operazione con le informazioni corrette sull'autore e sul paziente modificato.
+	
+	\item \texttt{salvataggioSenzaModificheNonCreaNuovoLog()}: salvataggio senza apportare modifiche al paziente per verificare che i dati rimangano invariati e che non venga creato un nuovo log.
+	
+	\item \texttt{pulsanteStoricoApreStoricoDelleModifiche()}: modifica di un'informazione del paziente e apertura dello storico per verificare che lo storico delle modifiche venga correttamente visualizzato.
+	
+	\item \texttt{undoDalloStoricoRipristinaStatoPrecedente()}: modifica delle informazioni del paziente e successivo annullamento dallo storico per verificare che lo stato precedente venga correttamente ripristinato e che venga registrato il relativo log di annullamento.
+	
+	\item \texttt{aggiornamentoDopoUndoCreaNuovaModifica()}: modifica del paziente, annullamento della modifica e successiva nuova modifica per verificare che la nuova operazione venga correttamente registrata come una nuova modifica.
+	
+\end{itemize}
+
+\subsubsection*{Messaggi}
+
+La gestione dei messaggi è stata verificata attraverso test relativi alla visualizzazione, alla ricerca per mittente, allo stato di lettura, al livello di urgenza e alla gestione delle notifiche.
+
+\subsubsection*{\texttt{MessaggiTest}}
+
+La classe \texttt{MessaggiTest} verifica la corretta visualizzazione e gestione dei messaggi ricevuti dal diabetologo, compreso il comportamento associato all'apertura dei messaggi e alle notifiche.
+
+\begin{itemize}
+	
+	\item \texttt{messaggiDelDiabetologoVengonoVisualizzati()}: creazione di un messaggio del paziente verso il medico per verificare che venga correttamente visualizzato nel container dei messaggi.
+	
+	\item \texttt{ricercaPerMittenteMostraSoloIlMessaggioCorrispondente()}: inserimento di più messaggi dello stesso mittente e ricerca per nome per verificare che vengano visualizzati i messaggi corrispondenti.
+	
+	\item \texttt{ricercaPerMittenteNonFaDifferenzaTraMaiuscoleEMinuscole()}: ricerca del mittente utilizzando maiuscole e minuscole diverse per verificare che la ricerca non sia case-sensitive.
+	
+	\item \texttt{ricercaSenzaRisultatiLasciaVuotoIlContainer()}: ricerca di un mittente inesistente per verificare che il container dei messaggi rimanga vuoto.
+	
+	\item \texttt{boxMessaggioContieneAvatarMittenteAnteprimaEApri()}: visualizzazione di un messaggio per verificare che il box contenga avatar, nome del mittente e pulsante ``Apri''.
+	
+	\item \texttt{messaggioNonLettoHaOpacitaCompleta()}: visualizzazione di un messaggio non letto per verificare che il box abbia opacità completa.
+	
+	\item \texttt{messaggioLettoHaOpacitaRidotta()}: visualizzazione di un messaggio già letto per verificare che il box abbia opacità ridotta.
+	
+	\item \texttt{aperturaMessaggioLoImpostaComeLetto()}: apertura di un messaggio non letto per verificare che venga impostato come letto anche nel database.
+	
+	\item \texttt{aperturaDiUnMessaggioGiaLettoNonEsegueNuovamenteIlCallback()}: apertura di un messaggio già letto per verificare che il callback delle notifiche non venga eseguito nuovamente.
+	
+	\item \texttt{aperturaDiUnMessaggioNonLettoEsegueIlCallbackNotifiche()}: apertura di un messaggio non letto per verificare che venga eseguito il callback delle notifiche.
+	
+	\item \texttt{messaggioMostraIlLivelloDiUrgenza()}: visualizzazione di un messaggio ad alta urgenza per verificare che il relativo livello venga mostrato correttamente.
+	
+	\item \texttt{aperturaMessaggioVisualizzaMittenteETestoCompleto()}: apertura di un messaggio per verificare che vengano visualizzati correttamente mittente, testo completo e livello di urgenza.
+	
+\end{itemize}
+
+\subsubsection*{Paziente}
+
+In questa parte sono state verificate le principali funzionalità disponibili al paziente e la gestione dello storico dei dati. I test comprendono l'inserimento di rilevazioni, assunzioni e segnalazioni, l'invio di comunicazioni al diabetologo e la consultazione, modifica ed eliminazione degli elementi dello storico.
+
+\subsubsection*{\texttt{PazienteControllerTest}}
+
+La classe \texttt{PazienteControllerTest} verifica l'inserimento e il salvataggio delle rilevazioni, delle assunzioni di farmaci e delle segnalazioni, considerando sia i casi validi sia i casi in cui i dati inseriti risultano incompleti. Viene inoltre verificata la corretta gestione dell'invio di email al diabetologo di riferimento.
+
+\subsubsection*{Rilevazione}
+
+\begin{itemize}
+	
+	\item \texttt{inserimentoRilevazioneValidaInserisceTuttiICampi()}: compilazione di una rilevazione valida per verificare che tutti i dati vengano salvati correttamente.
+	
+	\item \texttt{salvataggioRilevazioneAggiungeCorrettamenteAlDatabase()}: inserimento di una rilevazione valida per verificare che venga aggiunta al database.
+	
+	\item \texttt{salvataggioRilevazioneSenzaCampiNonInserisceNelDatabase()}: tentativo di salvare una rilevazione senza compilare i campi per verificare che non venga inserita.
+	
+	\item \texttt{salvataggioRilevazioneConUnCampoMancanteNonInserisceNelDatabase()}: compilazione di tutti i dati tranne il momento della rilevazione per verificare che non venga effettuato il salvataggio.
+	
+\end{itemize}
+
+\subsubsection*{Assunzione farmaco}
+
+\begin{itemize}
+	
+	\item \texttt{inserimentoAssunzioneValidaInserisceTuttiICampi()}: compilazione di un'assunzione valida per verificare che paziente, data, orario, quantità e terapia vengano salvati correttamente.
+	
+	\item \texttt{salvataggioAssunzioneAggiungeCorrettamenteAlDatabase()}: inserimento di un'assunzione valida per verificare che venga aggiunta al database.
+	
+	\item \texttt{salvataggioAssunzioneSenzaCampiNonInserisceNelDatabase()}: tentativo di salvare un'assunzione senza compilare i campi per verificare che non venga inserita.
+	
+	\item \texttt{salvataggioAssunzioneConUnCampoMancanteNonInserisceNelDatabase()}: compilazione di tutti i dati tranne la terapia per verificare che l'assunzione non venga salvata.
+	
+\end{itemize}
+
+\subsubsection*{Segnalazione}
+
+\begin{itemize}
+	
+	\item \texttt{inserimentoSegnalazioneValidaInserisceTuttiICampi()}: compilazione di una segnalazione valida per verificare che date, testo e paziente vengano salvati correttamente.
+	
+	\item \texttt{salvataggioSegnalazioneAggiungeCorrettamenteAlDatabase()}: inserimento di una segnalazione valida per verificare che venga aggiunta al database.
+	
+	\item \texttt{salvataggioSegnalazioneSenzaCampiNonInserisceNelDatabase()}: tentativo di salvare una segnalazione senza compilare i campi per verificare che non venga inserita.
+	
+	\item \texttt{salvataggioSegnalazioneConUnCampoMancanteNonInserisceNelDatabase()}: compilazione delle date senza inserire il testo per verificare che la segnalazione non venga salvata.
+	
+\end{itemize}
+
+\subsubsection*{Email}
+
+\begin{itemize}
+	
+	\item \texttt{emailDelDiabetologoECorretta()}: apertura della schermata di scrittura email per verificare che il destinatario sia correttamente impostato con l'indirizzo del diabetologo.
+	
+	\item \texttt{invioEmailInviaCorrettaAlDiabetologoDiRiferimento()}: compilazione e invio di un'email per verificare che il messaggio venga salvato con paziente, diabetologo, testo e tipo corretti.
+	
+\end{itemize}
+
+\paragraph{\texttt{StoricoControllerTest}}\mbox{}\
+
+La classe \texttt{StoricoControllerTest} verifica la visualizzazione e la ricerca degli elementi presenti nello storico del paziente, oltre alle operazioni di modifica e di eliminazione delle rilevazioni, delle assunzioni e delle segnalazioni.
+
+\subsubsection*{Apertura e visualizzazione}
+
+\begin{itemize}
+	
+	\item \texttt{aperturaStoricoCaricaCorrettaLaSchermata()}: apertura dello storico per verificare che controller, campo di ricerca e contenitore degli elementi vengano correttamente caricati.
+	
+	\item \texttt{storicoVisualizzaCorrettaUnaRilevazione()}: inserimento di una rilevazione nello storico per verificare che data, glicemia e orario del pasto vengano visualizzati correttamente.
+	
+	\item \texttt{storicoVisualizzaCorrettaUnaAssunzione()}: inserimento di un'assunzione nello storico per verificare che data e quantità vengano visualizzate correttamente.
+	
+	\item \texttt{storicoVisualizzaCorrettaUnaSegnalazione()}: inserimento di una segnalazione nello storico per verificare che data e testo vengano visualizzati correttamente.
+	
+\end{itemize}
+
+\subsubsection*{Ricerca}
+
+\begin{itemize}
+	
+	\item \texttt{ricercaDataMostraSoloGliElementiCorrispondenti()}: inserimento di rilevazioni in date diverse e ricerca per data per verificare che venga visualizzato solo l'elemento corrispondente.
+	
+	\item \texttt{ricercaDataSenzaCorrispondenzeNonMostraElementi()}: ricerca di una data senza elementi corrispondenti per verificare che lo storico rimanga vuoto.
+	
+\end{itemize}
+
+\subsubsection*{Modifica}
+
+\begin{itemize}
+	
+	\item \texttt{pulsanteModificaRilevazioneSalvaModifica()}: apertura della modifica di una rilevazione, modifica della glicemia e salvataggio per verificare che il nuovo valore venga memorizzato nel database.
+	
+	\item \texttt{pulsanteModificaRilevazioneSenzaSalvareMantieneValoreOriginale()}: modifica del valore della glicemia senza effettuare il salvataggio per verificare che nel database rimanga il valore originale.
+	
+	\item \texttt{pulsanteModificaAssunzioneSalvaModifica()}: apertura della modifica di un'assunzione, modifica della quantità e salvataggio per verificare che il nuovo valore venga memorizzato nel database.
+	
+	\item \texttt{pulsanteModificaAssunzioneSenzaSalvareMantieneValoreOriginale()}: modifica della quantità di un'assunzione senza effettuare il salvataggio per verificare che nel database rimanga il valore originale.
+	
+	\item \texttt{pulsanteModificaSegnalazioneSalvaModifica()}: apertura della modifica di una segnalazione, modifica del testo e salvataggio per verificare che il nuovo testo venga memorizzato nel database.
+	
+	\item \texttt{pulsanteModificaSegnalazioneSenzaSalvareMantieneValoreOriginale()}: modifica del testo di una segnalazione senza effettuare il salvataggio per verificare che nel database rimanga il testo originale.
+	
+\end{itemize}
+
+\subsubsection*{Eliminazione}
+
+\begin{itemize}
+	
+	\item \texttt{pulsanteEliminaRilevazioneRimuoveElementoDalDatabase()}: pressione del pulsante di eliminazione di una rilevazione per verificare che venga rimossa sia dal database sia dallo storico visualizzato.
+	
+	\item \texttt{pulsanteEliminaAssunzioneRimuoveElementoDalDatabase()}: pressione del pulsante di eliminazione di un'assunzione per verificare che venga rimossa sia dal database sia dallo storico visualizzato.
+	
+	\item \texttt{pulsanteEliminaSegnalazioneRimuoveElementoDalDatabase()}: pressione del pulsante di eliminazione di una segnalazione per verificare che venga rimossa sia dal database sia dallo storico visualizzato.
+	
+\end{itemize}
+
+\subsubsection*{Responsabile}
+
+La parte relativa al responsabile verifica la gestione degli utenti del sistema, comprendendo la visualizzazione e la ricerca di medici e pazienti, la modifica delle credenziali, la gestione delle associazioni tra pazienti e diabetologi e l'inserimento di nuovi utenti.
+
+\subsubsection*{\texttt{ResponsabileControllerTest}}
+
+La classe \texttt{ResponsabileControllerTest} verifica il comportamento della schermata del responsabile, dalla corretta inizializzazione del profilo alla visualizzazione, ricerca, modifica ed eliminazione degli utenti presenti nel sistema.
+
+\begin{itemize}
+	
+	\item \texttt{initializeImpostaIlRuoloResponsabile()}: inizializzazione del controller per verificare che il ruolo visualizzato sia correttamente impostato su ``Responsabile''.
+	
+	\item \texttt{inizializzaProfiloVisualizzaNomeECognome()}: inizializzazione del profilo di un responsabile per verificare che vengano visualizzati correttamente nome, cognome e ruolo.
+	
+	\item \texttt{aggiornaListeVisualizzaTuttiGliUtentiQuandoLaRicercaEVuota()}: inserimento di medici e pazienti e ricerca vuota per verificare che vengano visualizzati tutti gli utenti.
+	
+	\item \texttt{ricercaPerNomeMostraSoloLaPersonaCorrispondente()}: ricerca tramite nome per verificare che venga visualizzata solo la persona corrispondente.
+	
+	\item \texttt{ricercaPerCognomeMostraLaPersonaCorrispondente()}: ricerca tramite cognome per verificare che venga visualizzata solo la persona corrispondente.
+	
+	\item \texttt{ricercaNonFaDifferenzaTraMaiuscoleEMinuscole()}: ricerca con lettere maiuscole e minuscole miste per verificare che non venga fatta distinzione tra maiuscole e minuscole.
+	
+	\item \texttt{ricercaPerNomeECognomeFunziona()}: ricerca utilizzando nome e cognome insieme per verificare che venga trovata la persona corretta.
+	
+	\item \texttt{ricercaSenzaRisultatiLasciaVuotiIContainer()}: ricerca di una persona inesistente per verificare che i container di medici e pazienti rimangano vuoti.
+	
+	\item \texttt{modificaDelTestoDiRicercaAggiornaAutomaticamenteLeListe()}: modifica del testo di ricerca per verificare che le liste vengano aggiornate automaticamente.
+	
+	\item \texttt{boxPersonaContieneAvatarNomeEModificaElimina()}: visualizzazione di una persona per verificare che il relativo box contenga avatar, nome, pulsante di modifica e pulsante di eliminazione.
+	
+	\item \texttt{pulsanteEliminaPazienteRimuoveElementoDalDatabase()}: inserimento di un paziente e pressione del pulsante di eliminazione per verificare che venga rimosso dal database e dalla lista visualizzata.
+	
+	\item \texttt{pulsanteEliminaDiabetologoRimuoveElementoDalDatabase()}: inserimento di un diabetologo e pressione del pulsante di eliminazione per verificare che venga rimosso dal database e dalla lista visualizzata.
+	
+\end{itemize}
+
+\subsubsection*{\texttt{ModificaCredenzialiTest}}
+
+La classe \texttt{ModificaCredenzialiTest} verifica il caricamento e la modifica dei dati personali di diabetologi e pazienti, comprese le associazioni tra pazienti e medici.
+
+\begin{itemize}
+	
+	\item \texttt{inizializzazioneDiabetologoPrecompilaICampi()}: inizializzazione della modifica di un diabetologo per verificare che tutti i suoi dati vengano precompilati correttamente nei campi.
+	
+	\item \texttt{inizializzazionePazientePrecompilaICampi()}: inizializzazione della modifica di un paziente per verificare che tutti i suoi dati vengano precompilati correttamente nei campi.
+	
+	\item \texttt{inizializzazioneDiabetologoConfiguraCorrettaInterfaccia()}: inizializzazione di un diabetologo per verificare che l'interfaccia mostri correttamente le opzioni per l'assegnazione dei pazienti.
+	
+	\item \texttt{inizializzazionePazienteConfiguraCorrettaInterfaccia()}: inizializzazione di un paziente per verificare che l'interfaccia mostri correttamente l'opzione per l'assegnazione del medico.
+	
+	\item \texttt{inizializzazionePazientePreselezionaIlMedicoAttuale()}: inizializzazione di un paziente già associato a un medico per verificare che il medico attuale venga preselezionato.
+	
+	\item \texttt{inizializzazioneDiabetologoSelezionaIPazientiGiaAssociati()}: inizializzazione di un diabetologo per verificare che i pazienti già associati risultino selezionati e quelli non associati non risultino selezionati.
+	
+	\item \texttt{modificaCredenzialiDiabetologoAggiornaTuttiIDati()}: modifica dei dati di un diabetologo per verificare che username, password, codice fiscale, nome, cognome ed email vengano aggiornati correttamente.
+	
+	\item \texttt{modificaCredenzialiPazienteAggiornaTuttiIDati()}: modifica dei dati di un paziente per verificare che username, password, codice fiscale, nome, cognome ed email vengano aggiornati correttamente.
+	
+	\item \texttt{modificaCredenzialiPazientePermetteDiCambiareMedico()}: modifica di un paziente associandolo a un nuovo medico per verificare che il medico di riferimento venga aggiornato.
+	
+	\item \texttt{modificaDiabetologoAggiornaLeAssociazioni()}: modifica di un diabetologo con più pazienti selezionati per verificare che le associazioni con i pazienti vengano aggiornate correttamente.
+	
+\end{itemize}
+
+\subsubsection*{\texttt{AggiungiPersonaTest}}
+
+La classe \texttt{AggiungiPersonaTest} verifica la creazione di nuovi utenti, controllando la configurazione dell'interfaccia in base al tipo di utente, il caricamento delle associazioni disponibili e i controlli sui dati obbligatori e sugli username già presenti.
+
+\begin{itemize}
+	
+	\item \texttt{inizializzazioneComeMedicoConfiguraCorrettaInterfaccia()}: inizializzazione della schermata per l'aggiunta di un medico per verificare che l'interfaccia mostri correttamente le opzioni per l'assegnazione dei pazienti.
+	
+	\item \texttt{inizializzazioneComePazienteConfiguraCorrettaInterfaccia()}: inizializzazione della schermata per l'aggiunta di un paziente per verificare che l'interfaccia mostri correttamente l'opzione per l'assegnazione del medico.
+	
+	\item \texttt{inizializzazionePazienteCaricaIMediciNelComboBox()}: inserimento di più diabetologi per verificare che vengano caricati correttamente nel ComboBox dei medici.
+	
+	\item \texttt{inizializzazioneMedicoCaricaIPazientiNelMenuButton()}: inserimento di più pazienti per verificare che vengano caricati correttamente nel MenuButton e rappresentati tramite checkbox.
+	
+	\item \texttt{checkboxPazienteContieneIlPazienteComeUserData()}: creazione di un paziente e inizializzazione della schermata per verificare che la checkbox contenga correttamente nome, paziente associato come UserData e stato iniziale non selezionato.
+	
+	\item \texttt{handleConfermaInserisceUnNuovoMedico()}: compilazione dei dati di un nuovo medico e conferma per verificare che venga correttamente inserito nel database.
+	
+	\item \texttt{handleConfermaMedicoAssociaIPazientiSelezionati()}: creazione di un nuovo medico con un paziente selezionato per verificare che il paziente venga correttamente associato al medico.
+	
+	\item \texttt{handleConfermaInserisceUnNuovoPaziente()}: compilazione dei dati di un nuovo paziente con un medico selezionato per verificare che il paziente venga correttamente inserito e associato al medico.
+	
+	\item \texttt{handleConfermaNonInserisceSeMancaUnCampo()}: compilazione incompleta dei dati per verificare che un nuovo utente non venga inserito se manca un campo obbligatorio.
+	
+	\item \texttt{handleConfermaNonInserisceUsernameGiaEsistente()}: inserimento di un utente con uno username già presente per verificare che non venga creato un duplicato.
+	
+	\item \texttt{handleConfermaNonInseriscePazienteSenzaMedico()}: tentativo di inserimento di un paziente senza selezionare un medico per verificare che il paziente non venga inserito.
+	
+\end{itemize}

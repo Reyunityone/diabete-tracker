@@ -1,20 +1,56 @@
-\section{Class Diagram}
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=15cm,height=10cm,keepaspectratio]{Immagini/Bozza-UML(6).drawio.png}
-	\caption{Class Diagram}
-	%\label{fig:figure1}
-\end{figure}
+\begin{landscape}
+	\section{Class Diagram}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[
+		width=1\linewidth,
+		height=0.99\textheight,
+		keepaspectratio
+		]{Immagini/Bozza-UML(6).drawio.png}
+		\caption{Class Diagram}
+		\label{fig:class-diagram}
+	\end{figure}
+\end{landscape}
+
+\clearpage
 
 \subsection{Class Diagram della modellazione concettuale}
 
-Il sistema è incentrato sulla classe astratta Utente, che definisce le credenziali e i dati anagrafici comuni (username, password, codice fiscale, nome, cognome, email) e il metodo login(). Da essa ereditano Paziente, Diabetologo e Amministratore.\\
-A ogni Paziente è associato un Diabetologo come medico di riferimento e mantiene un elenco di fattori di rischio sotto forma di enumerazione, patologie pregresse e comorbidità. La modifica della cartella clinica (editCartella()) richiede l'autorizzazione di un medico e viene registrata tramite l'interfaccia GestoreLog, che salva ogni operazione in un oggetto Log (medico, paziente, timestamp, dettagli), in modo da assicurare il requisito di tracciabilità delle operazioni dei medici.\\
-Le rilevazioni giornaliere registrano data e ora, ultimo pasto e livello di glicemia. Le assunzioni di farmaci sono verificate rispetto alla Terapia assegnata tramite verificaTerapia(). Ogni Terapia, definita dal diabetologo, specifica farmaco, dose, numero di assunzioni giornaliere e indicazioni (prima, dopo o lontano dai pasti).\\
-Il paziente può inoltre inviare Segnalazione per sintomi, patologie o terapie concomitanti, indicando il periodo di riferimento. Il sistema genera Alert (verso paziente o medico) classificati per tipo (sistema-paziente, medico-paziente, paziente-medico) e livello di urgenza, coerentemente con i requisiti di notifica per mancata aderenza alla terapia o glicemia fuori soglia.\\
-Infine, Amministratore è responsabile della creazione dei nuovi utenti (creaUtente()) inserendone i dati iniziali.
+Il sistema è incentrato sulla classe astratta Utente, raccoglie i dati comuni ai diversi tipi di utilizzatori, quali username, password, codice fiscale, nome, cognome ed email. Da essa derivano le classi Paziente, Diabetologo e Responsabile.\\
 
+A ogni Paziente è associato un Diabetologo come medico di riferimento. Il Paziente mantiene inoltre i propri fattori di rischio, rappresentati tramite  l'enumerazione RiskFactor, oltre che le proprie patologie pregresse, comorbidità e altri dettagli clinici. La modifica della cartella clinica (editCartella()) richiede l'autorizzazione di un medico e viene registrata tramite l'interfaccia GestoreLog, che salva ogni operazione in un oggetto Log (medico, paziente, timestamp, dettagli), in modo da assicurare il requisito di tracciabilità delle operazioni dei medici.\\
+Le rilevazioni giornaliere registrano data e ora, ultimo pasto e livello di glicemia. Le assunzioni di farmaci sono verificate rispetto alla Terapia assegnata tramite verificaTerapia().\\
+Il paziente può inoltre effettuare Segnalazioni relative a sintomi, patologie o altre situazioni rilevanti. Il sistema gestisce messaggi tra paziente e diabetologo e genera messaggi di sistema destinati al paziente o al medico in presenza di condizioni che richiedono attenzione, come valori glicemici fuori soglia o mancata aderenza alla terapia.\\
 
-\subsection{Class Diagram del software}~\\
+Il Diabetologo può visualizzare i pazienti di propria competenza, consultare il loro andamento glicemico e gestire le relative terapie e informazioni cliniche.
+La classe Terapia contiene le informazioni relative al farmaco prescritto, alla dose, al numero di assunzioni giornaliere, al medico assegnante e alle indicazioni. Una stessa terapia può essere associata a più pazienti. Quando una terapia condivisa viene modificata per un singolo paziente, viene creata una nuova terapia per evitare di modificare quella degli altri pazienti.\\
 
+Il Responsabile è incaricato della gestione degli utenti del sistema, in particolare della creazione e modifica dei dati relativi a pazienti e diabetologi.\\
 
+La persistenza dei dati è garantita dalla classe Database, che centralizza il caricamento, il salvataggio, l'inserimento, la modifica e il recupero delle informazioni memorizzate nel file del database.
+
+\begin{landscape}
+	\subsection{Class Diagram del software}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[
+		width=0.99\linewidth,
+		height=0.99\textheight,
+		keepaspectratio
+		]{Immagini/ClassDiagramSW.png}
+		\caption{Class Diagram del software progettato}
+		\label{fig:class-diagram-sw}
+	\end{figure}
+	\clearpage
+	\let\clearpage\relax
+\end{landscape}
+
+Il diagramma di classi del software costituisce la traduzione del modello concettuale in una struttura di classi Java concrete, arricchita da tipi, costruttori, getter/setter e da alcune scelte implementative che nel modello concettuale non comparivano. La gerarchia portante resta invariata: una classe astratta User raccoglie username, password, codice fiscale, nome, cognome ed email, e da essa derivano per ereditarietà Paziente, Diabetologo e Responsabile. Il Paziente aggiunge alla superclasse gli attributi relativi a patologie pregresse, comorbidità e dettagli clinici, mentre i fattori di rischio e il medico di riferimento sono modellati come associazioni esplicite, rispettivamente verso l'enumerazione RiskFactor e verso Diabetologo. Diabetologo e Responsabile non introducono nuovi attributi rispetto a User, ma solo metodi propri, quali \texttt{isMioPaziente()} e \texttt{modificaTerapia()} per il primo.\\
+Attorno a questa gerarchia ruotano le classi che modellano il dominio clinico. Terapia contiene farmaco, dose, numero di assunzioni giornaliere e indicazioni, ed è collegata sia al medico che l'ha assegnata sia, tramite una collezione di pazienti, a più pazienti contemporaneamente, confermando la possibilità di condividere la stessa terapia tra utenti diversi. AssunzioneFarmaco registra data, orario e quantità di ogni assunzione ed è associata sia alla terapia di riferimento sia al paziente, esponendo il metodo \texttt{verificaTerapia()}. Rilevazione tiene traccia della glicemia rilevata e degli orari di pasto e rilevazione, associata all'enumerazione MomentoRilevazione, la quale non si limita a elencare i possibili momenti della giornata ma incorpora anche una descrizione testuale associata a ciascun valore. Segnalazione si compone infine di un testo libero delimitato da un periodo di inizio e fine, sempre riferita al paziente che l'ha effettuata.\\
+La classe Messaggio unifica due concetti tenuti distinti nel modello concettuale, ovvero le comunicazioni dirette tra paziente e medico e gli avvisi generati automaticamente dal sistema: un campo dedicato al tipo distingue infatti le comunicazioni paziente-medico, medico-paziente e quelle generate dal sistema verso l'uno o l'altro, mentre un secondo campo ne definisce il livello di urgenza, evitando così la necessità di due classi separate.\\
+Il diagramma software introduce inoltre alcune classi infrastrutturali assenti nel modello concettuale, necessarie a gestire la logica applicativa. La classe Database è realizzata secondo il pattern Singleton e centralizza non solo tutte le collezioni di dati del sistema, ma anche gran parte della logica di business, dalle operazioni di autenticazione alla creazione, modifica e cancellazione di ogni entità. Accanto a essa, la classe Session, anch'essa Singleton, gestisce separatamente l'utente attualmente autenticato. La classe GestoreAlert implementa la logica di generazione degli avvisi clinici, definendo soglie configurabili relative a livelli critici di glicemia e a fasce orarie rispetto ai pasti, e verificando periodicamente l'aderenza alla terapia e i valori fuori soglia, generando di conseguenza i messaggi di sistema opportuni.\\
+Merita infine una menzione particolare la classe GestoreLog che, a differenza della sua controparte nel modello concettuale, dove è definita come interfaccia, viene qui implementata come classe concreta che non si limita a registrare le modifiche apportate alla cartella clinica, ma ne consente anche l'annullamento. Questa funzionalità è resa possibile dalla classe LogOperazione, la quale conserva, oltre a medico, paziente, timestamp e dettagli dell'operazione, anche lo stato del paziente immediatamente precedente e successivo alla modifica, realizzando di fatto un meccanismo di tipo memento a supporto della tracciabilità e della reversibilità delle operazioni cliniche.\\
+
+Non è stato rappresentato il diagramma delle classi relative ai controller, perché la loro elevata complessità e il numero di attributi e metodi avrebbero reso il diagramma eccessivamente dettagliato, compromettendone la leggibilità e la funzionalità. Le varie classi dei controller svolgono principalmente il ruolo di collegamento tra l'interfaccia grafica e la logica dell'applicazione, per una consultazione più approfondita è possibile fare riferimento direttamente al codice sorgente del progetto.

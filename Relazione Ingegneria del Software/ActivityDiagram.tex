@@ -1,1 +1,41 @@
 \section{Activity Diagram}
+
+\begin{figure}[H]
+	\makebox[\paperwidth][c]{
+		\hspace*{-7.5cm}
+		\includegraphics[
+		height=0.92\textheight,
+		keepaspectratio
+		]{Immagini/ActivityDiagram_11.png}
+	}
+	\caption{Activity Diagram (Parte 1)}
+	\label{fig:activity-diagram_1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\hspace*{-3.5cm}
+	\includegraphics[
+	width=0.98\paperwidth,
+	height=0.98\textheight,
+	keepaspectratio
+	]{Immagini/ActivityDiagram_22.png}
+	\caption{Activity Diagram (Parte 2)}
+	\label{fig:activity-diagram_2}
+\end{figure}
+\clearpage
+
+Login: L'utente inserisce username e password. Il sistema ne verifica la validità: se risultano corrette avvia la relativa sessione e consente l'accesso alla schermata associata al ruolo dell'utente. In caso contrario viene mostrato un messaggio di errore e l'utente può digitare nuovamente le credenziali.\\
+
+Rilevazione giornaliera: il paziente inserisce i dati della rilevazione, ovvero il livello di glicemia, la data e l'ora e il periodo relativo all'ultimo pasto consumato. Il sistema salva la rilevazione e controlla se il valore glicemico è fuori soglia: se lo è genera un alert per notificarlo e, se l'urgenza è elevata a causa di un alto scostamento dal normale livello, crea un altro alert destinato al medico di riferimento per segnalarlo. Al termine, il sistema conferma la registrazione della rilevazione.\\
+
+Registrazione di un'assunzione e verifica della coerenza: il paziente inserisce i dati relativi al farmaco assunto, la sua quantità e la data e l'ora dell'assunzione. Il sistema salva i dati inseriti e verifica che siano coerenti con la terapia prescritta: in caso venga rilevata un'anomalia, il sistema la segnala all'utente.
+
+ Registrazione di una segnalazione: il paziente sceglie il tipo di segnalazione da effettuare e  ne indica la descrizione, la data di inizio e quella di fine. Il sistema la salva e ne conferma la registrazione, associandola al paziente.\\
+ 
+ Prescrizione e modifica di una terapia: il medico seleziona il paziente al quale assegnare o modificare la terapia e inserisce i dati relativi ad essa. L'operazione viene salvata in un log. Nel caso di modifica di una terapia condivisa, la modifica viene applicata al solo paziente interessato, senza alterare la terapia degli altri pazienti associati alla precedente versione.\\
+ 
+ Aggiornamento della cartella clinica di un paziente: il diabetologo seleziona un  paziente di riferimento e modifica le informazioni presenti nella sua cartella clinica. Il sistema salva le modifiche effettuate e registra l'operazione tramite un log, permettendo di mantenere la traccia dell'utente che ha effettuato l'aggiornamento.
+ 
+ 
+ 
